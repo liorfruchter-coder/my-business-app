@@ -1,0 +1,1521 @@
+{
+  "nodes": [
+    {
+      "id": "mre_app_shell",
+      "label": "App Shell (HTML Document)",
+      "type": "module",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Single-page application root containing four embedded sub-apps (calculator, calendar, tasks, home), all CSS, and all JS inline. Acts as the top-level container and bootstrap context.",
+      "attributes": {
+        "rationale": "EXTRACTED – the file itself is the module boundary; all code co-exists in one HTML document",
+        "pwa_manifest": "embedded as data-URI",
+        "charset": "UTF-8",
+        "rtl": true,
+        "lang": "he"
+      }
+    },
+    {
+      "id": "mre_auth_module",
+      "label": "Auth Module",
+      "type": "module",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Login/register system with demo-user shortcut. Manages user session, exports/imports per-user data as JSON blobs, and controls which user namespace is active for localStorage keys.",
+      "attributes": {
+        "rationale": "EXTRACTED – #biz-auth-screen section with dedicated bizLogin/bizRegister/bizLogout functions",
+        "ui_element": "#biz-auth-screen",
+        "storage_key": "biz_pin_v1"
+      }
+    },
+    {
+      "id": "mre_ns_proxy_iife",
+      "label": "Namespace Proxy IIFE",
+      "type": "module",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "IIFE that monkey-patches localStorage to prefix every key with the active user ID, so multiple users can share the same browser without data collisions. Exposes window._bizLS for raw unnamespaced access.",
+      "attributes": {
+        "rationale": "EXTRACTED – explicit IIFE pattern with bizNsProxy() wrapping getItem/setItem/removeItem",
+        "exposes": "window._bizLS",
+        "pattern": "proxy / monkey-patch"
+      }
+    },
+    {
+      "id": "mre_calculator_module",
+      "label": "Calculator Module",
+      "type": "module",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Core profit/loss calculator with income rows, expense rows, fixed tax deductions (income-tax, VAT, national-insurance), snapshot history, planning tools, Chart.js analytics, and AI-powered invoice scanning and monthly advisor. State key SK='biz_v10'.",
+      "attributes": {
+        "rationale": "EXTRACTED – largest JS block in the file, lines ~3926–5803, defines SK, SNAPK, expenseRows, fixedDefs, etc.",
+        "storage_keys": [
+          "biz_v10",
+          "biz_snaps_v6",
+          "biz_ds_v1"
+        ],
+        "chart_library": "Chart.js 4.4.1",
+        "ai_model": "claude-sonnet-4-20250514"
+      }
+    },
+    {
+      "id": "mre_home_iife",
+      "label": "Home Screen IIFE",
+      "type": "module",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "IIFE managing the home/dashboard screen: business name, logo (text or uploaded image), tagline, dark-mode toggle, emoji picker for logo, quick-stats bar pulling live data from the calculator module, and FAB (floating action button) configuration.",
+      "attributes": {
+        "rationale": "EXTRACTED – var _HOME_SK='home_v1', homeState object and homeApplyState/openSettings defined in dedicated IIFE block starting ~line 5831",
+        "storage_key": "home_v1",
+        "pattern": "IIFE"
+      }
+    },
+    {
+      "id": "mre_app_manager_module",
+      "label": "App Manager Module",
+      "type": "module",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Manages the registry of apps (built-in + user-defined). Persists app order/visibility in localStorage. Renders the app-manager overlay and provides launchApp() to navigate between sub-apps.",
+      "attributes": {
+        "rationale": "EXTRACTED – appsRegistry, APP_REG_KEY='home_apps_v1', BUILTIN_APPS array, loadAppsRegistry/saveAppsRegistry/renderAppManager/launchApp at line ~6133",
+        "storage_key": "home_apps_v1"
+      }
+    },
+    {
+      "id": "mre_calendar_module",
+      "label": "Calendar Module",
+      "type": "module",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Full calendar with month/week views, event CRUD (meetings, tasks, notes, reminders), recurrence, client and revenue tracking per event, mini-calendar widget, and upcoming-events panel. Storage key CAL_SK='biz_cal_v2'.",
+      "attributes": {
+        "rationale": "EXTRACTED – CAL_SK, CAL_EVS, cSave/cLoad/cDraw/cDrawMonth/cDrawWeek defined at line ~6208+",
+        "storage_key": "biz_cal_v2",
+        "event_types": [
+          "meeting",
+          "task",
+          "note",
+          "reminder"
+        ]
+      }
+    },
+    {
+      "id": "mre_tasks_module",
+      "label": "Tasks Module",
+      "type": "module",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Kanban/list task manager with quick-add bar, filter bar, stats row, settings overlay, and a modal for editing task details. Supports list and kanban board views. Storage key 'biz_tasks_v3'.",
+      "attributes": {
+        "rationale": "EXTRACTED – #app-tasks HTML section with tk-* classes and tkQaAdd/tkFilter/tkToggleKanban/tkOpenSettings functions",
+        "storage_key": "biz_tasks_v3",
+        "views": [
+          "list",
+          "kanban"
+        ]
+      }
+    },
+    {
+      "id": "mre_ui_auth_screen",
+      "label": "Auth Screen UI",
+      "type": "ui_section",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Login and registration form shown before any app is accessible. Contains email/password fields, submit button, demo-login shortcut, and user-menu panel (export/import data, logout).",
+      "attributes": {
+        "rationale": "EXTRACTED – #biz-auth-screen div with explicit form elements in HTML",
+        "element_id": "biz-auth-screen"
+      }
+    },
+    {
+      "id": "mre_ui_home_screen",
+      "label": "Home Screen UI",
+      "type": "ui_section",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Dashboard landing page showing business name/logo, tagline, quick-stats strip (revenue, profit, today events, open tasks), app-launcher grid, and FAB for quick calculator access.",
+      "attributes": {
+        "rationale": "EXTRACTED – #app-home section rendered by home IIFE",
+        "element_id": "app-home"
+      }
+    },
+    {
+      "id": "mre_ui_calculator_screen",
+      "label": "Calculator Screen UI",
+      "type": "ui_section",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Multi-tab calculator interface: Income tab, Expenses tab, Analysis tab (Chart.js charts), Planning tab, Snapshots tab, and Tools tab (invoice scanner, meeting timer, pricing calculator, ROAS/CAC tools).",
+      "attributes": {
+        "rationale": "EXTRACTED – #app-calc section with tab buttons and sub-panels in HTML",
+        "element_id": "app-calc",
+        "tabs": [
+          "income",
+          "expenses",
+          "analysis",
+          "planning",
+          "snapshots",
+          "tools"
+        ]
+      }
+    },
+    {
+      "id": "mre_ui_calendar_screen",
+      "label": "Calendar Screen UI",
+      "type": "ui_section",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Calendar interface with toolbar (prev/next/today, month/week toggle), main calendar grid, mini-calendar sidebar, upcoming-events list, and event-detail modal.",
+      "attributes": {
+        "rationale": "EXTRACTED – #app-cal section in HTML",
+        "element_id": "app-cal"
+      }
+    },
+    {
+      "id": "mre_ui_tasks_screen",
+      "label": "Tasks Screen UI",
+      "type": "ui_section",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Task manager interface with quick-add input bar, filter controls, stats summary row, task list/kanban toggle, kanban columns wrapper, and task-detail modal overlay.",
+      "attributes": {
+        "rationale": "EXTRACTED – #app-tasks section with tk-* child divs in HTML",
+        "element_id": "app-tasks"
+      }
+    },
+    {
+      "id": "mre_fn_biz_submit_auth",
+      "label": "bizSubmitAuth()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Entry-point for the auth form submission. Delegates to bizLogin() or bizRegister() depending on current mode. Validates inputs and triggers namespace proxy reconfiguration on success.",
+      "attributes": {
+        "rationale": "EXTRACTED – onclick handler on the auth form submit button",
+        "called_by": "auth form submit button"
+      }
+    },
+    {
+      "id": "mre_fn_biz_login",
+      "label": "bizLogin()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Authenticates an existing user by checking stored PIN/credentials in localStorage, activates the user namespace in the proxy, then loads the home screen.",
+      "attributes": {
+        "rationale": "EXTRACTED – defined in auth module, referenced in HTML and summary",
+        "storage_key_read": "biz_pin_v1"
+      }
+    },
+    {
+      "id": "mre_fn_biz_register",
+      "label": "bizRegister()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Creates a new user account: stores hashed credentials in localStorage under biz_pin_v1, initialises user namespace in the proxy, and navigates to home screen.",
+      "attributes": {
+        "rationale": "EXTRACTED – defined in auth module",
+        "storage_key_write": "biz_pin_v1"
+      }
+    },
+    {
+      "id": "mre_fn_biz_logout",
+      "label": "bizLogout()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Clears the active user session from memory, resets the namespace proxy, and returns to the auth screen.",
+      "attributes": {
+        "rationale": "EXTRACTED – referenced in user-menu HTML"
+      }
+    },
+    {
+      "id": "mre_fn_biz_export_user_data",
+      "label": "bizExportUserData()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Serialises all namespaced localStorage keys for the active user into a JSON blob and triggers a browser file download.",
+      "attributes": {
+        "rationale": "EXTRACTED – referenced in user-menu HTML export button"
+      }
+    },
+    {
+      "id": "mre_fn_biz_import_user_data",
+      "label": "bizImportUserData()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Reads a previously exported JSON blob via file-input, merges all keys back into namespaced localStorage, and reloads the active app state.",
+      "attributes": {
+        "rationale": "EXTRACTED – referenced in user-menu HTML import button"
+      }
+    },
+    {
+      "id": "mre_fn_calc",
+      "label": "calc()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Core calculation function. Reads all income and expense rows, applies Israeli tax brackets (calcIsraeliTax / calcIsraeliBI), computes net profit, updates summary UI, and triggers chart re-render. Monkey-patched by the namespace-proxy layer.",
+      "attributes": {
+        "rationale": "EXTRACTED – global function in calculator module, monkey-patched pattern with _origCalc saved",
+        "calls": [
+          "calcIsraeliTax",
+          "calcIsraeliBI",
+          "renderAnalysis"
+        ],
+        "pattern": "monkey-patch"
+      }
+    },
+    {
+      "id": "mre_fn_calc_israeli_tax",
+      "label": "calcIsraeliTax()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Computes Israeli income-tax (mas hakhnasa) for a given annual net income using the statutory progressive bracket table.",
+      "attributes": {
+        "rationale": "EXTRACTED – referenced explicitly in calc() and summary",
+        "domain": "Israeli tax law"
+      }
+    },
+    {
+      "id": "mre_fn_calc_israeli_bi",
+      "label": "calcIsraeliBI()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Computes Israeli national-insurance (Bituach Leumi) contributions using the statutory percentage schedule.",
+      "attributes": {
+        "rationale": "EXTRACTED – referenced in calc() and summary",
+        "domain": "Israeli social security law"
+      }
+    },
+    {
+      "id": "mre_fn_add_expense",
+      "label": "addExpense()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Appends a new expense row to the expenseRows array and re-renders the expense table. Monkey-patched to also trigger saveState() on change.",
+      "attributes": {
+        "rationale": "EXTRACTED – listed in monkey-patching pattern summary",
+        "pattern": "monkey-patch"
+      }
+    },
+    {
+      "id": "mre_fn_save_state",
+      "label": "saveState()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Serialises the current calculator state (income rows, expense rows, settings, forex rates) via buildStateObj() and writes it to localStorage key SK ('biz_v10').",
+      "attributes": {
+        "rationale": "EXTRACTED – part of calculator persistence flow",
+        "writes_to": "biz_v10"
+      }
+    },
+    {
+      "id": "mre_fn_apply_state",
+      "label": "applyState()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Reads the persisted state from localStorage and restores UI: populates income/expense rows, sets currency selectors, etc. Monkey-patched version runs after the original to handle extended fields.",
+      "attributes": {
+        "rationale": "EXTRACTED – monkey-patched, reads SK='biz_v10'",
+        "reads_from": "biz_v10",
+        "pattern": "monkey-patch"
+      }
+    },
+    {
+      "id": "mre_fn_capture_state",
+      "label": "captureState()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Returns a deep snapshot of the current calculator state as a plain object, used as the payload stored in each snapshot record.",
+      "attributes": {
+        "rationale": "INFERRED – referenced in snapshot structure {data: captureState()}"
+      }
+    },
+    {
+      "id": "mre_fn_confirm_save_snap",
+      "label": "confirmSaveSnap()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Prompts the user for a snapshot label/note, then calls captureState(), wraps it in a snapshot object {id, label, note, date, ts, data}, pushes to the snapshots array, and writes to SNAPK ('biz_snaps_v6').",
+      "attributes": {
+        "rationale": "EXTRACTED – part of snapshot workflow in calculator module",
+        "writes_to": "biz_snaps_v6"
+      }
+    },
+    {
+      "id": "mre_fn_render_snap_list",
+      "label": "renderSnapList()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Renders the list of saved snapshots in the Snapshots tab, with load/delete actions per row. Monkey-patched to add extra metadata display.",
+      "attributes": {
+        "rationale": "EXTRACTED – monkey-patched, listed in summary",
+        "pattern": "monkey-patch"
+      }
+    },
+    {
+      "id": "mre_fn_render_analysis",
+      "label": "renderAnalysis()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Builds or updates all Chart.js charts in the Analysis tab: income vs expenses bar chart, profit trend line, expense breakdown doughnut, and any DS-specific charts. Monkey-patched.",
+      "attributes": {
+        "rationale": "EXTRACTED – monkey-patched, calls Chart.js",
+        "pattern": "monkey-patch",
+        "chart_library": "Chart.js 4.4.1"
+      }
+    },
+    {
+      "id": "mre_fn_render_planning",
+      "label": "renderPlanning()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Renders the Planning tab: goal-setting inputs, break-even calculation, projected profit scenarios, and what-if sliders.",
+      "attributes": {
+        "rationale": "EXTRACTED – referenced in calculator module summary"
+      }
+    },
+    {
+      "id": "mre_fn_switch_tab",
+      "label": "switchTab()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Handles tab navigation within the calculator screen. Shows the selected tab panel, hides others, updates active tab button style. Monkey-patched.",
+      "attributes": {
+        "rationale": "EXTRACTED – monkey-patched, controls #app-calc tabs",
+        "pattern": "monkey-patch"
+      }
+    },
+    {
+      "id": "mre_fn_scan_invoice",
+      "label": "scanInvoice()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Accepts an invoice image upload from the user, encodes it as base64, and sends it to the Anthropic Claude API (claude-sonnet-4-20250514) with a Hebrew prompt to extract line-items, amounts, and VAT. Populates expense rows with the parsed result.",
+      "attributes": {
+        "rationale": "EXTRACTED – calls Anthropic API directly from client JS",
+        "api": "Anthropic Messages API",
+        "model": "claude-sonnet-4-20250514",
+        "input": "image (base64)"
+      }
+    },
+    {
+      "id": "mre_fn_run_monthly_advisor",
+      "label": "runMonthlyAdvisor()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Builds a financial summary prompt from the current calculator state and sends it to the Anthropic Claude API to receive personalised Hebrew-language monthly business advice. Displays the response in the Tools tab.",
+      "attributes": {
+        "rationale": "EXTRACTED – calls Anthropic API, referenced in file read summary",
+        "api": "Anthropic Messages API",
+        "model": "claude-sonnet-4-20250514",
+        "input": "structured financial summary"
+      }
+    },
+    {
+      "id": "mre_fn_export_all_csv",
+      "label": "exportAllCSV()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Exports all income and expense rows as a CSV file download for spreadsheet use.",
+      "attributes": {
+        "rationale": "EXTRACTED – referenced in calculator module"
+      }
+    },
+    {
+      "id": "mre_fn_export_accountant",
+      "label": "exportAccountant()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Generates an accountant-ready report (PDF or structured text) summarising income, expenses, tax deductions, and net profit for the current period.",
+      "attributes": {
+        "rationale": "EXTRACTED – referenced in calculator module"
+      }
+    },
+    {
+      "id": "mre_fn_calc_roas",
+      "label": "calcROAS()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Calculates Return on Ad Spend from user-entered advertising cost and revenue inputs in the Tools tab.",
+      "attributes": {
+        "rationale": "EXTRACTED – listed in marketing-metrics helpers in calculator module"
+      }
+    },
+    {
+      "id": "mre_fn_calc_cac",
+      "label": "calcCAC()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Calculates Customer Acquisition Cost from ad spend and new-customer count inputs.",
+      "attributes": {
+        "rationale": "EXTRACTED – listed alongside calcROAS in Tools tab"
+      }
+    },
+    {
+      "id": "mre_fn_calc_cash_flow",
+      "label": "calcCashFlow()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Projects cash-flow timeline based on income schedule and expense payment dates entered in the planning section.",
+      "attributes": {
+        "rationale": "EXTRACTED – referenced in calculator module planning functions"
+      }
+    },
+    {
+      "id": "mre_fn_open_app",
+      "label": "openApp()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Navigation function that hides all app screens and shows the requested sub-app (#app-home, #app-calc, #app-cal, #app-tasks). Delegates to launchApp() in the app manager.",
+      "attributes": {
+        "rationale": "EXTRACTED – defined at end of calculator module, calls launchApp"
+      }
+    },
+    {
+      "id": "mre_fn_go_home",
+      "label": "goHome()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Convenience wrapper around openApp() that navigates specifically to the home screen and refreshes the quick-stats bar.",
+      "attributes": {
+        "rationale": "EXTRACTED – defined alongside openApp in the file"
+      }
+    },
+    {
+      "id": "mre_fn_c_save_modal",
+      "label": "cSaveModal()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Saves a new or edited calendar event from the modal form. Validates required fields, merges changes into the CAL_EVS array, calls cSave() to persist, then re-renders the calendar view.",
+      "attributes": {
+        "rationale": "EXTRACTED – onclick='cSaveModal()' on modal Save button in calendar HTML",
+        "writes_to": "biz_cal_v2"
+      }
+    },
+    {
+      "id": "mre_fn_c_draw",
+      "label": "cDraw()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Top-level calendar render dispatcher: calls cDrawMonth() or cDrawWeek() based on C_VIEW, and refreshes mini-calendar and upcoming-events panel.",
+      "attributes": {
+        "rationale": "EXTRACTED – defined in calendar module"
+      }
+    },
+    {
+      "id": "mre_fn_tk_draw_kanban",
+      "label": "tkDrawKanban()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Renders the kanban board view for tasks: creates column elements for each status (todo, in-progress, done), populates task cards, and wires drag-and-drop handlers.",
+      "attributes": {
+        "rationale": "EXTRACTED – referenced in #app-tasks HTML (tkToggleKanban calls this) and summary",
+        "called_by": "tkToggleKanban"
+      }
+    },
+    {
+      "id": "mre_fn_home_apply_state",
+      "label": "homeApplyState()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Reads homeState from localStorage ('home_v1') and applies all settings to the home screen DOM: business name, logo, tagline, dark-mode class, FAB configuration.",
+      "attributes": {
+        "rationale": "EXTRACTED – defined in home IIFE, reads _HOME_SK",
+        "reads_from": "home_v1"
+      }
+    },
+    {
+      "id": "mre_fn_load_home_quick_stats",
+      "label": "loadHomeQuickStats()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Reads the latest calculator state and calendar/tasks data to populate the home screen's quick-stats strip (monthly revenue, profit, today's events, open task count).",
+      "attributes": {
+        "rationale": "EXTRACTED – defined in home IIFE, cross-module data reader",
+        "reads_from": [
+          "biz_v10",
+          "biz_cal_v2",
+          "biz_tasks_v3"
+        ]
+      }
+    },
+    {
+      "id": "mre_fn_launch_app",
+      "label": "launchApp()",
+      "type": "function",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "App manager function that looks up the requested app in appsRegistry, hides all screens, shows the target screen div, and fires any per-app onLoad hooks.",
+      "attributes": {
+        "rationale": "EXTRACTED – defined in app manager module at line ~6133"
+      }
+    },
+    {
+      "id": "mre_ds_main_calc_state",
+      "label": "Main Calc State (biz_v10)",
+      "type": "datastore",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Primary localStorage key holding the serialised calculator state: income rows, expense rows, currency, fixed-deduction percentages, forex rates, and UI preferences.",
+      "attributes": {
+        "rationale": "EXTRACTED – SK='biz_v10' constant in calculator module",
+        "key": "biz_v10",
+        "namespaced": true
+      }
+    },
+    {
+      "id": "mre_ds_snapshots",
+      "label": "Snapshots Store (biz_snaps_v6)",
+      "type": "datastore",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "localStorage key storing an array of snapshot objects {id, label, note, date, ts, data} capturing historical calculator states.",
+      "attributes": {
+        "rationale": "EXTRACTED – SNAPK='biz_snaps_v6' constant",
+        "key": "biz_snaps_v6",
+        "namespaced": true
+      }
+    },
+    {
+      "id": "mre_ds_home_state",
+      "label": "Home State (home_v1)",
+      "type": "datastore",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "localStorage key holding the home-screen configuration: businessName, logo, tagline, calcLabel, dark, fabLabel, fabSize, fabPosition, fabBg, userName, logoImage, logoBg.",
+      "attributes": {
+        "rationale": "EXTRACTED – _HOME_SK='home_v1' in home IIFE",
+        "key": "home_v1",
+        "namespaced": true
+      }
+    },
+    {
+      "id": "mre_ds_calendar_events",
+      "label": "Calendar Events (biz_cal_v2)",
+      "type": "datastore",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "localStorage key storing an array of calendar event objects {id, type, title, date, start, end, recur, color, client, status, travel, video, revenue, notes, done}.",
+      "attributes": {
+        "rationale": "EXTRACTED – CAL_SK='biz_cal_v2' constant",
+        "key": "biz_cal_v2",
+        "namespaced": true
+      }
+    },
+    {
+      "id": "mre_ds_tasks",
+      "label": "Tasks Store (biz_tasks_v3)",
+      "type": "datastore",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "localStorage key storing the tasks array with status, priority, due-date, and kanban column for each task.",
+      "attributes": {
+        "rationale": "EXTRACTED – referenced in DATA_KEYS array in namespace proxy IIFE",
+        "key": "biz_tasks_v3",
+        "namespaced": true
+      }
+    },
+    {
+      "id": "mre_ds_apps_registry",
+      "label": "Apps Registry (home_apps_v1)",
+      "type": "datastore",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "localStorage key storing the app registry: ordering, visibility flags, and any user-added custom apps beyond BUILTIN_APPS.",
+      "attributes": {
+        "rationale": "EXTRACTED – APP_REG_KEY='home_apps_v1' in app manager module",
+        "key": "home_apps_v1",
+        "namespaced": true
+      }
+    },
+    {
+      "id": "mre_ds_user_credentials",
+      "label": "User Credentials (biz_pin_v1)",
+      "type": "datastore",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "localStorage key (unnamespaced) storing user account credentials/PIN for login verification.",
+      "attributes": {
+        "rationale": "EXTRACTED – referenced in auth module summary as storage_key",
+        "key": "biz_pin_v1",
+        "namespaced": false
+      }
+    },
+    {
+      "id": "mre_ds_ds_state",
+      "label": "Digital Sales State (biz_ds_v1)",
+      "type": "datastore",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "localStorage key for digital-sales product configuration used by calcDSProduct() and ROAS/CAC tools.",
+      "attributes": {
+        "rationale": "EXTRACTED – 'biz_ds_v1' in DATA_KEYS and storage_keys of calculator module",
+        "key": "biz_ds_v1",
+        "namespaced": true
+      }
+    },
+    {
+      "id": "mre_ext_anthropic_api",
+      "label": "Anthropic Claude API",
+      "type": "user_system",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "External Anthropic Messages API endpoint called client-side for invoice OCR scanning and monthly advisor features. Uses model claude-sonnet-4-20250514.",
+      "attributes": {
+        "rationale": "EXTRACTED – direct fetch() calls to Anthropic API in scanInvoice and runMonthlyAdvisor",
+        "model": "claude-sonnet-4-20250514",
+        "call_pattern": "client-side fetch"
+      }
+    },
+    {
+      "id": "mre_ext_frankfurter_api",
+      "label": "Frankfurter Forex API",
+      "type": "user_system",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "External Frankfurter.app API called to fetch live forex exchange rates for multi-currency income/expense support in the calculator.",
+      "attributes": {
+        "rationale": "EXTRACTED – Frankfurter API referenced in calculator module for live forex rates",
+        "endpoint": "api.frankfurter.app"
+      }
+    },
+    {
+      "id": "mre_ext_chartjs",
+      "label": "Chart.js Library",
+      "type": "user_system",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Chart.js 4.4.1 loaded from CDN, used by renderAnalysis() to draw bar, line, and doughnut charts in the Analysis tab.",
+      "attributes": {
+        "rationale": "EXTRACTED – Chart.js 4.4.1 referenced in calculator module attributes",
+        "version": "4.4.1",
+        "source": "CDN"
+      }
+    },
+    {
+      "id": "mre_concept_monkey_patching",
+      "label": "Monkey-Patching Pattern",
+      "type": "feature",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Architectural pattern used throughout: original functions are saved as _orig* variables, then the global name is reassigned to a wrapper that calls the original plus extended logic. Used for calc, applyState, addExpense, renderSnapList, renderAnalysis, switchTab, buildStateObj.",
+      "attributes": {
+        "rationale": "EXTRACTED – explicitly identified in multiple function definitions",
+        "affected_functions": [
+          "calc",
+          "applyState",
+          "addExpense",
+          "renderSnapList",
+          "renderAnalysis",
+          "switchTab",
+          "buildStateObj"
+        ]
+      }
+    },
+    {
+      "id": "mre_concept_user_namespacing",
+      "label": "User Namespace Isolation",
+      "type": "feature",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "All localStorage keys are prefixed with the active user's ID via the namespace proxy IIFE, allowing multiple users to share one browser without data interference.",
+      "attributes": {
+        "rationale": "EXTRACTED – bizNsProxy() IIFE wraps localStorage globally",
+        "mechanism": "localStorage proxy with userId prefix"
+      }
+    },
+    {
+      "id": "mre_concept_israeli_tax",
+      "label": "Israeli Tax Calculation",
+      "type": "feature",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Domain-specific feature computing Israeli income-tax (mas hakhnasa) and national-insurance (Bituach Leumi) using statutory progressive brackets, applied to freelancer/small-business net profit.",
+      "attributes": {
+        "rationale": "EXTRACTED – calcIsraeliTax and calcIsraeliBI explicitly identified",
+        "jurisdiction": "Israel",
+        "applies_to": "freelancers and small businesses"
+      }
+    },
+    {
+      "id": "mre_concept_pwa",
+      "label": "PWA Support",
+      "type": "feature",
+      "file": "מחשבון_רווח_עסקי.html",
+      "description": "Progressive Web App manifest embedded as a data URI in the HTML head, enabling installation on mobile/desktop home screens with offline capability via the single-file architecture.",
+      "attributes": {
+        "rationale": "EXTRACTED – PWA manifest embedded as data-URI in app shell",
+        "manifest_delivery": "data-URI link tag"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "mre_app_shell",
+      "target": "mre_auth_module",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "note": "Auth screen HTML and JS are embedded in the single HTML file"
+    },
+    {
+      "source": "mre_app_shell",
+      "target": "mre_ns_proxy_iife",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "note": "Namespace proxy IIFE is defined inside the HTML script block"
+    },
+    {
+      "source": "mre_app_shell",
+      "target": "mre_calculator_module",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_app_shell",
+      "target": "mre_home_iife",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_app_shell",
+      "target": "mre_app_manager_module",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_app_shell",
+      "target": "mre_calendar_module",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_app_shell",
+      "target": "mre_tasks_module",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_app_shell",
+      "target": "mre_concept_pwa",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "note": "PWA manifest embedded as data-URI in <head>"
+    },
+    {
+      "source": "mre_ns_proxy_iife",
+      "target": "mre_ds_main_calc_state",
+      "relation": "manages",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "note": "Proxy prefixes all localStorage access including SK keys"
+    },
+    {
+      "source": "mre_ns_proxy_iife",
+      "target": "mre_ds_snapshots",
+      "relation": "manages",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_ns_proxy_iife",
+      "target": "mre_ds_home_state",
+      "relation": "manages",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_ns_proxy_iife",
+      "target": "mre_ds_calendar_events",
+      "relation": "manages",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_ns_proxy_iife",
+      "target": "mre_ds_tasks",
+      "relation": "manages",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_ns_proxy_iife",
+      "target": "mre_ds_apps_registry",
+      "relation": "manages",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_ns_proxy_iife",
+      "target": "mre_ds_ds_state",
+      "relation": "manages",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_ns_proxy_iife",
+      "target": "mre_concept_user_namespacing",
+      "relation": "uses",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_auth_module",
+      "target": "mre_fn_biz_submit_auth",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_auth_module",
+      "target": "mre_fn_biz_login",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_auth_module",
+      "target": "mre_fn_biz_register",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_auth_module",
+      "target": "mre_fn_biz_logout",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_auth_module",
+      "target": "mre_fn_biz_export_user_data",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_auth_module",
+      "target": "mre_fn_biz_import_user_data",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_auth_module",
+      "target": "mre_ui_auth_screen",
+      "relation": "renders",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_auth_module",
+      "target": "mre_ds_user_credentials",
+      "relation": "stores",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_biz_submit_auth",
+      "target": "mre_fn_biz_login",
+      "relation": "calls",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_biz_submit_auth",
+      "target": "mre_fn_biz_register",
+      "relation": "calls",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_biz_login",
+      "target": "mre_ds_user_credentials",
+      "relation": "reads",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_biz_register",
+      "target": "mre_ds_user_credentials",
+      "relation": "stores",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_biz_login",
+      "target": "mre_ns_proxy_iife",
+      "relation": "calls",
+      "evidence": "INFERRED",
+      "confidence_score": 0.85,
+      "note": "Login must activate the namespace proxy with the authenticated user ID"
+    },
+    {
+      "source": "mre_fn_biz_export_user_data",
+      "target": "mre_ns_proxy_iife",
+      "relation": "uses",
+      "evidence": "INFERRED",
+      "confidence_score": 0.85,
+      "note": "Export reads all namespaced keys, which requires the proxy enumeration"
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_fn_calc",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_fn_add_expense",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_fn_save_state",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_fn_apply_state",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_fn_capture_state",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_fn_confirm_save_snap",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_fn_render_snap_list",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_fn_render_analysis",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_fn_render_planning",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_fn_switch_tab",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_fn_scan_invoice",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_fn_run_monthly_advisor",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_fn_export_all_csv",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_fn_export_accountant",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_fn_calc_roas",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_fn_calc_cac",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_fn_calc_cash_flow",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_fn_calc_israeli_tax",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_fn_calc_israeli_bi",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_fn_open_app",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_fn_go_home",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_concept_monkey_patching",
+      "relation": "uses",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_concept_israeli_tax",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_ui_calculator_screen",
+      "relation": "renders",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_calc",
+      "target": "mre_fn_calc_israeli_tax",
+      "relation": "calls",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_calc",
+      "target": "mre_fn_calc_israeli_bi",
+      "relation": "calls",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_calc",
+      "target": "mre_fn_render_analysis",
+      "relation": "calls",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_save_state",
+      "target": "mre_ds_main_calc_state",
+      "relation": "stores",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_apply_state",
+      "target": "mre_ds_main_calc_state",
+      "relation": "reads",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_confirm_save_snap",
+      "target": "mre_fn_capture_state",
+      "relation": "calls",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_confirm_save_snap",
+      "target": "mre_ds_snapshots",
+      "relation": "stores",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_render_snap_list",
+      "target": "mre_ds_snapshots",
+      "relation": "reads",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_render_analysis",
+      "target": "mre_ext_chartjs",
+      "relation": "uses",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_scan_invoice",
+      "target": "mre_ext_anthropic_api",
+      "relation": "calls",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_run_monthly_advisor",
+      "target": "mre_ext_anthropic_api",
+      "relation": "calls",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_run_monthly_advisor",
+      "target": "mre_ds_main_calc_state",
+      "relation": "reads",
+      "evidence": "INFERRED",
+      "confidence_score": 0.9,
+      "note": "Advisor builds prompt from current financial state which must come from saved state"
+    },
+    {
+      "source": "mre_calculator_module",
+      "target": "mre_ext_frankfurter_api",
+      "relation": "uses",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "note": "Fetches live exchange rates for multi-currency support"
+    },
+    {
+      "source": "mre_fn_open_app",
+      "target": "mre_fn_launch_app",
+      "relation": "calls",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_go_home",
+      "target": "mre_fn_open_app",
+      "relation": "calls",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_go_home",
+      "target": "mre_fn_load_home_quick_stats",
+      "relation": "calls",
+      "evidence": "INFERRED",
+      "confidence_score": 0.8,
+      "note": "Navigating home refreshes the stats strip"
+    },
+    {
+      "source": "mre_home_iife",
+      "target": "mre_fn_home_apply_state",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_home_iife",
+      "target": "mre_fn_load_home_quick_stats",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_home_iife",
+      "target": "mre_ui_home_screen",
+      "relation": "renders",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_home_apply_state",
+      "target": "mre_ds_home_state",
+      "relation": "reads",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_load_home_quick_stats",
+      "target": "mre_ds_main_calc_state",
+      "relation": "reads",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_load_home_quick_stats",
+      "target": "mre_ds_calendar_events",
+      "relation": "reads",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_load_home_quick_stats",
+      "target": "mre_ds_tasks",
+      "relation": "reads",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_app_manager_module",
+      "target": "mre_fn_launch_app",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_app_manager_module",
+      "target": "mre_ds_apps_registry",
+      "relation": "stores",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_launch_app",
+      "target": "mre_ds_apps_registry",
+      "relation": "reads",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calendar_module",
+      "target": "mre_fn_c_save_modal",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calendar_module",
+      "target": "mre_fn_c_draw",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_calendar_module",
+      "target": "mre_ui_calendar_screen",
+      "relation": "renders",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_c_save_modal",
+      "target": "mre_ds_calendar_events",
+      "relation": "stores",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_c_draw",
+      "target": "mre_ds_calendar_events",
+      "relation": "reads",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_tasks_module",
+      "target": "mre_fn_tk_draw_kanban",
+      "relation": "contains",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_tasks_module",
+      "target": "mre_ui_tasks_screen",
+      "relation": "renders",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_tasks_module",
+      "target": "mre_ds_tasks",
+      "relation": "stores",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_tk_draw_kanban",
+      "target": "mre_ds_tasks",
+      "relation": "reads",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_calc_israeli_tax",
+      "target": "mre_concept_israeli_tax",
+      "relation": "uses",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_calc_israeli_bi",
+      "target": "mre_concept_israeli_tax",
+      "relation": "uses",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_fn_calc_roas",
+      "target": "mre_fn_calc_cac",
+      "relation": "semantically_similar_to",
+      "evidence": "INFERRED",
+      "confidence_score": 0.8,
+      "note": "Both are marketing-efficiency metrics computed from ad spend; conceptually paired in the Tools tab"
+    },
+    {
+      "source": "mre_fn_scan_invoice",
+      "target": "mre_fn_run_monthly_advisor",
+      "relation": "semantically_similar_to",
+      "evidence": "INFERRED",
+      "confidence_score": 0.75,
+      "note": "Both features call the same Anthropic Claude API from client JS for AI-assisted financial tasks"
+    },
+    {
+      "source": "mre_fn_export_all_csv",
+      "target": "mre_fn_export_accountant",
+      "relation": "semantically_similar_to",
+      "evidence": "INFERRED",
+      "confidence_score": 0.82,
+      "note": "Both export financial data for external use; differ in format and audience"
+    },
+    {
+      "source": "mre_fn_biz_export_user_data",
+      "target": "mre_fn_biz_import_user_data",
+      "relation": "semantically_similar_to",
+      "evidence": "INFERRED",
+      "confidence_score": 0.9,
+      "note": "Symmetric backup/restore pair operating on the same user data namespace"
+    },
+    {
+      "source": "mre_fn_save_state",
+      "target": "mre_fn_apply_state",
+      "relation": "semantically_similar_to",
+      "evidence": "INFERRED",
+      "confidence_score": 0.9,
+      "note": "Symmetric persist/restore pair for the same calculator state object"
+    },
+    {
+      "source": "mre_calendar_module",
+      "target": "mre_tasks_module",
+      "relation": "semantically_similar_to",
+      "evidence": "INFERRED",
+      "confidence_score": 0.72,
+      "note": "Both manage time-based work items (events vs tasks) and share the quick-stats aggregation in loadHomeQuickStats"
+    },
+    {
+      "source": "mre_fn_confirm_save_snap",
+      "target": "mre_fn_render_snap_list",
+      "relation": "depends_on",
+      "evidence": "INFERRED",
+      "confidence_score": 0.85,
+      "note": "After saving a snapshot, renderSnapList is called to refresh the UI"
+    },
+    {
+      "source": "mre_fn_switch_tab",
+      "target": "mre_ui_calculator_screen",
+      "relation": "renders",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_concept_monkey_patching",
+      "target": "mre_fn_calc",
+      "relation": "uses",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_concept_monkey_patching",
+      "target": "mre_fn_apply_state",
+      "relation": "uses",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_concept_monkey_patching",
+      "target": "mre_fn_render_analysis",
+      "relation": "uses",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "mre_auth_module",
+      "target": "mre_calculator_module",
+      "relation": "depends_on",
+      "evidence": "INFERRED",
+      "confidence_score": 0.8,
+      "note": "Auth must complete before calculator state is loaded for the active user"
+    },
+    {
+      "source": "mre_auth_module",
+      "target": "mre_ns_proxy_iife",
+      "relation": "depends_on",
+      "evidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "note": "Auth activates the user namespace in the proxy"
+    },
+    {
+      "source": "mre_home_iife",
+      "target": "mre_app_manager_module",
+      "relation": "depends_on",
+      "evidence": "INFERRED",
+      "confidence_score": 0.8,
+      "note": "Home screen app-launcher grid is powered by appsRegistry from app manager"
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "he_ai_features_flow",
+      "label": "Client-Side AI Feature Flow",
+      "nodes": [
+        "mre_fn_scan_invoice",
+        "mre_fn_run_monthly_advisor",
+        "mre_ext_anthropic_api",
+        "mre_ds_main_calc_state"
+      ],
+      "relation": "uses",
+      "note": "Both AI features (invoice scanner and monthly advisor) share the same pattern: read financial state from biz_v10, build a Hebrew prompt, POST to the Anthropic Claude API, and display the response in the Tools tab. This three-way shared flow justifies a hyperedge."
+    },
+    {
+      "id": "he_cross_module_quick_stats",
+      "label": "Home Quick-Stats Aggregation Flow",
+      "nodes": [
+        "mre_fn_load_home_quick_stats",
+        "mre_ds_main_calc_state",
+        "mre_ds_calendar_events",
+        "mre_ds_tasks",
+        "mre_ui_home_screen"
+      ],
+      "relation": "reads",
+      "note": "loadHomeQuickStats is the single cross-module read that pulls data from three independent datastores (calculator, calendar, tasks) and merges them into one UI strip. This multi-source aggregation pattern uniquely connects all four nodes."
+    },
+    {
+      "id": "he_user_data_lifecycle",
+      "label": "User Data Lifecycle (Auth + Namespace + Persistence)",
+      "nodes": [
+        "mre_auth_module",
+        "mre_ns_proxy_iife",
+        "mre_fn_biz_export_user_data",
+        "mre_fn_biz_import_user_data",
+        "mre_ds_user_credentials"
+      ],
+      "relation": "manages",
+      "note": "These five nodes collectively own the full user-data lifecycle: credentials stored unnamespaced in biz_pin_v1, namespace proxy activated on login, and export/import providing full backup/restore of all namespaced keys. No other nodes participate in all three lifecycle phases."
+    }
+  ]
+}

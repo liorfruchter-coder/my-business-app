@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1668D0"/>
+      <stop offset="100%" style="stop-color:#0F4FA8"/>
+    </linearGradient>
+  </defs>
+  <!-- Full bleed background (no border-radius for maskable) -->
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <!-- Safe zone content (center 80% = 102px margin each side) -->
+  <!-- Building -->
+  <rect x="186" y="230" width="140" height="130" rx="8" fill="rgba(255,255,255,0.15)"/>
+  <rect x="200" y="215" width="112" height="145" rx="8" fill="rgba(255,255,255,0.22)"/>
+  <!-- Windows -->
+  <rect x="215" y="235" width="25" height="22" rx="4" fill="rgba(255,255,255,0.85)"/>
+  <rect x="250" y="235" width="25" height="22" rx="4" fill="rgba(255,255,255,0.85)"/>
+  <rect x="285" y="235" width="15" height="22" rx="4" fill="rgba(255,255,255,0.85)"/>
+  <rect x="215" y="267" width="25" height="22" rx="4" fill="rgba(255,255,255,0.6)"/>
+  <rect x="250" y="267" width="25" height="22" rx="4" fill="rgba(255,255,255,0.85)"/>
+  <!-- Door -->
+  <rect x="244" y="315" width="24" height="45" rx="4" fill="rgba(255,255,255,0.92)"/>
+  <!-- Chart -->
+  <rect x="298" y="305" width="14" height="35" rx="4" fill="rgba(255,255,255,0.7)"/>
+  <rect x="318" y="292" width="14" height="48" rx="4" fill="rgba(255,255,255,0.92)"/>
+  <!-- Arrow -->
+  <polyline points="298,255 312,238 324,246" stroke="rgba(255,255,255,0.95)" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="325,239 332,251 320,250" fill="rgba(255,255,255,0.95)"/>
+</svg>

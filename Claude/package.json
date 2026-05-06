@@ -1,0 +1,25 @@
+{
+  "name": "biz-manager-app",
+  "version": "1.0.0",
+  "description": "מערכת ניהול עסק — מחשבון רווח, יומן ומשימות",
+  "private": true,
+  "scripts": {
+    "cap:init":   "npx cap init",
+    "cap:add":    "npx cap add android",
+    "cap:sync":   "npx cap sync",
+    "cap:open":   "npx cap open android",
+    "cap:run":    "npx cap run android",
+    "build":      "npx cap sync && npx cap open android"
+  },
+  "dependencies": {
+    "@capacitor/core":       "^6.0.0",
+    "@capacitor/android":    "^6.0.0",
+    "@capacitor/app":        "^6.0.0",
+    "@capacitor/haptics":    "^6.0.0",
+    "@capacitor/keyboard":   "^6.0.0",
+    "@capacitor/status-bar": "^6.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.0.0"
+  }
+}
