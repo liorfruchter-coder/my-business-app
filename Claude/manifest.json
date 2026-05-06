@@ -1,0 +1,47 @@
+{
+  "name": "מערכת ניהול עסק",
+  "short_name": "ניהול עסק",
+  "description": "מחשבון רווח, יומן ומשימות לעסקים קטנים",
+  "start_url": "./מחשבון_רווח_עסקי.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#EDECEA",
+  "theme_color": "#1668D0",
+  "lang": "he",
+  "dir": "rtl",
+  "categories": ["business", "finance", "productivity"],
+  "icons": [
+    {
+      "src": "./icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-maskable.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "מחשבון רווח",
+      "url": "./מחשבון_רווח_עסקי.html#calc",
+      "description": "פתח מחשבון רווח נקי"
+    },
+    {
+      "name": "יומן",
+      "url": "./מחשבון_רווח_עסקי.html#cal",
+      "description": "פתח יומן"
+    }
+  ]
+}
