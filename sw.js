@@ -3,7 +3,7 @@
    גרסה: 2.0
    ════════════════════════════════════════════ */
 
-const CACHE_NAME = 'biz-app-v2';
+const CACHE_NAME = 'biz-app-v5';
 
 // קבצים שנשמרים לשימוש אופליין
 const LOCAL_ASSETS = [
@@ -84,4 +84,34 @@ self.addEventListener('fetch', function(e) {
 // ── הודעה לעדכון הקאש ────────────────────────────────
 self.addEventListener('message', function(e) {
   if (e.data === 'SKIP_WAITING') self.skipWaiting();
+  // Schedule a notification from the main thread
+  if (e.data && e.data.type === 'SCHEDULE_NOTIF') {
+    var payload = e.data;
+    var delay = Math.max(0, payload.triggerMs - Date.now());
+    setTimeout(function(){
+      self.registration.showNotification(payload.title, {
+        body: payload.body || '',
+        icon: './icon-192.svg',
+        badge: './icon-192.svg',
+        tag: payload.tag || 'biz-notif',
+        data: { url: payload.url || './' },
+        vibrate: [100, 50, 100],
+        requireInteraction: false
+      });
+    }, delay);
+  }
+});
+
+// ── לחיצה על נוטיפיקציה ──────────────────────────────
+self.addEventListener('notificationclick', function(e) {
+  e.notification.close();
+  var url = (e.notification.data && e.notification.data.url) || './';
+  e.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(cls) {
+      for (var i = 0; i < cls.length; i++) {
+        if (cls[i].url.includes(url) && 'focus' in cls[i]) return cls[i].focus();
+      }
+      if (clients.openWindow) return clients.openWindow(url);
+    })
+  );
 });
