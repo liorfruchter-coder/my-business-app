@@ -1,0 +1,35 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      ".firebaserc",
+      "**/.git/**",
+      "**/node_modules/**",
+      "netlify/**",
+      "netlify.toml",
+      "make-icons.js",
+      "package*.json",
+      ".netlifyignore",
+      "**/.claude/**",
+      "DEPLOY_GUIDE.md"
+    ],
+    "headers": [
+      {
+        "source": "/sw.js",
+        "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }]
+      },
+      {
+        "source": "/*.html",
+        "headers": [{ "key": "Cache-Control", "value": "no-cache, must-revalidate" }]
+      },
+      {
+        "source": "/*.js",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600" }]
+      }
+    ],
+    "rewrites": [
+      { "source": "/", "destination": "/מחשבון_רווח_עסקי.html" }
+    ]
+  }
+}
