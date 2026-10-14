@@ -953,5 +953,241 @@
     "White"
    ]
   }
+ ],
+ "RichCity": [
+  {
+   "name": "Mansion",
+   "size_studs": {
+    "x": 72.6,
+    "y": 49.9,
+    "z": 45.5
+   },
+   "tris": 18112,
+   "parts": 14,
+   "styles": [
+    "Brass",
+    "Charcoal",
+    "Cream",
+    "Glass",
+    "GlassDark",
+    "Gold",
+    "Hedge",
+    "Marble",
+    "MarbleDark",
+    "Red",
+    "White",
+    "WindowGlow",
+    "WoodDark"
+   ]
+  },
+  {
+   "name": "GlassTower",
+   "size_studs": {
+    "x": 33.0,
+    "y": 104.6,
+    "z": 40.1
+   },
+   "tris": 5040,
+   "parts": 11,
+   "styles": [
+    "Charcoal",
+    "DarkMetal",
+    "Glass",
+    "GlassDark",
+    "Gold",
+    "Marble",
+    "MarbleDark",
+    "Metal",
+    "NeonCyan",
+    "NeonRed",
+    "White"
+   ]
+  },
+  {
+   "name": "ArtDecoTower",
+   "size_studs": {
+    "x": 35.8,
+    "y": 94.6,
+    "z": 38.7
+   },
+   "tris": 8876,
+   "parts": 8,
+   "styles": [
+    "Brass",
+    "Cream",
+    "Glass",
+    "GlassDark",
+    "Gold",
+    "MarbleDark",
+    "NeonYellow",
+    "WindowGlow"
+   ]
+  },
+  {
+   "name": "Bank",
+   "size_studs": {
+    "x": 47.2,
+    "y": 34.4,
+    "z": 31.6
+   },
+   "tris": 7076,
+   "parts": 9,
+   "styles": [
+    "Brass",
+    "Charcoal",
+    "Cream",
+    "GlassDark",
+    "Gold",
+    "Green",
+    "Marble",
+    "White",
+    "WindowGlow"
+   ]
+  },
+  {
+   "name": "GoldFountain",
+   "size_studs": {
+    "x": 24.8,
+    "y": 15.4,
+    "z": 24.8
+   },
+   "tris": 3502,
+   "parts": 4,
+   "styles": [
+    "Brass",
+    "Gold",
+    "Marble",
+    "Water"
+   ]
+  },
+  {
+   "name": "Hotel",
+   "size_studs": {
+    "x": 38.0,
+    "y": 64.0,
+    "z": 34.6
+   },
+   "tris": 9296,
+   "parts": 14,
+   "styles": [
+    "Brass",
+    "Coral",
+    "Glass",
+    "GlassDark",
+    "Gold",
+    "MarbleDark",
+    "Navy",
+    "NeonPink",
+    "Peach",
+    "Red",
+    "SkyBlue",
+    "Water",
+    "White",
+    "WindowGlow"
+   ]
+  },
+  {
+   "name": "Limo",
+   "size_studs": {
+    "x": 7.6,
+    "y": 5.6,
+    "z": 26.8
+   },
+   "tris": 902,
+   "parts": 7,
+   "styles": [
+    "Black",
+    "GlassDark",
+    "Gold",
+    "Metal",
+    "NeonRed",
+    "NeonWhite",
+    "Rubber"
+   ]
+  },
+  {
+   "name": "BoutiqueRow",
+   "size_studs": {
+    "x": 44.2,
+    "y": 23.2,
+    "z": 16.8
+   },
+   "tris": 13640,
+   "parts": 15,
+   "styles": [
+    "Charcoal",
+    "Concrete",
+    "Cream",
+    "Glass",
+    "GlassDark",
+    "Gold",
+    "Hedge",
+    "Metal",
+    "Mint",
+    "Navy",
+    "Pink",
+    "Plum",
+    "Red",
+    "White",
+    "WindowGlow"
+   ]
+  },
+  {
+   "name": "GoldenFishStatue",
+   "size_studs": {
+    "x": 11.9,
+    "y": 22.6,
+    "z": 10.2
+   },
+   "tris": 3664,
+   "parts": 7,
+   "styles": [
+    "Black",
+    "Charcoal",
+    "Gold",
+    "Marble",
+    "MarbleDark",
+    "Water",
+    "White"
+   ]
+  },
+  {
+   "name": "StreetClock",
+   "size_studs": {
+    "x": 4.5,
+    "y": 18.1,
+    "z": 4.5
+   },
+   "tris": 1886,
+   "parts": 5,
+   "styles": [
+    "Black",
+    "Brass",
+    "Charcoal",
+    "Gold",
+    "White"
+   ]
+  },
+  {
+   "name": "CityGate",
+   "size_studs": {
+    "x": 35.4,
+    "y": 28.7,
+    "z": 18.0
+   },
+   "tris": 6140,
+   "parts": 9,
+   "styles": [
+    "Blue",
+    "Charcoal",
+    "Gold",
+    "Marble",
+    "MarbleDark",
+    "Navy",
+    "Purple",
+    "Red",
+    "WindowGlow"
+   ]
+  }
  ]
 }
