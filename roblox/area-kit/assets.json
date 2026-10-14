@@ -715,5 +715,243 @@
     "StoneDark"
    ]
   }
+ ],
+ "ThemePark": [
+  {
+   "name": "RollerCoaster",
+   "size_studs": {
+    "x": 99.7,
+    "y": 42.7,
+    "z": 42.4
+   },
+   "tris": 24328,
+   "parts": 10,
+   "styles": [
+    "Charcoal",
+    "Gold",
+    "HotPink",
+    "Lemon",
+    "Mint",
+    "NeonYellow",
+    "Purple",
+    "Red",
+    "White"
+   ]
+  },
+  {
+   "name": "Carousel",
+   "size_studs": {
+    "x": 30.2,
+    "y": 30.0,
+    "z": 31.2
+   },
+   "tris": 30604,
+   "parts": 15,
+   "styles": [
+    "Black",
+    "Glass",
+    "Gold",
+    "HotPink",
+    "Lemon",
+    "Lilac",
+    "Mint",
+    "NeonYellow",
+    "Orange",
+    "Pink",
+    "Purple",
+    "Red",
+    "SkyBlue",
+    "White"
+   ]
+  },
+  {
+   "name": "CastleGate",
+   "size_studs": {
+    "x": 52.4,
+    "y": 45.8,
+    "z": 14.0
+   },
+   "tris": 7860,
+   "parts": 16,
+   "styles": [
+    "Brass",
+    "Cream",
+    "Flower",
+    "Glass",
+    "Gold",
+    "Hedge",
+    "HotPink",
+    "Leaf",
+    "Lemon",
+    "Lilac",
+    "Mint",
+    "NeonYellow",
+    "Pink",
+    "Purple",
+    "SkyBlue",
+    "White"
+   ]
+  },
+  {
+   "name": "DropTower",
+   "size_studs": {
+    "x": 22.3,
+    "y": 91.0,
+    "z": 22.3
+   },
+   "tris": 6904,
+   "parts": 9,
+   "styles": [
+    "Charcoal",
+    "HotPink",
+    "Lemon",
+    "Lilac",
+    "NeonPink",
+    "NeonRed",
+    "NeonYellow",
+    "Purple",
+    "White"
+   ]
+  },
+  {
+   "name": "TicketBooth",
+   "size_studs": {
+    "x": 11.8,
+    "y": 18.6,
+    "z": 14.5
+   },
+   "tris": 2654,
+   "parts": 8,
+   "styles": [
+    "Charcoal",
+    "Cream",
+    "Glass",
+    "Gold",
+    "Red",
+    "RedDark",
+    "SkyBlue",
+    "White"
+   ]
+  },
+  {
+   "name": "TeacupRide",
+   "size_studs": {
+    "x": 31.5,
+    "y": 10.8,
+    "z": 31.5
+   },
+   "tris": 7638,
+   "parts": 9,
+   "styles": [
+    "Charcoal",
+    "HotPink",
+    "Lemon",
+    "Lilac",
+    "Mint",
+    "Orange",
+    "Pink",
+    "SkyBlue",
+    "White"
+   ]
+  },
+  {
+   "name": "GameStall",
+   "size_studs": {
+    "x": 16.8,
+    "y": 15.9,
+    "z": 12.1
+   },
+   "tris": 8456,
+   "parts": 18,
+   "styles": [
+    "Black",
+    "Coral",
+    "Cream",
+    "GlassDark",
+    "HotPink",
+    "Lemon",
+    "Lilac",
+    "Mint",
+    "NeonYellow",
+    "Orange",
+    "Pink",
+    "Plank",
+    "Purple",
+    "Red",
+    "SkyBlue",
+    "Teal",
+    "White",
+    "WoodLight"
+   ]
+  },
+  {
+   "name": "PopcornCart",
+   "size_studs": {
+    "x": 7.1,
+    "y": 14.2,
+    "z": 7.6
+   },
+   "tris": 4480,
+   "parts": 9,
+   "styles": [
+    "Charcoal",
+    "DarkMetal",
+    "Glass",
+    "Gold",
+    "Lemon",
+    "Metal",
+    "Red",
+    "White",
+    "WoodDark"
+   ]
+  },
+  {
+   "name": "SwingRide",
+   "size_studs": {
+    "x": 40.3,
+    "y": 29.6,
+    "z": 40.3
+   },
+   "tris": 4604,
+   "parts": 11,
+   "styles": [
+    "Charcoal",
+    "Gold",
+    "HotPink",
+    "Lemon",
+    "Lilac",
+    "Metal",
+    "Mint",
+    "NeonYellow",
+    "Purple",
+    "SkyBlue",
+    "White"
+   ]
+  },
+  {
+   "name": "BumperCars",
+   "size_studs": {
+    "x": 40.0,
+    "y": 16.2,
+    "z": 28.4
+   },
+   "tris": 8404,
+   "parts": 13,
+   "styles": [
+    "Blue",
+    "Charcoal",
+    "DarkMetal",
+    "HotPink",
+    "Lemon",
+    "Mint",
+    "NeonYellow",
+    "Orange",
+    "Purple",
+    "Red",
+    "Rubber",
+    "SkyBlue",
+    "White"
+   ]
+  }
  ]
 }
