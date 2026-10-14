@@ -1702,5 +1702,231 @@
     "White"
    ]
   }
+ ],
+ "PyramidDesert": [
+  {
+   "name": "Sphinx",
+   "size_studs": {
+    "x": 28.8,
+    "y": 38.5,
+    "z": 77.2
+   },
+   "tris": 2452,
+   "parts": 7,
+   "styles": [
+    "Black",
+    "Fire",
+    "Gold",
+    "Sandstone",
+    "SandstoneDark",
+    "SandstoneLight",
+    "Turquoise"
+   ]
+  },
+  {
+   "name": "TempleGate",
+   "size_studs": {
+    "x": 44.0,
+    "y": 37.0,
+    "z": 14.5
+   },
+   "tris": 3708,
+   "parts": 9,
+   "styles": [
+    "Fire",
+    "Gold",
+    "Navy",
+    "Red",
+    "Sandstone",
+    "SandstoneDark",
+    "SandstoneLight",
+    "Turquoise",
+    "WoodDark"
+   ]
+  },
+  {
+   "name": "BazaarStalls",
+   "size_studs": {
+    "x": 41.5,
+    "y": 9.4,
+    "z": 10.8
+   },
+   "tris": 2838,
+   "parts": 17,
+   "styles": [
+    "Adobe",
+    "AdobeLight",
+    "Brass",
+    "Chocolate",
+    "Cream",
+    "Fire",
+    "Green",
+    "Navy",
+    "Orange",
+    "Purple",
+    "Red",
+    "Rope",
+    "Teal",
+    "Thatch",
+    "WoodDark",
+    "WoodLight",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "MudBrickHouse",
+   "size_studs": {
+    "x": 22.9,
+    "y": 17.7,
+    "z": 18.0
+   },
+   "tris": 2610,
+   "parts": 11,
+   "styles": [
+    "Adobe",
+    "AdobeLight",
+    "Brass",
+    "Charcoal",
+    "Cream",
+    "Purple",
+    "Red",
+    "Teal",
+    "Turquoise",
+    "WoodDark",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "OasisPool",
+   "size_studs": {
+    "x": 42.9,
+    "y": 20.5,
+    "z": 42.5
+   },
+   "tris": 5676,
+   "parts": 11,
+   "styles": [
+    "Bark",
+    "Flower",
+    "Grass",
+    "Leaf",
+    "LeafDark",
+    "LeafLight",
+    "Orange",
+    "Sandstone",
+    "SandstoneDark",
+    "Water",
+    "WoodDark"
+   ]
+  },
+  {
+   "name": "DesertWell",
+   "size_studs": {
+    "x": 10.0,
+    "y": 11.5,
+    "z": 7.3
+   },
+   "tris": 1376,
+   "parts": 10,
+   "styles": [
+    "Adobe",
+    "DarkMetal",
+    "Rope",
+    "Sandstone",
+    "SandstoneDark",
+    "SandstoneLight",
+    "Water",
+    "WoodDark",
+    "WoodLight",
+    "WoodRed"
+   ]
+  },
+  {
+   "name": "Colonnade",
+   "size_studs": {
+    "x": 37.6,
+    "y": 22.6,
+    "z": 20.0
+   },
+   "tris": 4698,
+   "parts": 6,
+   "styles": [
+    "Gold",
+    "Sand",
+    "Sandstone",
+    "SandstoneDark",
+    "SandstoneLight",
+    "Turquoise"
+   ]
+  },
+  {
+   "name": "BedouinTent",
+   "size_studs": {
+    "x": 22.3,
+    "y": 10.0,
+    "z": 20.7
+   },
+   "tris": 2432,
+   "parts": 14,
+   "styles": [
+    "Brass",
+    "Chocolate",
+    "Cream",
+    "Fire",
+    "Navy",
+    "Orange",
+    "Purple",
+    "Red",
+    "Rope",
+    "Teal",
+    "White",
+    "WoodDark",
+    "WoodLight",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "PharaohStatue",
+   "size_studs": {
+    "x": 12.0,
+    "y": 32.2,
+    "z": 16.2
+   },
+   "tris": 1752,
+   "parts": 9,
+   "styles": [
+    "Black",
+    "Cream",
+    "Gold",
+    "Navy",
+    "Sandstone",
+    "SandstoneDark",
+    "SandstoneLight",
+    "Turquoise",
+    "White"
+   ]
+  },
+  {
+   "name": "PotteryCart",
+   "size_studs": {
+    "x": 8.1,
+    "y": 7.0,
+    "z": 14.1
+   },
+   "tris": 1484,
+   "parts": 10,
+   "styles": [
+    "Adobe",
+    "AdobeLight",
+    "DarkMetal",
+    "Navy",
+    "Plank",
+    "Red",
+    "Teal",
+    "WoodDark",
+    "WoodLight",
+    "Yellow"
+   ]
+  }
  ]
 }
