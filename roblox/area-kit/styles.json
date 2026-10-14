@@ -1,0 +1,1224 @@
+{
+ "White": {
+  "rgb": [
+   246,
+   246,
+   242
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "OffWhite": {
+  "rgb": [
+   238,
+   230,
+   214
+  ],
+  "mat": "Plaster",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Cream": {
+  "rgb": [
+   250,
+   238,
+   208
+  ],
+  "mat": "Plaster",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Grey": {
+  "rgb": [
+   150,
+   152,
+   158
+  ],
+  "mat": "Concrete",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Charcoal": {
+  "rgb": [
+   52,
+   54,
+   60
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Black": {
+  "rgb": [
+   30,
+   30,
+   34
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Concrete": {
+  "rgb": [
+   178,
+   178,
+   182
+  ],
+  "mat": "Concrete",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Asphalt": {
+  "rgb": [
+   70,
+   72,
+   78
+  ],
+  "mat": "Asphalt",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Metal": {
+  "rgb": [
+   172,
+   178,
+   186
+  ],
+  "mat": "Metal",
+  "rough": 0.35,
+  "metal": 0.8,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "DarkMetal": {
+  "rgb": [
+   74,
+   78,
+   88
+  ],
+  "mat": "Metal",
+  "rough": 0.4,
+  "metal": 0.7,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Rust": {
+  "rgb": [
+   150,
+   82,
+   48
+  ],
+  "mat": "CorrodedMetal",
+  "rough": 0.8,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Gold": {
+  "rgb": [
+   246,
+   192,
+   58
+  ],
+  "mat": "Foil",
+  "rough": 0.25,
+  "metal": 0.9,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Brass": {
+  "rgb": [
+   214,
+   164,
+   70
+  ],
+  "mat": "Metal",
+  "rough": 0.3,
+  "metal": 0.85,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Copper": {
+  "rgb": [
+   200,
+   120,
+   70
+  ],
+  "mat": "Metal",
+  "rough": 0.35,
+  "metal": 0.85,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Rubber": {
+  "rgb": [
+   36,
+   36,
+   40
+  ],
+  "mat": "Rubber",
+  "rough": 0.9,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Glass": {
+  "rgb": [
+   150,
+   214,
+   245
+  ],
+  "mat": "Glass",
+  "rough": 0.05,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 0.45,
+  "bevel": false
+ },
+ "GlassDark": {
+  "rgb": [
+   60,
+   96,
+   140
+  ],
+  "mat": "Glass",
+  "rough": 0.05,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 0.75,
+  "bevel": false
+ },
+ "Water": {
+  "rgb": [
+   70,
+   176,
+   232
+  ],
+  "mat": "Glass",
+  "rough": 0.05,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 0.6,
+  "bevel": false
+ },
+ "WindowGlow": {
+  "rgb": [
+   255,
+   222,
+   140
+  ],
+  "mat": "Neon",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 2.2,
+  "alpha": 1.0,
+  "bevel": false
+ },
+ "WoodLight": {
+  "rgb": [
+   214,
+   170,
+   118
+  ],
+  "mat": "Wood",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Plank": {
+  "rgb": [
+   188,
+   138,
+   90
+  ],
+  "mat": "WoodPlanks",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "WoodDark": {
+  "rgb": [
+   124,
+   84,
+   54
+  ],
+  "mat": "WoodPlanks",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "WoodRed": {
+  "rgb": [
+   150,
+   64,
+   48
+  ],
+  "mat": "WoodPlanks",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Driftwood": {
+  "rgb": [
+   196,
+   180,
+   156
+  ],
+  "mat": "Wood",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Bark": {
+  "rgb": [
+   104,
+   70,
+   44
+  ],
+  "mat": "Wood",
+  "rough": 0.9,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Bamboo": {
+  "rgb": [
+   204,
+   190,
+   104
+  ],
+  "mat": "Wood",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "BambooDark": {
+  "rgb": [
+   150,
+   136,
+   64
+  ],
+  "mat": "Wood",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Thatch": {
+  "rgb": [
+   220,
+   184,
+   106
+  ],
+  "mat": "Fabric",
+  "rough": 0.95,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "ThatchDark": {
+  "rgb": [
+   176,
+   140,
+   72
+  ],
+  "mat": "Fabric",
+  "rough": 0.95,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Rope": {
+  "rgb": [
+   204,
+   174,
+   124
+  ],
+  "mat": "Fabric",
+  "rough": 0.95,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": false
+ },
+ "Leaf": {
+  "rgb": [
+   74,
+   180,
+   76
+  ],
+  "mat": "Grass",
+  "rough": 0.8,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "LeafDark": {
+  "rgb": [
+   42,
+   134,
+   64
+  ],
+  "mat": "LeafyGrass",
+  "rough": 0.8,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "LeafLight": {
+  "rgb": [
+   130,
+   206,
+   92
+  ],
+  "mat": "Grass",
+  "rough": 0.8,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Grass": {
+  "rgb": [
+   96,
+   182,
+   84
+  ],
+  "mat": "Grass",
+  "rough": 0.9,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Hedge": {
+  "rgb": [
+   58,
+   146,
+   72
+  ],
+  "mat": "LeafyGrass",
+  "rough": 0.9,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Flower": {
+  "rgb": [
+   250,
+   120,
+   160
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": false
+ },
+ "Stone": {
+  "rgb": [
+   156,
+   154,
+   158
+  ],
+  "mat": "Cobblestone",
+  "rough": 0.85,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "StoneDark": {
+  "rgb": [
+   110,
+   108,
+   114
+  ],
+  "mat": "Slate",
+  "rough": 0.85,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Rock": {
+  "rgb": [
+   128,
+   118,
+   110
+  ],
+  "mat": "Rock",
+  "rough": 0.9,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Sand": {
+  "rgb": [
+   240,
+   214,
+   156
+  ],
+  "mat": "Sand",
+  "rough": 0.95,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Sandstone": {
+  "rgb": [
+   228,
+   192,
+   130
+  ],
+  "mat": "Sandstone",
+  "rough": 0.85,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "SandstoneDark": {
+  "rgb": [
+   192,
+   150,
+   92
+  ],
+  "mat": "Sandstone",
+  "rough": 0.85,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "SandstoneLight": {
+  "rgb": [
+   240,
+   214,
+   166
+  ],
+  "mat": "Sandstone",
+  "rough": 0.85,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Adobe": {
+  "rgb": [
+   206,
+   146,
+   100
+  ],
+  "mat": "Plaster",
+  "rough": 0.9,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "AdobeLight": {
+  "rgb": [
+   226,
+   178,
+   128
+  ],
+  "mat": "Plaster",
+  "rough": 0.9,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Marble": {
+  "rgb": [
+   242,
+   240,
+   234
+  ],
+  "mat": "Marble",
+  "rough": 0.3,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "MarbleDark": {
+  "rgb": [
+   60,
+   62,
+   70
+  ],
+  "mat": "Marble",
+  "rough": 0.3,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Brick": {
+  "rgb": [
+   178,
+   84,
+   62
+  ],
+  "mat": "Brick",
+  "rough": 0.85,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Basalt": {
+  "rgb": [
+   58,
+   52,
+   58
+  ],
+  "mat": "Basalt",
+  "rough": 0.85,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "BasaltLight": {
+  "rgb": [
+   98,
+   88,
+   92
+  ],
+  "mat": "Slate",
+  "rough": 0.85,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Obsidian": {
+  "rgb": [
+   34,
+   26,
+   44
+  ],
+  "mat": "Glass",
+  "rough": 0.15,
+  "metal": 0.2,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Lava": {
+  "rgb": [
+   255,
+   104,
+   28
+  ],
+  "mat": "Neon",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 4.0,
+  "alpha": 1.0,
+  "bevel": false
+ },
+ "LavaDim": {
+  "rgb": [
+   210,
+   70,
+   30
+  ],
+  "mat": "CrackedLava",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.8,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Fire": {
+  "rgb": [
+   255,
+   178,
+   60
+  ],
+  "mat": "Neon",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 6.0,
+  "alpha": 1.0,
+  "bevel": false
+ },
+ "Ember": {
+  "rgb": [
+   255,
+   70,
+   30
+  ],
+  "mat": "Neon",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 4.0,
+  "alpha": 1.0,
+  "bevel": false
+ },
+ "Snow": {
+  "rgb": [
+   250,
+   252,
+   255
+  ],
+  "mat": "Snow",
+  "rough": 0.9,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Ice": {
+  "rgb": [
+   176,
+   222,
+   250
+  ],
+  "mat": "Ice",
+  "rough": 0.1,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 0.82,
+  "bevel": true
+ },
+ "IceDeep": {
+  "rgb": [
+   110,
+   180,
+   236
+  ],
+  "mat": "Glacier",
+  "rough": 0.15,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "IceGlow": {
+  "rgb": [
+   150,
+   230,
+   255
+  ],
+  "mat": "Neon",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 2.5,
+  "alpha": 1.0,
+  "bevel": false
+ },
+ "Red": {
+  "rgb": [
+   222,
+   62,
+   62
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "RedDark": {
+  "rgb": [
+   160,
+   40,
+   44
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Pink": {
+  "rgb": [
+   250,
+   146,
+   192
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "HotPink": {
+  "rgb": [
+   232,
+   62,
+   150
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Coral": {
+  "rgb": [
+   250,
+   128,
+   104
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Peach": {
+  "rgb": [
+   252,
+   196,
+   156
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Orange": {
+  "rgb": [
+   250,
+   142,
+   42
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Yellow": {
+  "rgb": [
+   255,
+   212,
+   64
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Lemon": {
+  "rgb": [
+   255,
+   240,
+   140
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Mint": {
+  "rgb": [
+   156,
+   232,
+   200
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Green": {
+  "rgb": [
+   80,
+   190,
+   92
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Teal": {
+  "rgb": [
+   36,
+   166,
+   176
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Turquoise": {
+  "rgb": [
+   52,
+   196,
+   196
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "SkyBlue": {
+  "rgb": [
+   124,
+   202,
+   246
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Blue": {
+  "rgb": [
+   58,
+   128,
+   230
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Navy": {
+  "rgb": [
+   30,
+   48,
+   98
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Lilac": {
+  "rgb": [
+   196,
+   166,
+   240
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Purple": {
+  "rgb": [
+   146,
+   88,
+   220
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Plum": {
+  "rgb": [
+   96,
+   48,
+   120
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Waffle": {
+  "rgb": [
+   222,
+   164,
+   84
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Chocolate": {
+  "rgb": [
+   112,
+   66,
+   42
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Cherry": {
+  "rgb": [
+   210,
+   30,
+   50
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "MoonWhite": {
+  "rgb": [
+   234,
+   237,
+   244
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "MoonPanel": {
+  "rgb": [
+   186,
+   192,
+   206
+  ],
+  "mat": "DiamondPlate",
+  "rough": 0.5,
+  "metal": 0.3,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "MoonDark": {
+  "rgb": [
+   64,
+   68,
+   84
+  ],
+  "mat": "Metal",
+  "rough": 0.5,
+  "metal": 0.4,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Solar": {
+  "rgb": [
+   38,
+   62,
+   150
+  ],
+  "mat": "Glass",
+  "rough": 0.1,
+  "metal": 0.3,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": false
+ },
+ "NeonPurple": {
+  "rgb": [
+   186,
+   120,
+   255
+  ],
+  "mat": "Neon",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 3.0,
+  "alpha": 1.0,
+  "bevel": false
+ },
+ "NeonCyan": {
+  "rgb": [
+   90,
+   228,
+   255
+  ],
+  "mat": "Neon",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 3.0,
+  "alpha": 1.0,
+  "bevel": false
+ },
+ "NeonPink": {
+  "rgb": [
+   255,
+   90,
+   190
+  ],
+  "mat": "Neon",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 3.0,
+  "alpha": 1.0,
+  "bevel": false
+ },
+ "NeonGreen": {
+  "rgb": [
+   110,
+   255,
+   140
+  ],
+  "mat": "Neon",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 3.0,
+  "alpha": 1.0,
+  "bevel": false
+ },
+ "NeonRed": {
+  "rgb": [
+   255,
+   60,
+   60
+  ],
+  "mat": "Neon",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 3.0,
+  "alpha": 1.0,
+  "bevel": false
+ },
+ "NeonYellow": {
+  "rgb": [
+   255,
+   226,
+   90
+  ],
+  "mat": "Neon",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 3.0,
+  "alpha": 1.0,
+  "bevel": false
+ },
+ "NeonWhite": {
+  "rgb": [
+   255,
+   252,
+   236
+  ],
+  "mat": "Neon",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 3.0,
+  "alpha": 1.0,
+  "bevel": false
+ },
+ "Accent": {
+  "rgb": [
+   232,
+   96,
+   96
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ },
+ "Party": {
+  "rgb": [
+   90,
+   190,
+   250
+  ],
+  "mat": "SmoothPlastic",
+  "rough": 0.55,
+  "metal": 0.0,
+  "emit": 0.0,
+  "alpha": 1.0,
+  "bevel": true
+ }
+}

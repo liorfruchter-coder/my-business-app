@@ -2153,5 +2153,40 @@
     "NeonRed"
    ]
   }
+ ],
+ "Shared": [
+  {
+   "name": "BorderPylon",
+   "size_studs": {
+    "x": 6.4,
+    "y": 29.0,
+    "z": 6.4
+   },
+   "tris": 272,
+   "parts": 4,
+   "styles": [
+    "Accent",
+    "Charcoal",
+    "DarkMetal",
+    "Metal"
+   ]
+  },
+  {
+   "name": "PricePlaque",
+   "size_studs": {
+    "x": 21.0,
+    "y": 15.8,
+    "z": 2.2
+   },
+   "tris": 396,
+   "parts": 5,
+   "styles": [
+    "Accent",
+    "Black",
+    "Charcoal",
+    "Gold",
+    "Metal"
+   ]
+  }
  ]
 }
