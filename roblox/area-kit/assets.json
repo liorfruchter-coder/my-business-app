@@ -1,0 +1,250 @@
+{
+ "Beach": [
+  {
+   "name": "BeachHouse",
+   "size_studs": {
+    "x": 47.7,
+    "y": 41.7,
+    "z": 37.9
+   },
+   "tris": 10986,
+   "parts": 19,
+   "styles": [
+    "Accent",
+    "Black",
+    "Brass",
+    "Concrete",
+    "Coral",
+    "DarkMetal",
+    "Driftwood",
+    "Glass",
+    "Leaf",
+    "LeafDark",
+    "LeafLight",
+    "Plank",
+    "Red",
+    "SkyBlue",
+    "Teal",
+    "White",
+    "WindowGlow",
+    "WoodDark",
+    "WoodLight"
+   ]
+  },
+  {
+   "name": "SurfShack",
+   "size_studs": {
+    "x": 34.4,
+    "y": 20.0,
+    "z": 24.0
+   },
+   "tris": 5776,
+   "parts": 22,
+   "styles": [
+    "Accent",
+    "Blue",
+    "Brass",
+    "Charcoal",
+    "Concrete",
+    "Coral",
+    "DarkMetal",
+    "Driftwood",
+    "Glass",
+    "Lilac",
+    "Metal",
+    "Mint",
+    "Navy",
+    "Orange",
+    "Plank",
+    "Red",
+    "SkyBlue",
+    "Teal",
+    "White",
+    "WoodDark",
+    "WoodLight",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "IceCreamKiosk",
+   "size_studs": {
+    "x": 24.0,
+    "y": 34.4,
+    "z": 21.2
+   },
+   "tris": 8788,
+   "parts": 16,
+   "styles": [
+    "Charcoal",
+    "Cherry",
+    "Chocolate",
+    "Cream",
+    "Glass",
+    "LeafDark",
+    "Lemon",
+    "Lilac",
+    "Metal",
+    "Mint",
+    "Pink",
+    "SkyBlue",
+    "Waffle",
+    "White",
+    "WoodDark",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "Pier",
+   "size_studs": {
+    "x": 27.4,
+    "y": 21.8,
+    "z": 101.0
+   },
+   "tris": 8220,
+   "parts": 11,
+   "styles": [
+    "Brass",
+    "DarkMetal",
+    "Driftwood",
+    "Plank",
+    "Rope",
+    "SkyBlue",
+    "Teal",
+    "White",
+    "WindowGlow",
+    "WoodDark",
+    "WoodLight"
+   ]
+  },
+  {
+   "name": "BeachCabanas",
+   "size_studs": {
+    "x": 35.4,
+    "y": 12.5,
+    "z": 14.4
+   },
+   "tris": 4788,
+   "parts": 11,
+   "styles": [
+    "Brass",
+    "Charcoal",
+    "Coral",
+    "Driftwood",
+    "Glass",
+    "Mint",
+    "Plank",
+    "SkyBlue",
+    "White",
+    "WoodDark",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "ShowerStation",
+   "size_studs": {
+    "x": 7.5,
+    "y": 11.4,
+    "z": 6.4
+   },
+   "tris": 2420,
+   "parts": 8,
+   "styles": [
+    "Blue",
+    "Metal",
+    "Plank",
+    "Red",
+    "Teal",
+    "Water",
+    "White",
+    "WoodDark"
+   ]
+  },
+  {
+   "name": "VolleyballCourt",
+   "size_studs": {
+    "x": 46.6,
+    "y": 13.7,
+    "z": 36.1
+   },
+   "tris": 2956,
+   "parts": 11,
+   "styles": [
+    "Black",
+    "Blue",
+    "Concrete",
+    "Metal",
+    "Plank",
+    "Red",
+    "Sand",
+    "White",
+    "WoodDark",
+    "WoodLight",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "RowBoat",
+   "size_studs": {
+    "x": 6.1,
+    "y": 3.2,
+    "z": 18.7
+   },
+   "tris": 1526,
+   "parts": 7,
+   "styles": [
+    "Accent",
+    "Brass",
+    "Plank",
+    "Rope",
+    "White",
+    "WoodDark",
+    "WoodLight"
+   ]
+  },
+  {
+   "name": "Boardwalk",
+   "size_studs": {
+    "x": 11.8,
+    "y": 9.4,
+    "z": 40.0
+   },
+   "tris": 3176,
+   "parts": 10,
+   "styles": [
+    "Coral",
+    "DarkMetal",
+    "Driftwood",
+    "Orange",
+    "Plank",
+    "Rope",
+    "WindowGlow",
+    "WoodDark",
+    "WoodLight",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "BeachArch",
+   "size_studs": {
+    "x": 29.0,
+    "y": 19.6,
+    "z": 6.0
+   },
+   "tris": 2808,
+   "parts": 11,
+   "styles": [
+    "Concrete",
+    "Coral",
+    "Cream",
+    "Peach",
+    "Pink",
+    "Rope",
+    "SkyBlue",
+    "Teal",
+    "White",
+    "WoodDark",
+    "Yellow"
+   ]
+  }
+ ]
+}
