@@ -246,5 +246,271 @@
     "Yellow"
    ]
   }
+ ],
+ "TropicalIsland": [
+  {
+   "name": "TreeHouse",
+   "size_studs": {
+    "x": 30.9,
+    "y": 59.9,
+    "z": 29.1
+   },
+   "tris": 11504,
+   "parts": 16,
+   "styles": [
+    "Bamboo",
+    "BambooDark",
+    "Bark",
+    "Charcoal",
+    "Leaf",
+    "LeafDark",
+    "LeafLight",
+    "Orange",
+    "Plank",
+    "Red",
+    "Rope",
+    "Thatch",
+    "ThatchDark",
+    "WoodDark",
+    "WoodLight",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "StiltHut",
+   "size_studs": {
+    "x": 21.2,
+    "y": 26.0,
+    "z": 23.4
+   },
+   "tris": 6080,
+   "parts": 11,
+   "styles": [
+    "Bamboo",
+    "BambooDark",
+    "Bark",
+    "Charcoal",
+    "Plank",
+    "Rope",
+    "SkyBlue",
+    "Thatch",
+    "ThatchDark",
+    "Turquoise",
+    "WoodDark"
+   ]
+  },
+  {
+   "name": "TikiBar",
+   "size_studs": {
+    "x": 33.7,
+    "y": 18.0,
+    "z": 20.9
+   },
+   "tris": 7628,
+   "parts": 23,
+   "styles": [
+    "Bamboo",
+    "BambooDark",
+    "Black",
+    "Charcoal",
+    "Chocolate",
+    "Ember",
+    "Fire",
+    "GlassDark",
+    "Green",
+    "Orange",
+    "Pink",
+    "Plank",
+    "Red",
+    "Rope",
+    "Stone",
+    "Teal",
+    "Thatch",
+    "ThatchDark",
+    "Turquoise",
+    "White",
+    "WoodDark",
+    "WoodLight",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "TotemGate",
+   "size_studs": {
+    "x": 30.6,
+    "y": 24.8,
+    "z": 5.0
+   },
+   "tris": 5856,
+   "parts": 21,
+   "styles": [
+    "Bark",
+    "Black",
+    "Charcoal",
+    "Coral",
+    "Ember",
+    "Fire",
+    "Orange",
+    "Peach",
+    "Plank",
+    "Red",
+    "Rock",
+    "Rope",
+    "Stone",
+    "Teal",
+    "Thatch",
+    "ThatchDark",
+    "Turquoise",
+    "White",
+    "WoodDark",
+    "WoodRed",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "RopeBridge",
+   "size_studs": {
+    "x": 8.8,
+    "y": 13.8,
+    "z": 80.2
+   },
+   "tris": 3900,
+   "parts": 6,
+   "styles": [
+    "Bark",
+    "Driftwood",
+    "Plank",
+    "Rope",
+    "WoodDark",
+    "WoodLight"
+   ]
+  },
+  {
+   "name": "WaterfallCliff",
+   "size_studs": {
+    "x": 42.8,
+    "y": 30.0,
+    "z": 36.4
+   },
+   "tris": 3336,
+   "parts": 10,
+   "styles": [
+    "Flower",
+    "Grass",
+    "Leaf",
+    "LeafDark",
+    "LeafLight",
+    "Rock",
+    "Stone",
+    "StoneDark",
+    "Water",
+    "White"
+   ]
+  },
+  {
+   "name": "Canoe",
+   "size_studs": {
+    "x": 7.9,
+    "y": 2.7,
+    "z": 17.0
+   },
+   "tris": 1096,
+   "parts": 8,
+   "styles": [
+    "Bamboo",
+    "Bark",
+    "Plank",
+    "Red",
+    "Rope",
+    "WoodDark",
+    "WoodLight",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "FruitStand",
+   "size_studs": {
+    "x": 15.5,
+    "y": 11.4,
+    "z": 11.1
+   },
+   "tris": 6756,
+   "parts": 14,
+   "styles": [
+    "Bamboo",
+    "BambooDark",
+    "Chocolate",
+    "Green",
+    "LeafDark",
+    "Plank",
+    "Red",
+    "Rope",
+    "Thatch",
+    "ThatchDark",
+    "White",
+    "WoodDark",
+    "WoodLight",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "BambooFence",
+   "size_studs": {
+    "x": 23.1,
+    "y": 7.0,
+    "z": 1.8
+   },
+   "tris": 4572,
+   "parts": 4,
+   "styles": [
+    "Bamboo",
+    "BambooDark",
+    "Rope",
+    "WoodDark"
+   ]
+  },
+  {
+   "name": "Bonfire",
+   "size_studs": {
+    "x": 27.0,
+    "y": 6.2,
+    "z": 27.0
+   },
+   "tris": 1122,
+   "parts": 10,
+   "styles": [
+    "Bark",
+    "Charcoal",
+    "Cream",
+    "Ember",
+    "Fire",
+    "Sand",
+    "Stone",
+    "StoneDark",
+    "WoodLight",
+    "WoodRed"
+   ]
+  },
+  {
+   "name": "Hammock",
+   "size_studs": {
+    "x": 16.0,
+    "y": 8.6,
+    "z": 3.8
+   },
+   "tris": 1044,
+   "parts": 9,
+   "styles": [
+    "Bamboo",
+    "BambooDark",
+    "Red",
+    "Rock",
+    "Rope",
+    "Turquoise",
+    "White",
+    "WoodDark",
+    "Yellow"
+   ]
+  }
  ]
 }
