@@ -1928,5 +1928,230 @@
     "Yellow"
    ]
   }
+ ],
+ "MoonBase": [
+  {
+   "name": "CommandCenter",
+   "size_studs": {
+    "x": 63.2,
+    "y": 34.7,
+    "z": 61.5
+   },
+   "tris": 10168,
+   "parts": 11,
+   "styles": [
+    "Black",
+    "Glass",
+    "GlassDark",
+    "Grey",
+    "MoonDark",
+    "MoonPanel",
+    "MoonWhite",
+    "NeonCyan",
+    "NeonPurple",
+    "NeonRed",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "LaunchPad",
+   "size_studs": {
+    "x": 44.0,
+    "y": 70.6,
+    "z": 44.6
+   },
+   "tris": 4532,
+   "parts": 12,
+   "styles": [
+    "Black",
+    "Charcoal",
+    "Concrete",
+    "Ember",
+    "Glass",
+    "Grey",
+    "MoonDark",
+    "MoonWhite",
+    "NeonCyan",
+    "NeonRed",
+    "Orange",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "Observatory",
+   "size_studs": {
+    "x": 28.0,
+    "y": 27.9,
+    "z": 28.0
+   },
+   "tris": 2654,
+   "parts": 10,
+   "styles": [
+    "Black",
+    "Brass",
+    "Glass",
+    "Grey",
+    "MoonDark",
+    "MoonPanel",
+    "MoonWhite",
+    "NeonCyan",
+    "NeonPurple",
+    "Orange"
+   ]
+  },
+  {
+   "name": "HabModule",
+   "size_studs": {
+    "x": 43.8,
+    "y": 20.6,
+    "z": 16.8
+   },
+   "tris": 3684,
+   "parts": 9,
+   "styles": [
+    "GlassDark",
+    "Metal",
+    "MoonDark",
+    "MoonPanel",
+    "MoonWhite",
+    "NeonCyan",
+    "NeonPurple",
+    "Solar",
+    "White"
+   ]
+  },
+  {
+   "name": "SolarArray",
+   "size_studs": {
+    "x": 37.8,
+    "y": 5.7,
+    "z": 14.6
+   },
+   "tris": 1272,
+   "parts": 7,
+   "styles": [
+    "Black",
+    "Metal",
+    "MoonDark",
+    "MoonWhite",
+    "NeonGreen",
+    "Orange",
+    "Solar"
+   ]
+  },
+  {
+   "name": "AirlockTunnel",
+   "size_studs": {
+    "x": 7.3,
+    "y": 8.4,
+    "z": 31.2
+   },
+   "tris": 1212,
+   "parts": 6,
+   "styles": [
+    "Grey",
+    "MoonDark",
+    "MoonPanel",
+    "MoonWhite",
+    "NeonCyan",
+    "NeonPurple"
+   ]
+  },
+  {
+   "name": "LunarLander",
+   "size_studs": {
+    "x": 24.0,
+    "y": 16.8,
+    "z": 24.0
+   },
+   "tris": 928,
+   "parts": 11,
+   "styles": [
+    "Black",
+    "DarkMetal",
+    "Gold",
+    "Grey",
+    "Metal",
+    "MoonDark",
+    "MoonPanel",
+    "MoonWhite",
+    "Purple",
+    "White",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "CommTower",
+   "size_studs": {
+    "x": 32.4,
+    "y": 54.6,
+    "z": 28.3
+   },
+   "tris": 1608,
+   "parts": 5,
+   "styles": [
+    "Concrete",
+    "MoonDark",
+    "MoonWhite",
+    "NeonRed",
+    "Orange"
+   ]
+  },
+  {
+   "name": "CargoPods",
+   "size_studs": {
+    "x": 21.7,
+    "y": 10.4,
+    "z": 14.4
+   },
+   "tris": 1848,
+   "parts": 7,
+   "styles": [
+    "Black",
+    "Glass",
+    "MoonDark",
+    "MoonWhite",
+    "NeonCyan",
+    "Orange",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "FuelTanks",
+   "size_studs": {
+    "x": 29.5,
+    "y": 15.0,
+    "z": 12.1
+   },
+   "tris": 4768,
+   "parts": 8,
+   "styles": [
+    "Black",
+    "Concrete",
+    "Metal",
+    "MoonDark",
+    "MoonPanel",
+    "MoonWhite",
+    "Orange",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "MoonGate",
+   "size_studs": {
+    "x": 26.3,
+    "y": 30.7,
+    "z": 7.7
+   },
+   "tris": 2980,
+   "parts": 5,
+   "styles": [
+    "MoonDark",
+    "MoonWhite",
+    "NeonCyan",
+    "NeonPurple",
+    "NeonRed"
+   ]
+  }
  ]
 }
