@@ -12,7 +12,8 @@
       "package*.json",
       ".netlifyignore",
       "**/.claude/**",
-      "DEPLOY_GUIDE.md"
+      "DEPLOY_GUIDE.md",
+      "roblox/**"
     ],
     "headers": [
       {
