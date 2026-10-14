@@ -1466,5 +1466,241 @@
     "Yellow"
    ]
   }
+ ],
+ "SnowyPeaks": [
+  {
+   "name": "IceCastle",
+   "size_studs": {
+    "x": 64.0,
+    "y": 53.8,
+    "z": 51.2
+   },
+   "tris": 18630,
+   "parts": 5,
+   "styles": [
+    "Ice",
+    "IceDeep",
+    "IceGlow",
+    "Snow"
+   ]
+  },
+  {
+   "name": "SkiLodge",
+   "size_studs": {
+    "x": 45.1,
+    "y": 26.9,
+    "z": 30.7
+   },
+   "tris": 10136,
+   "parts": 15,
+   "styles": [
+    "Bark",
+    "Brass",
+    "Glass",
+    "Navy",
+    "Red",
+    "SkyBlue",
+    "Snow",
+    "Stone",
+    "StoneDark",
+    "White",
+    "WindowGlow",
+    "WoodDark",
+    "WoodLight",
+    "WoodRed",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "SkiLiftStation",
+   "size_studs": {
+    "x": 27.6,
+    "y": 18.7,
+    "z": 30.3
+   },
+   "tris": 2256,
+   "parts": 12,
+   "styles": [
+    "Charcoal",
+    "Concrete",
+    "DarkMetal",
+    "GlassDark",
+    "Metal",
+    "Navy",
+    "Red",
+    "Snow",
+    "White",
+    "WoodLight",
+    "WoodRed",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "SkiLiftTower",
+   "size_studs": {
+    "x": 17.8,
+    "y": 27.6,
+    "z": 32.0
+   },
+   "tris": 1276,
+   "parts": 8,
+   "styles": [
+    "Charcoal",
+    "Concrete",
+    "DarkMetal",
+    "Metal",
+    "Navy",
+    "Red",
+    "Snow",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "LogCabin",
+   "size_studs": {
+    "x": 21.9,
+    "y": 17.9,
+    "z": 15.6
+   },
+   "tris": 4072,
+   "parts": 12,
+   "styles": [
+    "Bark",
+    "Brass",
+    "Charcoal",
+    "Ice",
+    "Red",
+    "Snow",
+    "Stone",
+    "StoneDark",
+    "WindowGlow",
+    "WoodDark",
+    "WoodLight",
+    "WoodRed"
+   ]
+  },
+  {
+   "name": "HotCocoaStand",
+   "size_studs": {
+    "x": 21.7,
+    "y": 14.8,
+    "z": 8.7
+   },
+   "tris": 3968,
+   "parts": 10,
+   "styles": [
+    "Chocolate",
+    "Ember",
+    "Metal",
+    "Navy",
+    "Plank",
+    "Red",
+    "Snow",
+    "White",
+    "WoodDark",
+    "WoodLight"
+   ]
+  },
+  {
+   "name": "IceArch",
+   "size_studs": {
+    "x": 32.0,
+    "y": 25.7,
+    "z": 6.9
+   },
+   "tris": 5380,
+   "parts": 9,
+   "styles": [
+    "Charcoal",
+    "Ice",
+    "IceDeep",
+    "IceGlow",
+    "Rope",
+    "Snow",
+    "White",
+    "WindowGlow",
+    "WoodDark"
+   ]
+  },
+  {
+   "name": "SkiRack",
+   "size_studs": {
+    "x": 13.3,
+    "y": 7.4,
+    "z": 5.6
+   },
+   "tris": 1102,
+   "parts": 11,
+   "styles": [
+    "Black",
+    "Green",
+    "Metal",
+    "Navy",
+    "Orange",
+    "Red",
+    "SkyBlue",
+    "Snow",
+    "WoodDark",
+    "WoodLight",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "IceFishSculpture",
+   "size_studs": {
+    "x": 11.6,
+    "y": 12.7,
+    "z": 11.0
+   },
+   "tris": 684,
+   "parts": 4,
+   "styles": [
+    "Ice",
+    "IceDeep",
+    "IceGlow",
+    "Snow"
+   ]
+  },
+  {
+   "name": "IceRink",
+   "size_studs": {
+    "x": 50.5,
+    "y": 9.6,
+    "z": 35.8
+   },
+   "tris": 4046,
+   "parts": 8,
+   "styles": [
+    "Charcoal",
+    "Ice",
+    "Red",
+    "SkyBlue",
+    "Snow",
+    "White",
+    "WindowGlow",
+    "WoodRed"
+   ]
+  },
+  {
+   "name": "Snowmobile",
+   "size_studs": {
+    "x": 4.4,
+    "y": 5.1,
+    "z": 12.9
+   },
+   "tris": 382,
+   "parts": 9,
+   "styles": [
+    "Black",
+    "Charcoal",
+    "DarkMetal",
+    "GlassDark",
+    "NeonRed",
+    "NeonWhite",
+    "Red",
+    "Rubber",
+    "White"
+   ]
+  }
  ]
 }
