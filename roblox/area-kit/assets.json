@@ -1189,5 +1189,282 @@
     "WindowGlow"
    ]
   }
+ ],
+ "CruiseShip": [
+  {
+   "name": "CruiseShip",
+   "size_studs": {
+    "x": 34.0,
+    "y": 53.5,
+    "z": 176.4
+   },
+   "tris": 16335,
+   "parts": 16,
+   "styles": [
+    "Black",
+    "Coral",
+    "DarkMetal",
+    "Glass",
+    "GlassDark",
+    "Lemon",
+    "Navy",
+    "NeonWhite",
+    "Orange",
+    "Plank",
+    "Red",
+    "SkyBlue",
+    "Teal",
+    "Water",
+    "White",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "HarborTerminal",
+   "size_studs": {
+    "x": 90.7,
+    "y": 22.2,
+    "z": 43.3
+   },
+   "tris": 4864,
+   "parts": 14,
+   "styles": [
+    "Blue",
+    "Concrete",
+    "DarkMetal",
+    "Glass",
+    "GlassDark",
+    "Gold",
+    "Green",
+    "Hedge",
+    "Navy",
+    "Orange",
+    "Red",
+    "SkyBlue",
+    "White",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "Lighthouse",
+   "size_studs": {
+    "x": 23.2,
+    "y": 60.2,
+    "z": 26.4
+   },
+   "tris": 2864,
+   "parts": 12,
+   "styles": [
+    "Brass",
+    "Brick",
+    "Charcoal",
+    "Glass",
+    "GlassDark",
+    "Navy",
+    "NeonYellow",
+    "Red",
+    "Rock",
+    "Stone",
+    "StoneDark",
+    "White"
+   ]
+  },
+  {
+   "name": "CargoCrane",
+   "size_studs": {
+    "x": 22.6,
+    "y": 55.8,
+    "z": 66.6
+   },
+   "tris": 5292,
+   "parts": 8,
+   "styles": [
+    "DarkMetal",
+    "GlassDark",
+    "Metal",
+    "Navy",
+    "NeonRed",
+    "Red",
+    "White",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "ContainerStack",
+   "size_studs": {
+    "x": 44.3,
+    "y": 25.5,
+    "z": 16.9
+   },
+   "tris": 6368,
+   "parts": 9,
+   "styles": [
+    "Blue",
+    "DarkMetal",
+    "Green",
+    "Metal",
+    "Navy",
+    "Orange",
+    "Red",
+    "Teal",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "DockPier",
+   "size_studs": {
+    "x": 26.0,
+    "y": 16.6,
+    "z": 60.0
+   },
+   "tris": 4960,
+   "parts": 12,
+   "styles": [
+    "Asphalt",
+    "Black",
+    "Charcoal",
+    "Concrete",
+    "DarkMetal",
+    "Grey",
+    "Rope",
+    "Rubber",
+    "WindowGlow",
+    "WoodDark",
+    "WoodLight",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "Tugboat",
+   "size_studs": {
+    "x": 12.2,
+    "y": 21.0,
+    "z": 28.4
+   },
+   "tris": 4046,
+   "parts": 11,
+   "styles": [
+    "Black",
+    "DarkMetal",
+    "GlassDark",
+    "Navy",
+    "NeonGreen",
+    "NeonRed",
+    "Plank",
+    "Red",
+    "Rope",
+    "Rubber",
+    "White"
+   ]
+  },
+  {
+   "name": "FishMarket",
+   "size_studs": {
+    "x": 26.5,
+    "y": 12.6,
+    "z": 14.6
+   },
+   "tris": 6118,
+   "parts": 15,
+   "styles": [
+    "Black",
+    "Blue",
+    "Concrete",
+    "Coral",
+    "DarkMetal",
+    "Metal",
+    "Navy",
+    "Orange",
+    "Red",
+    "Rope",
+    "SkyBlue",
+    "White",
+    "WoodDark",
+    "WoodLight",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "AnchorMonument",
+   "size_studs": {
+    "x": 13.9,
+    "y": 21.2,
+    "z": 12.0
+   },
+   "tris": 2616,
+   "parts": 5,
+   "styles": [
+    "Charcoal",
+    "Gold",
+    "Navy",
+    "Rust",
+    "Stone"
+   ]
+  },
+  {
+   "name": "Warehouse",
+   "size_studs": {
+    "x": 42.0,
+    "y": 20.5,
+    "z": 31.6
+   },
+   "tris": 4992,
+   "parts": 13,
+   "styles": [
+    "Brick",
+    "Concrete",
+    "Cream",
+    "Glass",
+    "GlassDark",
+    "Grey",
+    "Metal",
+    "Navy",
+    "Orange",
+    "Rust",
+    "White",
+    "WoodLight",
+    "Yellow"
+   ]
+  },
+  {
+   "name": "NavBuoy",
+   "size_studs": {
+    "x": 10.0,
+    "y": 12.0,
+    "z": 10.0
+   },
+   "tris": 668,
+   "parts": 6,
+   "styles": [
+    "DarkMetal",
+    "NeonRed",
+    "Red",
+    "Rubber",
+    "Water",
+    "White"
+   ]
+  },
+  {
+   "name": "HarborGate",
+   "size_studs": {
+    "x": 27.0,
+    "y": 28.1,
+    "z": 5.2
+   },
+   "tris": 7164,
+   "parts": 10,
+   "styles": [
+    "Black",
+    "Brass",
+    "Navy",
+    "Orange",
+    "Red",
+    "Rope",
+    "White",
+    "WoodDark",
+    "WoodRed",
+    "Yellow"
+   ]
+  }
  ]
 }
