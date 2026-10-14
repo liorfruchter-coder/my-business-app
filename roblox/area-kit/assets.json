@@ -512,5 +512,208 @@
     "Yellow"
    ]
   }
+ ],
+ "Volcano": [
+  {
+   "name": "ObsidianTemple",
+   "size_studs": {
+    "x": 56.8,
+    "y": 45.5,
+    "z": 61.0
+   },
+   "tris": 17542,
+   "parts": 11,
+   "styles": [
+    "Basalt",
+    "BasaltLight",
+    "DarkMetal",
+    "Ember",
+    "Fire",
+    "Gold",
+    "Lava",
+    "LavaDim",
+    "Obsidian",
+    "Stone"
+   ]
+  },
+  {
+   "name": "LavaForge",
+   "size_studs": {
+    "x": 27.9,
+    "y": 32.0,
+    "z": 38.2
+   },
+   "tris": 8136,
+   "parts": 14,
+   "styles": [
+    "Bark",
+    "Basalt",
+    "BasaltLight",
+    "Chocolate",
+    "DarkMetal",
+    "Ember",
+    "Fire",
+    "Gold",
+    "Lava",
+    "Metal",
+    "Rust",
+    "Water",
+    "WoodDark",
+    "WoodLight"
+   ]
+  },
+  {
+   "name": "Watchtower",
+   "size_studs": {
+    "x": 16.6,
+    "y": 42.0,
+    "z": 16.4
+   },
+   "tris": 6032,
+   "parts": 8,
+   "styles": [
+    "Basalt",
+    "BasaltLight",
+    "DarkMetal",
+    "Ember",
+    "Fire",
+    "Gold",
+    "Metal",
+    "RedDark"
+   ]
+  },
+  {
+   "name": "LavaBridge",
+   "size_studs": {
+    "x": 41.7,
+    "y": 21.0,
+    "z": 64.0
+   },
+   "tris": 4264,
+   "parts": 8,
+   "styles": [
+    "Basalt",
+    "BasaltLight",
+    "DarkMetal",
+    "Ember",
+    "Fire",
+    "Lava",
+    "Stone",
+    "StoneDark"
+   ]
+  },
+  {
+   "name": "MagmaGate",
+   "size_studs": {
+    "x": 34.9,
+    "y": 30.2,
+    "z": 12.9
+   },
+   "tris": 4722,
+   "parts": 7,
+   "styles": [
+    "Basalt",
+    "BasaltLight",
+    "Charcoal",
+    "DarkMetal",
+    "Fire",
+    "Lava",
+    "Obsidian"
+   ]
+  },
+  {
+   "name": "CrystalCluster",
+   "size_studs": {
+    "x": 10.0,
+    "y": 12.8,
+    "z": 10.4
+   },
+   "tris": 376,
+   "parts": 5,
+   "styles": [
+    "Basalt",
+    "BasaltLight",
+    "Ember",
+    "Lava",
+    "Obsidian"
+   ]
+  },
+  {
+   "name": "LavaFall",
+   "size_studs": {
+    "x": 42.3,
+    "y": 24.5,
+    "z": 35.5
+   },
+   "tris": 2096,
+   "parts": 5,
+   "styles": [
+    "Basalt",
+    "BasaltLight",
+    "Fire",
+    "Lava",
+    "LavaDim"
+   ]
+  },
+  {
+   "name": "MineCart",
+   "size_studs": {
+    "x": 10.9,
+    "y": 8.0,
+    "z": 30.6
+   },
+   "tris": 1408,
+   "parts": 11,
+   "styles": [
+    "Basalt",
+    "BasaltLight",
+    "DarkMetal",
+    "Ember",
+    "Fire",
+    "Gold",
+    "Lava",
+    "Metal",
+    "Red",
+    "Rust",
+    "WoodDark"
+   ]
+  },
+  {
+   "name": "FirePillar",
+   "size_studs": {
+    "x": 7.2,
+    "y": 21.5,
+    "z": 7.2
+   },
+   "tris": 630,
+   "parts": 6,
+   "styles": [
+    "Basalt",
+    "BasaltLight",
+    "DarkMetal",
+    "Ember",
+    "Fire",
+    "Lava"
+   ]
+  },
+  {
+   "name": "CharredHut",
+   "size_studs": {
+    "x": 17.6,
+    "y": 8.5,
+    "z": 29.7
+   },
+   "tris": 4150,
+   "parts": 7,
+   "styles": [
+    "Basalt",
+    "BasaltLight",
+    "Charcoal",
+    "Ember",
+    "Fire",
+    "Rust",
+    "StoneDark"
+   ]
+  }
  ]
 }
