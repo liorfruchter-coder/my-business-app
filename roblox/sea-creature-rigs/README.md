@@ -1,8 +1,10 @@
 # Fish a Human: sea creature character rigs
 
 Eleven playable sea creature characters on the default blocky R15 rig, built in Blender.
-Each one is 5.2 studs tall like the default character and has the regular Roblox head, so the player's face shows.
-The creature parts (fins, spikes, claws, tentacles, the jelly bell, the squid mantle) are attached around the head and body.
+Each one is 5.2 studs tall like the default character and keeps the regular Roblox head, so the player's face shows.
+The fish, sharks, eel and orca wear their creature's head as a hood: the player's face looks out through its mouth.
+The crab, jellyfish, octopus and squid keep the bare head with eye stalks, a bell or a mantle on it.
+Each body is shaped like its animal (round pufferfish, V-shaped shark, soft octopus, armoured crab) while staying a normal R15 humanoid.
 
 ![Front](previews/Lineup_Front.jpg)
 
@@ -49,6 +51,7 @@ To make a creature the default character instead, copy its rig into **StarterPla
 
 - Body parts are named exactly as in R15 (`Head`, `UpperTorso`, `LeftUpperArm` …) and keep the blocky R15 sizes.
 - Creature pieces are named `<BodyPart>__<Piece>`, for example `Head__Fin` or `LowerTorso__Tail`. The setup script welds each one to the body part before the `__`.
+- `Head__Hood` is the hood on the fish and sharks. It is welded to the head and has an opening for the face.
 - Pieces stay clear of the face on the front of the head.
 - `Joint_<Name>` cubes mark the R15 joints; the setup script turns them into rig attachments and deletes them.
 - Every part is under Roblox's 20,000-triangle limit.
@@ -57,17 +60,17 @@ To make a creature the default character instead, copy its rig into **StarterPla
 
 | # | Creature | Parts | Triangles | Largest part (tris) | Size W × H × D (studs) |
 |---:|---|---:|---:|---:|---|
-| 1 | Tiny Fish | 23 | 29,708 | 4,940 | 4.87 × 6.06 × 2.29 |
-| 2 | Pufferfish | 30 | 25,548 | 4,940 | 4.87 × 5.59 × 2.53 |
+| 1 | Tiny Fish | 24 | 40,812 | 10,304 | 4.87 × 5.97 × 2.51 |
+| 2 | Pufferfish | 31 | 36,664 | 10,304 | 4.87 × 5.89 × 2.64 |
 | 3 | Crab | 17 | 17,686 | 3,134 | 4.25 × 6.22 × 2.73 |
-| 4 | Jellyfish | 22 | 15,642 | 3,358 | 4 × 5.65 × 2.08 |
-| 5 | Octopus | 18 | 34,292 | 14,416 | 6.13 × 6.57 × 2.53 |
-| 6 | Moray Eel | 18 | 18,436 | 6,156 | 4.2 × 5.69 × 2.59 |
-| 7 | Shark | 21 | 21,264 | 4,752 | 4.49 × 6.31 × 2.73 |
-| 8 | Hammerhead Shark | 22 | 24,760 | 4,752 | 4.49 × 6.45 × 2.73 |
-| 9 | Orca | 20 | 16,396 | 2,724 | 5.2 × 6.46 × 2.32 |
-| 10 | Giant Squid | 18 | 40,268 | 13,252 | 4.13 × 7.45 × 2.67 |
-| 11 | Clownfish | 23 | 29,136 | 5,120 | 4.87 × 6.06 × 2.28 |
+| 4 | Jellyfish | 22 | 17,618 | 3,358 | 3.87 × 5.65 × 2.08 |
+| 5 | Octopus | 18 | 35,668 | 14,416 | 6.13 × 6.57 × 2.53 |
+| 6 | Moray Eel | 19 | 29,540 | 10,584 | 4.12 × 5.78 × 2.93 |
+| 7 | Shark | 22 | 34,048 | 10,584 | 4.49 × 6.1 × 3.12 |
+| 8 | Hammerhead Shark | 23 | 36,344 | 9,384 | 4.49 × 6.15 × 3.04 |
+| 9 | Orca | 21 | 30,396 | 10,584 | 5.2 × 6.17 × 2.64 |
+| 10 | Giant Squid | 18 | 41,644 | 13,252 | 4.13 × 7.45 × 2.67 |
+| 11 | Clownfish | 24 | 41,456 | 10,304 | 4.87 × 5.97 × 2.51 |
 
 Height is the whole model including fins, bells and mantles. The body itself is 5.2 studs tall on every rig.
 

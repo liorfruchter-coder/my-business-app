@@ -163,8 +163,11 @@ function SeaCreatureRigSetup.Run(root, opts)
 	-- the usual accessory / tool attachments
 	local head, ut, lt = parts.Head, parts.UpperTorso, parts.LowerTorso
 	local hp, hs = head.Position, head.Size
-	attach(head, "HatAttachment", hp + Vector3.new(0, hs.Y / 2, 0))
-	attach(head, "HairAttachment", hp + Vector3.new(0, hs.Y / 2, 0))
+	-- hats sit on top of the hood when the creature wears one
+	local hood = rig:FindFirstChild("Head__Hood")
+	local crown = hood and top(hood) or hp.Y + hs.Y / 2
+	attach(head, "HatAttachment", Vector3.new(hp.X, crown, hp.Z))
+	attach(head, "HairAttachment", Vector3.new(hp.X, crown, hp.Z))
 	attach(head, "FaceFrontAttachment", hp + Vector3.new(0, 0, -hs.Z / 2))
 	attach(head, "FaceCenterAttachment", hp)
 	local up = ut.Position

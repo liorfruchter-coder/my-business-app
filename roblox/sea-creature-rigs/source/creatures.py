@@ -6,13 +6,15 @@ the faces that look that way, plus wrap-around bands. Fins are fin2 surfaces
 that thin toward the edge, curve, carry a base-to-tip colour and a darker rim.
 Anything that sticks out lives in "<BodyPart>__<Piece>" objects that Roblox
 welds on; the Head stays the regular Roblox head and its pieces keep clear of
-the face.
+the face. The fish, sharks, eel and orca wear their head as a hood (char.Hood)
+with the face looking out through the mouth. Each body has its own shape
+(FISH_BODY, SHARK_BODY ...) on the same R15 layout.
 """
 import math
 
 from mathutils import Matrix
 
-from char import ARM_X, LEG_X, CharBuilder, smooth_outline, standard_body
+from char import ARM_X, LEG_X, CharBuilder, Hood, smooth_outline, standard_body
 from kit import PI, TAU, R, T, V
 
 W = (250, 250, 252)
@@ -92,6 +94,27 @@ def spike(b, st, p, n, L=0.3, r=0.08):
         b.cyl(st, p - n * 0.07, p + n * L, r, 8, r2=0.0)
 
 
+# body shapes per creature (see char.BODY): still the R15 parts, but each reads as that animal
+FISH_BODY = dict(chest=(2.0, 1.12), chest_bot=(0.9, 0.92), chest_bev=0.26, waist=(1.8, 1.02), waist_bev=0.16, arm=0.92,
+                 arm_bot=0.86, leg=0.94, leg_bot=0.88, limb_bev=0.2, hand="mitt", foot="flipper")
+SHARK_BODY = dict(chest=(2.12, 1.06), chest_bot=(0.8, 0.86), chest_bev=0.2, waist=(1.7, 0.92), waist_bev=0.14, arm=0.98,
+                  arm_bot=0.82, leg=0.96, leg_bot=0.86, limb_bev=0.18, hand="mitt", foot="flipper")
+ORCA_BODY = dict(chest=(2.1, 1.16), chest_bot=(0.9, 0.92), chest_bev=0.32, waist=(1.9, 1.06), waist_bev=0.18, arm=0.98,
+                 arm_bot=0.86, leg=0.98, leg_bot=0.9, limb_bev=0.24, belly=(0.8, 0.2, 0.76), hand="mitt", foot="flipper")
+PUFFER_BODY = dict(chest_ball=(1.12, 0.8, 0.92), waist=(1.7, 1.1), waist_bev=0.18, arm=0.88, arm_bot=0.9, leg=0.92,
+                   leg_bot=0.96, limb_bev=0.26, hand="mitt")
+CRAB_BODY = dict(chest=(2.2, 1.0), chest_bot=(0.82, 0.9), chest_bev=0.1, waist=(1.66, 0.92), waist_bev=0.08, arm=1.0,
+                 arm_bot=0.9, leg=0.9, leg_bot=0.8, limb_bev=0.1)
+JELLY_BODY = dict(chest=(1.96, 1.0), chest_bot=(0.92, 0.94), chest_bev=0.36, waist=(1.8, 0.96), waist_bev=0.18, arm=0.9,
+                  arm_bot=0.84, leg=0.92, leg_bot=0.86, limb_bev=0.3, hand="mitt")
+OCTO_BODY = dict(chest=(1.96, 1.06), chest_bot=(1.04, 1.06), chest_bev=0.4, waist=(2.0, 1.08), waist_bev=0.18, arm=0.94,
+                 arm_bot=0.78, leg=0.96, leg_bot=0.8, limb_bev=0.32)
+EEL_BODY = dict(chest=(1.86, 0.98), chest_bot=(0.92, 0.94), chest_bev=0.26, waist=(1.68, 0.92), waist_bev=0.16, arm=0.86,
+                arm_bot=0.86, leg=0.88, leg_bot=0.88, limb_bev=0.22, hand="mitt", foot="flipper")
+SQUID_BODY = dict(chest=(1.92, 1.0), chest_bot=(0.86, 0.9), chest_bev=0.34, waist=(1.66, 0.9), waist_bev=0.18, arm=0.9,
+                  arm_bot=0.84, leg=0.9, leg_bot=0.84, limb_bev=0.28)
+
+
 # painted shapes (studs; front view u = x, side view u = y with the front at -y)
 def shield(top=3.92, bot=2.04, wt=0.42, wm=0.7, wb=0.5, zm=3.25):
     """A belly shield down the front of the torso."""
@@ -116,6 +139,11 @@ def gills(y0=-0.06, z=4.6, n=2, step=0.13, h=0.4, w=0.045):
     return out
 
 
+def _dir(th, ph):
+    t, p = math.radians(th), math.radians(ph)
+    return V((math.cos(p) * math.cos(t), math.cos(p) * math.sin(t), math.sin(p)))
+
+
 def head_ring_points(z, step_deg=30, skip_front=60, r=0.6, phase=0.0):
     out = []
     a = phase
@@ -128,19 +156,45 @@ def head_ring_points(z, step_deg=30, skip_front=60, r=0.6, phase=0.0):
     return out
 
 
+def wear_hood(b, hood, st="Hood", lining="Lining", lip="Lip", fat_lip=0.0, teeth=None, eye_r=0.2, eye_at=(42, 30),
+              eyes=True):
+    """Put a creature hood on the head: the shell, optional fat lips round the mouth, teeth
+    (style, length, radius, every n-th lip point) and a pair of cartoon eyes."""
+    with b.part("Head__Hood"):
+        ring = hood.build(b, st, lining, lip)
+        if fat_lip:
+            b.ttube(lip, ring + [ring[0]], [fat_lip] * (len(ring) + 1), n=12, cap=False, grad=False)
+        if teeth:
+            tst, L, r, every = teeth
+            hc = hood.surf(-90, hood.phc)
+            for k, p in enumerate(ring):
+                off = p - hc
+                if k % every or abs(off.z) < 0.6 * max(abs(off.x), 1e-3) * (hood.hph / hood.hth):
+                    continue
+                d = ((hc - p).normalized() + (hood.c - p).normalized() * 0.35).normalized()
+                spike(b, tst, p + d * 0.02, d, L, r)
+        if eyes:
+            for sx in (-1, 1):
+                P, N = hood.point(-90 + sx * eye_at[0], eye_at[1])
+                b.eye(tuple(P + N * eye_r * 0.3), eye_r, look=tuple((N * 0.6 + V((0, -1, 0.1))).normalized()))
+    return ring
+
+
 def fish_fins(b, fin_st, body, head="Head", tail_ctrl=None, dorsal=True, forearm=True, calf=True, crest=True, ears=True,
-              pleat=0.014, scale=0.78):
-    """The shared fin set for the fish-type rigs (scale shrinks or grows them all)."""
+              pleat=0.014, scale=0.78, crest_o=(0, -0.02, 5.1), ear_o=(0.52, 0.12, 4.5), head_scale=0.44):
+    """The shared fin set for the fish-type rigs: scale sizes the body fins, head_scale the small
+    fins on the hood."""
     if crest:
         with b.part("Head__Crest"):
             fin(b, fin_st, [(-0.46, -0.04), (0.5, -0.04), (0.88, 0.3), (1.04, 0.74), (0.92, 1.1), (0.58, 1.22), (0.2, 1.06),
                             (-0.1, 0.74), (-0.32, 0.36)],
-                Fm((0, -0.02, 5.1), (0, 1, 0), (0, 0, 1)), thick=0.15, rays=6, pleat=pleat, scale=scale)
+                Fm(crest_o, (0, 1, 0), (0, 0, 1)), thick=0.13, rays=4, pleat=pleat * 0.7, scale=head_scale)
     if ears:
         with b.part("Head__Fins"):
             for sx in (-1, 1):
                 fin(b, fin_st, [(-0.22, -0.04), (0.3, -0.04), (0.64, 0.24), (0.72, 0.56), (0.48, 0.74), (0.16, 0.66), (-0.08, 0.36)],
-                    Fm((sx * 0.52, 0.12, 4.5), (0, 0.35, 1), (sx, 0.5, 0.3)), thick=0.12, rays=4, pleat=pleat * 0.8, scale=scale)
+                    Fm((sx * ear_o[0], ear_o[1], ear_o[2]), (0, 0.35, 1), (sx, 0.5, 0.3)), thick=0.11, rays=3, pleat=pleat * 0.6,
+                    scale=head_scale * 1.1)
     if dorsal:
         with b.part("UpperTorso__DorsalFin"):
             fin(b, fin_st, [(-0.8, -0.04), (0.74, -0.04), (1.0, 0.3), (0.84, 0.74), (0.36, 0.94), (-0.2, 0.82), (-0.56, 0.48)],
@@ -169,20 +223,25 @@ def fish_fins(b, fin_st, body, head="Head", tail_ctrl=None, dorsal=True, forearm
 def tiny_fish():
     paint = [("front", (112, 196, 255), [shield()]),
              ("back", (26, 84, 196), [("smooth", [(-0.32, 4.0), (0.32, 4.0), (0.42, 3.0), (0.3, 2.0), (-0.3, 2.0), (-0.42, 3.0)])])]
+    scales = [("scales", 1.4, (30, 96, 198))]
     styles = dict(EYES,
                   Body=dict(color=(38, 118, 232), grad=0.12, patterns=[("scales", 1.5, (26, 84, 188))], paint=paint),
                   Belly=dict(color=(132, 212, 255), grad=0.1, rough=0.35),
                   Limb=dict(color=(36, 114, 228), grad=0.16, patterns=[("scales", 1.6, (26, 84, 188))]),
                   Dark=dict(color=(26, 86, 192), grad=0.12, patterns=[("scales", 1.8, (18, 62, 150))]),
-                  Head=dict(color=(44, 128, 238), grad=0.08, front_clean=True, patterns=[("scales", 1.4, (30, 96, 198))],
-                            paint=[("side", (22, 70, 170), gills())]),
+                  Head=dict(color=(44, 128, 238), grad=0.08),
+                  Hood=dict(color=(44, 128, 238), grad=0.1, rough=0.4, patterns=scales,
+                            paint=[("front", (132, 212, 255), [("rect", (-1.2, 3.8, 1.2, 4.16))]), ("side", (22, 70, 170), gills(0.16, 4.5))]),
+                  Lining=dict(color=(18, 50, 126), grad=0.1),
+                  Lip=dict(color=(255, 196, 70), grad=0.05, rough=0.35),
                   Fin=dict(color=(255, 214, 60), tip=(255, 138, 30), tip_from=0.3, grad=0, rough=0.4, root=((40, 120, 234), 0.3, 0.62),
                            rays=((214, 112, 18), 0.75), edge=((255, 228, 150), 0.94)))
     b = CharBuilder("TinyFish", styles)
     standard_body(b, dict(head="Head", chest="Body", waist="Body", arm="Limb", forearm="Limb", hand="Dark",
-                          thigh="Limb", shin="Limb", foot="Dark"))
-    belly_plates(b, "Belly")
-    fish_fins(b, "Fin", "Body")
+                          thigh="Limb", shin="Limb", foot="Dark"), shape=FISH_BODY)
+    belly_plates(b, "Belly", y=-0.56)
+    wear_hood(b, Hood(bumps=[(-90, -10, 0.07, 30)]), fat_lip=0.07)
+    fish_fins(b, "Fin", "Body", crest_o=(0, 0.02, 5.42), ear_o=(0.86, 0.16, 4.5))
     return b
 
 
@@ -205,69 +264,62 @@ def pufferfish():
     yel = (255, 204, 54)
     spots = [("spots", 4.2, (196, 126, 40), 0.17), ("spots", 9, (206, 140, 44), 0.11)]
     styles = dict(EYES,
-                  Body=dict(color=yel, grad=0.12, patterns=spots,
-                            paint=[("front", (255, 240, 192), [shield(3.9, 2.04, 0.52, 0.84, 0.64)])]),
+                  Body=dict(color=yel, grad=0.1, patterns=spots,
+                            paint=[("front", (255, 240, 192), [("ellipse", (0, 3.08, 0.86, 0.74))])]),
                   Limb=dict(color=(255, 200, 50), grad=0.16, patterns=spots),
                   Dark=dict(color=(242, 170, 40), grad=0.12, patterns=[("spots", 6, (196, 120, 36), 0.14)]),
-                  Belly=dict(color=(255, 240, 192), grad=0.06),
-                  Head=dict(color=(255, 208, 60), grad=0.08, front_clean=True, patterns=spots),
+                  Head=dict(color=(255, 208, 60), grad=0.08),
+                  Hood=dict(color=(255, 206, 58), grad=0.1, rough=0.4, patterns=spots,
+                            paint=[("front", (255, 240, 192), [("rect", (-1.2, 3.8, 1.2, 4.16))])]),
+                  Lining=dict(color=(150, 96, 24), grad=0.1),
+                  Lip=dict(color=(255, 150, 112), grad=0.05, rough=0.35),
                   Spike=dict(color=(255, 236, 170), tip=(176, 108, 40), tip_from=0.15, grad=0),
                   Fin=dict(color=(255, 186, 56), tip=(244, 116, 32), tip_from=0.3, grad=0, rough=0.4, root=(255, 204, 54),
                            rays=((206, 104, 26), 0.7), edge=((255, 214, 140), 0.94)))
     b = CharBuilder("Pufferfish", styles)
     standard_body(b, dict(head="Head", chest="Body", waist="Body", arm="Limb", forearm="Limb", hand="Dark",
-                          thigh="Limb", shin="Limb", foot="Dark"))
-    with b.part("UpperTorso"):
-        b.ball("Belly", (0, -0.4, 3.1), 1.0, seg=(32, 20), sc=(0.86, 0.26, 0.8))
-        b.ball("Body", (0, 0.4, 3.2), 1.0, seg=(32, 20), sc=(0.86, 0.24, 0.76))
+                          thigh="Limb", shin="Limb", foot="Dark"), shape=PUFFER_BODY)
+    rx, ry, rz = PUFFER_BODY["chest_ball"]
     with b.part("UpperTorso__Spikes"):
-        # puffed belly: spikes radiate from the bulge
-        for x in (-0.66, -0.22, 0.22, 0.66):
-            for z in (2.6, 3.0, 3.4, 3.78):
-                e = (x / 0.86) ** 2 + ((z - 3.1) / 0.8) ** 2
-                if e < 1.0:
-                    y = -0.4 - 0.26 * math.sqrt(max(0.0, 1 - e))
-                    spike(b, "Spike", (x * 0.98, y + 0.03, z), (x * 0.7, -1, (z - 3.1) * 0.8), 0.34, 0.09)
-        for x in (-0.44, 0.0, 0.44):
-            for z in (2.8, 3.2, 3.6):
-                e = (x / 0.86) ** 2 + ((z - 3.1) / 0.8) ** 2
-                y = -0.4 - 0.26 * math.sqrt(max(0.0, 1 - e))
-                spike(b, "Spike", (x, y + 0.03, z), (x * 0.7, -1, (z - 3.1) * 0.8), 0.3, 0.085)
-        for x in (-0.66, -0.22, 0.22, 0.66):
-            for z in (2.7, 3.15, 3.6):
-                e = (x / 0.86) ** 2 + ((z - 3.2) / 0.76) ** 2
-                y = 0.4 + 0.24 * math.sqrt(max(0.0, 1 - e))
-                spike(b, "Spike", (x, y - 0.03, z), (x * 0.6, 1, (z - 3.2) * 0.6), 0.4, 0.1)
-        for sx in (-1, 1):
-            for z in (2.62, 3.1, 3.58):
-                for y in (-0.26, 0.26):
-                    spike(b, "Spike", (sx * 0.96, y, z), (sx, y * 0.5, 0.1), 0.32, 0.085)
-        for x in (-0.66, -0.22, 0.22, 0.66):
-            spike(b, "Spike", (x, 0.0, 3.97), (x * 0.4, 0.1, 1), 0.3, 0.085)
+        # spikes all over the puffed-up ball, leaving the neck and the shoulders free
+        n = 90
+        for k in range(n):
+            zc = 1 - 2 * (k + 0.5) / n
+            rr = math.sqrt(1 - zc * zc)
+            a = k * 2.39996
+            d = V((math.cos(a) * rr, math.sin(a) * rr, zc))
+            if d.z > 0.72 or (abs(d.x) > 0.62 and d.z > -0.1) or d.z < -0.82:
+                continue
+            p = V((0, 0, 3.18)) + V((d.x * rx, d.y * ry, d.z * rz))
+            nrm = V((d.x / rx, d.y / ry, d.z / rz)).normalized()
+            spike(b, "Spike", p - nrm * 0.02, nrm, 0.3 if d.y < 0 else 0.36, 0.085)
+    hood = Hood(c=(0, 0.1, 4.64), r=(1.0, 1.0, 0.9), t=0.12, bumps=[(-90, -10, 0.06, 30)])
+    wear_hood(b, hood, fat_lip=0.1, eye_r=0.24, eye_at=(40, 32))
     with b.part("Head__Spikes"):
-        for z, ph in ((4.34, 0), (4.68, 15), (4.98, 0)):
-            for p, n in head_ring_points(z, 30, 64, phase=ph):
-                spike(b, "Spike", p, n, 0.36, 0.09)
-        for a in range(0, 360, 45):
-            ar = math.radians(a + 22)
-            p = (math.cos(ar) * 0.32, math.sin(ar) * 0.32, 5.19)
-            spike(b, "Spike", p, (math.cos(ar) * 0.5, math.sin(ar) * 0.5, 1), 0.34, 0.09)
-        spike(b, "Spike", (0, 0.02, 5.19), (0, 0, 1), 0.4, 0.1)
-    fish_fins(b, "Fin", "Body", crest=False, calf=False,
+        for ph, step, ph0 in ((-20, 30, 0), (8, 30, 15), (36, 30, 0), (62, 45, 22)):
+            for k in range(int(360 / step)):
+                th = ph0 + k * step
+                if math.degrees(math.acos(max(-1.0, min(1.0, _dir(th, ph).dot(_dir(-90, -2)))))) < 58:
+                    continue
+                P, N = hood.point(th, ph)
+                spike(b, "Spike", P - N * 0.03, N, 0.34, 0.09)
+        P, N = hood.point(0, 90)
+        spike(b, "Spike", P - N * 0.03, N, 0.38, 0.1)
+    fish_fins(b, "Fin", "Body", crest=False, calf=False, ear_o=(0.94, 0.16, 4.5),
               tail_ctrl=[(-0.2, -0.04), (0.2, -0.04), (0.62, 0.36), (0.86, 0.78), (0.52, 0.88), (0, 0.72), (-0.52, 0.88),
                          (-0.86, 0.78), (-0.62, 0.36)])
     for side, sx in (("Left", 1), ("Right", -1)):
         for part, zs in (("UpperArm", (3.2, 3.68)), ("LowerArm", (2.5, 2.82))):
             with b.part(f"{side}{part}__Spikes"):
                 for z in zs:
-                    for y in (-0.24, 0.24):
-                        spike(b, "Spike", (sx * 1.96, y, z), (sx, y * 0.5, 0.15), 0.26, 0.075)
-                    spike(b, "Spike", (sx * 1.5, -0.46, z - 0.1), (sx * 0.2, -1, 0.1), 0.24, 0.07)
+                    for y in (-0.22, 0.22):
+                        spike(b, "Spike", (sx * 1.9, y, z), (sx, y * 0.5, 0.15), 0.24, 0.07)
+                    spike(b, "Spike", (sx * 1.5, -0.4, z - 0.1), (sx * 0.2, -1, 0.1), 0.22, 0.065)
         for part, zs in (("UpperLeg", (1.36, 1.76)), ("LowerLeg", (0.6, 0.92))):
             with b.part(f"{side}{part}__Spikes"):
                 for z in zs:
-                    spike(b, "Spike", (sx * 0.96, 0, z), (sx, 0, 0.1), 0.24, 0.07)
-                    spike(b, "Spike", (sx * 0.5, -0.46, z - 0.1), (sx * 0.2, -1, 0.1), 0.22, 0.065)
+                    spike(b, "Spike", (sx * 0.92, 0, z), (sx, 0, 0.1), 0.22, 0.065)
+                    spike(b, "Spike", (sx * 0.5, -0.42, z - 0.1), (sx * 0.2, -1, 0.1), 0.2, 0.06)
     return b
 
 
@@ -311,7 +363,7 @@ def crab():
                   ClawTip=dict(color=(250, 226, 190), tip=(70, 36, 30), tip_from=0.1, grad=0))
     b = CharBuilder("Crab", styles)
     standard_body(b, dict(head="Head", chest="Shell", waist="Shell", arm="Shell", forearm="Shell", hand="Shell",
-                          thigh="Shell", shin="Shell", foot="ShellDark"), hands=False)
+                          thigh="Shell", shin="Shell", foot="ShellDark"), hands=False, shape=CRAB_BODY)
     with b.part("UpperTorso"):
         for z in (2.74, 3.14, 3.54):
             for sx in (-1, 1):
@@ -373,7 +425,7 @@ def jellyfish():
                   GlowPink=dict(color=(255, 140, 232), grad=0, light=False))
     b = CharBuilder("Jellyfish", styles)
     standard_body(b, dict(head="Head", chest="Jelly", waist="Jelly", arm="Jelly", forearm="Jelly", hand="Jelly",
-                          thigh="Jelly", shin="Jelly", foot="Jelly"))
+                          thigh="Jelly", shin="Jelly", foot="Jelly"), shape=JELLY_BODY)
     BZ = 4.9
     with b.part("Head__BellGlass"):
         with b.grad(lambda co: (co.z - BZ) / 0.75):
@@ -460,7 +512,7 @@ def octopus():
                   Head=dict(color=(152, 80, 222), grad=0.08, front_clean=True, patterns=pat))
     b = CharBuilder("Octopus", styles)
     standard_body(b, dict(head="Head", chest="Skin", waist="Skin", arm="Skin", forearm="Skin", hand="Skin",
-                          thigh="Skin", shin="Skin", foot="Skin"), hands=False)
+                          thigh="Skin", shin="Skin", foot="Skin"), hands=False, shape=OCTO_BODY)
     with b.part("Head__Mantle"):
         b.ball("Skin", (0, 0.34, 5.58), 1.0, seg=(40, 26), sc=(0.84, 0.8, 0.98))
         for (x, y, z, r) in ((0.36, -0.02, 6.25, 0.1), (-0.3, 0.08, 6.36, 0.09), (0.0, 0.5, 6.45, 0.11), (0.58, 0.5, 5.86, 0.09),
@@ -506,18 +558,25 @@ def moray_eel():
                            patterns=[("spots", 10, (210, 200, 80), 0.12)], rays=((18, 62, 86), 0.55), edge=((226, 224, 100), 0.88)),
                   FinRim=dict(color=(220, 220, 96), grad=0),
                   Tail=dict(color=teal, grad=0.0, patterns=spots),
-                  Head=dict(color=(34, 100, 130), grad=0.08, front_clean=True, patterns=spots,
-                            paint=[("side", (14, 40, 58), gills(-0.02, 4.55, 1, 0.13, 0.42, 0.06))]))
+                  Head=dict(color=(34, 100, 130), grad=0.08),
+                  Hood=dict(color=(34, 100, 130), grad=0.1, rough=0.4, patterns=spots,
+                            paint=[("front", (206, 216, 96), [("rect", (-1.2, 3.7, 1.2, 4.14))]),
+                                   ("side", (14, 40, 58), gills(0.2, 4.42, 1, 0.13, 0.44, 0.06))]),
+                  Lining=dict(color=(72, 18, 30), grad=0.1),
+                  Lip=dict(color=(160, 50, 66), grad=0.05, rough=0.35),
+                  Tooth=dict(color=(255, 252, 236), tip=(240, 236, 210), tip_from=0.5, grad=0, rough=0.3))
     b = CharBuilder("MorayEel", styles)
     standard_body(b, dict(head="Head", chest="Skin", waist="Skin", arm="Limb", forearm="Limb", hand="Dark",
-                          thigh="Limb", shin="Limb", foot="Dark"))
+                          thigh="Limb", shin="Limb", foot="Dark"), shape=EEL_BODY)
+    hood = Hood(r=(0.88, 0.96, 0.9), bumps=[(-90, 30, 0.2, 26), (-90, -40, 0.12, 24)])
+    wear_hood(b, hood, fat_lip=0.05, teeth=("Tooth", 0.17, 0.045, 2), eye_r=0.17, eye_at=(38, 44))
     with b.part("Head__Crest"):
         # the long eel dorsal fin starts on the crown and runs down the back
         fin(b, "Fin", [(-0.36, -0.04), (0.76, -0.04), (0.9, 0.14), (0.74, 0.4), (0.34, 0.54), (-0.06, 0.5), (-0.28, 0.28)],
-            Fm((0, -0.16, 5.12), (0, 1, -0.38), (0, 0.3, 1)), thick=0.15, rays=8, pleat=0.012, scallop=0.04, scale=1.15)
+            Fm((0, -0.12, 5.48), (0, 1, -0.45), (0, 0.4, 1)), thick=0.13, rays=5, pleat=0.01, scallop=0.04, scale=0.62)
     with b.part("UpperTorso__DorsalFin"):
         fin(b, "Fin", [(-0.56, -0.04), (1.62, -0.04), (1.66, 0.18), (1.3, 0.38), (0.7, 0.44), (0.1, 0.42), (-0.4, 0.3)],
-            Fm((0, 0.46, 2.36), (0, 0, 1), (0, 1, 0.04)), thick=0.14, rays=11, pleat=0.012, scallop=0.04)
+            Fm((0, 0.44, 2.36), (0, 0, 1), (0, 1, 0.04)), thick=0.14, rays=11, pleat=0.012, scallop=0.04)
     with b.part("LowerTorso__Tail"):
         pts = [(0, 0.38, 2.25), (0, 0.95, 1.92), (0.1, 1.35, 1.22), (0.45, 1.58, 0.5), (1.1, 1.62, 0.24), (1.72, 1.32, 0.22),
                (2.05, 0.94, 0.26), (2.0, 0.66, 0.34)]
@@ -546,8 +605,13 @@ def _shark_styles(skin, dark, fin_c, fin_tip):
                 Dark=dict(color=dark, grad=0.1, rough=0.38),
                 White=dict(color=white, grad=0.05, rough=0.38),
                 Fin=dict(color=fin_c, tip=fin_tip, tip_from=0.4, grad=0, rough=0.36, root=skin),
-                Head=dict(color=skin, grad=0.08, rough=0.38,
-                          paint=[("side", tuple(int(c * 0.5) for c in dark), gills(-0.06, 4.58, 3, 0.13, 0.42, 0.055))]))
+                Head=dict(color=skin, grad=0.08, rough=0.38),
+                Hood=dict(color=skin, grad=0.1, rough=0.38,
+                          paint=[("front", white, [("rect", (-1.2, 3.7, 1.2, 4.18))]),
+                                 ("side", tuple(int(c * 0.5) for c in dark), gills(0.2, 4.5, 3, 0.12, 0.38, 0.05))]),
+                Lining=dict(color=(96, 24, 38), grad=0.1),
+                Lip=dict(color=(214, 86, 104), grad=0.05, rough=0.35),
+                Tooth=dict(color=(255, 255, 250), grad=0, rough=0.25))
 
 
 # the cartoon shark fin: convex front edge sweeping back to a rounded tip, concave back edge
@@ -557,7 +621,7 @@ SHARK_FIN = [(-0.55, -0.04), (0.45, -0.04), (0.5, 0.12), (0.52, 0.32), (0.6, 0.5
 
 def _shark_body(b, dorsal=True):
     standard_body(b, dict(head="Head", chest="Skin", waist="Skin", arm="Limb", forearm="Limb", hand="Limb",
-                          thigh="Limb", shin="Limb", foot="White"))
+                          thigh="Limb", shin="Limb", foot="White"), shape=SHARK_BODY)
     if dorsal:
         with b.part("UpperTorso__DorsalFin"):
             fin(b, "Fin", [(x * 0.8, y * 0.8) for x, y in SHARK_FIN], Fm((0, 0.46, 3.5), (0, 0.42, -1), (0, 1, 0.42)),
@@ -583,19 +647,24 @@ def _shark_body(b, dorsal=True):
 def shark():
     b = CharBuilder("Shark", _shark_styles((92, 128, 178), (62, 90, 138), (84, 120, 172), (56, 80, 124)))
     _shark_body(b)
+    # the shark's head is a hood: snout over the face, the face in its jaws
+    hood = Hood(r=(0.92, 0.96, 0.88), bumps=[(-90, 34, 0.24, 26), (-90, -42, 0.1, 22)])
+    wear_hood(b, hood, fat_lip=0.05, teeth=("Tooth", 0.15, 0.05, 2), eye_r=0.14, eye_at=(58, 22))
     with b.part("Head__Fin"):
         # the big head fin, with a cartoon bite taken out of its back edge
         bitten = SHARK_FIN[:4] + [(0.47, 0.42), (0.53, 0.5)] + SHARK_FIN[4:]
-        fin(b, "Fin", [(x * 1.18, y * 1.2) for x, y in bitten], Fm((0, -0.06, 5.12), (0, 1, 0), (0, 0, 1)),
+        fin(b, "Fin", [(x * 0.62, y * 0.62) for x, y in bitten], Fm((0, 0.06, 5.48), (0, 1, 0), (0, 0, 1)),
             thick=0.22, scale=0.82)
     return b
 
 
 def hammerhead():
     st = _shark_styles((90, 142, 200), (60, 102, 158), (84, 134, 192), (54, 92, 146))
-    st["Hammer"] = dict(color=(90, 142, 200), grad=0, rough=0.38, patterns=[("zgrad", 5.12, 5.17, (236, 242, 248))])
+    st["Hammer"] = dict(color=(90, 142, 200), grad=0, rough=0.38, patterns=[("zgrad", 5.22, 5.27, (236, 242, 248))])
     b = CharBuilder("HammerheadShark", st)
     _shark_body(b)
+    hood = Hood(r=(0.92, 0.96, 0.88), bumps=[(-90, 30, 0.14, 26), (-90, -42, 0.1, 22)])
+    wear_hood(b, hood, fat_lip=0.05, teeth=("Tooth", 0.15, 0.05, 2), eyes=False)
     with b.part("Head__Hammer"):
         # the hammer: a chunky wing across the crown, swept forward, bulging at the eye ends
         secs = []
@@ -608,14 +677,14 @@ def hammerhead():
             d = (0.56 - 0.14 * k) * (0.3 + 0.7 * end)
             th = (0.3 + 0.06 * k * k) * (0.3 + 0.7 * end)
             yc = 0.08 - 0.24 * k * k
-            zc = 5.26 + 0.04 * k
+            zc = 5.36 + 0.04 * k
             secs.append([(x, yc + d * math.cos(a), zc + th * math.sin(a) * (1.0 if math.sin(a) > 0 else 0.8))
                          for a in (TAU * j / 28 for j in range(28))])
         b.skin_rings("Hammer", secs)
         for sx in (-1, 1):
-            b.eye((sx * 1.56, -0.22, 5.32), 0.3, look=(sx * 1.0, -0.75, 0.05))
+            b.eye((sx * 1.56, -0.22, 5.42), 0.3, look=(sx * 1.0, -0.75, 0.05))
     with b.part("Head__Fin"):
-        fin(b, "Fin", [(x * 0.95, y * 0.95) for x, y in SHARK_FIN], Fm((0, 0.1, 5.5), (0, 1, 0), (0, 0, 1)),
+        fin(b, "Fin", [(x * 0.52, y * 0.52) for x, y in SHARK_FIN], Fm((0, 0.16, 5.62), (0, 1, 0), (0, 0, 1)),
             thick=0.21, scale=0.82)
     return b
 
@@ -630,22 +699,29 @@ def orca():
                         (-0.5, 2.02), (-0.56, 2.32), (-0.4, 2.72), (-0.6, 3.0), (-0.74, 3.5)])
     flank = ("smooth", [(-0.3, 2.2), (0.1, 2.12), (0.5, 2.3), (0.56, 2.62), (0.3, 2.86), (0.12, 2.6), (-0.2, 2.5)])
     saddle = ("smooth", [(-0.62, 3.0), (0, 2.86), (0.62, 3.0), (0.4, 3.3), (0, 3.36), (-0.4, 3.3)])
-    eye = ("smooth", [(-0.3, 4.74), (-0.12, 4.9), (0.16, 4.92), (0.3, 4.84), (0.1, 4.76), (-0.12, 4.72)])
+    eye = ("smooth", [(-0.18, 4.72), (0.0, 4.9), (0.3, 4.94), (0.46, 4.86), (0.26, 4.74), (0.02, 4.68)])
     styles = dict(EYES,
                   Black=dict(color=black, grad=0.06, rough=0.28,
                              paint=[("front", white, [belly]), ("side", white, [flank]), ("back", (132, 138, 152), [saddle])]),
                   Limb=dict(color=black, grad=0.08, rough=0.28, paint=[("side", white, [("ellipse", (0.02, 3.42, 0.26, 0.2))])]),
                   White=dict(color=white, grad=0.04),
                   Fin=dict(color=(30, 30, 38), tip=(52, 54, 66), tip_from=0.6, grad=0, rough=0.28),
-                  Head=dict(color=(30, 30, 38), grad=0.05, rough=0.28, paint=[("side", white, [eye])]))
+                  Head=dict(color=(238, 238, 244), grad=0.05, rough=0.3),   # white face inside the hood so the face reads
+                  Hood=dict(color=(30, 30, 38), grad=0.06, rough=0.28,
+                            paint=[("side", white, [eye]), ("front", white, [("rect", (-1.2, 3.7, 1.2, 4.18))])]),
+                  Lining=dict(color=(92, 30, 44), grad=0.1),
+                  Lip=dict(color=(222, 112, 132), grad=0.05, rough=0.35),
+                  Tooth=dict(color=(255, 255, 250), grad=0, rough=0.25))
     b = CharBuilder("Orca", styles)
     standard_body(b, dict(head="Head", chest="Black", waist="Black", arm="Limb", forearm="Limb", hand="Limb",
-                          thigh="Limb", shin="Limb", foot="White"))
+                          thigh="Limb", shin="Limb", foot="White"), shape=ORCA_BODY)
+    hood = Hood(r=(0.94, 0.96, 0.88), bumps=[(-90, 30, 0.16, 32)])
+    wear_hood(b, hood, fat_lip=0.05, teeth=("Tooth", 0.1, 0.04, 2), eye_r=0.11, eye_at=(62, 10))
     with b.part("Head__Fin"):
         # the tall orca dorsal fin, leaning back a little
         fin(b, "Fin", [(-0.52, -0.04), (0.4, -0.04), (0.38, 0.4), (0.36, 0.86), (0.38, 1.3), (0.34, 1.62), (0.2, 1.6),
                        (0.02, 1.14), (-0.22, 0.62)],
-            Fm((0, -0.04, 5.12), (0, 1, 0), (0, 0, 1)), thick=0.22, scale=0.8)
+            Fm((0, 0.06, 5.46), (0, 1, 0), (0, 0, 1)), thick=0.2, scale=0.42)
     with b.part("UpperTorso__DorsalFin"):
         fin(b, "Fin", [(-0.5, -0.04), (0.5, -0.04), (0.5, 0.3), (0.5, 0.62), (0.36, 0.78), (0.12, 0.6), (-0.2, 0.3)],
             Fm((0, 0.46, 3.5), (0, 0.4, -1), (0, 1, 0.4)), thick=0.18, scale=0.85)
@@ -680,7 +756,7 @@ def giant_squid():
                   Head=dict(color=(230, 54, 66), grad=0.08, front_clean=True, patterns=pat))
     b = CharBuilder("GiantSquid", styles)
     standard_body(b, dict(head="Head", chest="Skin", waist="Skin", arm="Skin", forearm="Skin", hand="Skin",
-                          thigh="Skin", shin="Skin", foot="Skin"), hands=False)
+                          thigh="Skin", shin="Skin", foot="Skin"), hands=False, shape=SQUID_BODY)
     with b.part("Head__Mantle"):
         with b.grad(lambda co: (co.z - 5.0) / 2.5):
             b.lathe("Mantle", [(0, 4.98), (0.7, 4.98), (0.72, 5.3), (0.66, 5.9), (0.52, 6.5), (0.32, 7.0), (0.1, 7.38), (0, 7.45)],
@@ -729,22 +805,25 @@ def clownfish():
     def bands(zc, half):
         # a white band with black edges painted round everything at height zc
         return [((0, 0, zc), (9, 9, half + 0.06), black, 0.02), ((0, 0, zc), (9, 9, half), white, 0.02)]
+    hood_band = [((0, 0.24, 4.6), (9, 0.2, 9), black, 0.02), ((0, 0.24, 4.6), (9, 0.14, 9), white, 0.02)]
     styles = dict(EYES,
-                  Orange=dict(color=orange, grad=0.12, patterns=[("scales", 1.4, (208, 82, 14))], regions=bands(3.18, 0.17),
-),
+                  Orange=dict(color=orange, grad=0.12, patterns=[("scales", 1.4, (208, 82, 14))], regions=bands(3.18, 0.17)),
                   Limb=dict(color=(248, 110, 24), grad=0.16, patterns=[("scales", 1.5, (208, 82, 14))], regions=bands(3.18, 0.17)),
                   Dark=dict(color=(226, 90, 18), grad=0.14, patterns=[("scales", 1.7, (186, 68, 12))]),
                   White=dict(color=white, grad=0.04),
                   Black=dict(color=black, grad=0, rough=0.35),
                   Fin=dict(color=(255, 136, 36), tip=(255, 104, 22), tip_from=0.3, grad=0, rough=0.4,
                            rays=((206, 76, 12), 0.6), edge=(black, 0.84)),
-                  Head=dict(color=(252, 120, 30), grad=0.08, front_clean=True, patterns=[("scales", 1.3, (212, 86, 16))],
-                            regions=[((0, 0.26, 4.6), (0.9, 0.22, 1.2), black, 0.02),
-                                     ((0, 0.26, 4.6), (0.9, 0.15, 1.2), white, 0.02)]))
+                  Head=dict(color=(252, 120, 30), grad=0.08),
+                  Hood=dict(color=(252, 118, 28), grad=0.1, rough=0.4, patterns=[("scales", 1.3, (212, 86, 16))], regions=hood_band),
+                  Lining=dict(color=(150, 60, 22), grad=0.1),
+                  Lip=dict(color=(236, 124, 146), grad=0.05, rough=0.35))
     b = CharBuilder("Clownfish", styles)
     standard_body(b, dict(head="Head", chest="Orange", waist="Orange", arm="Limb", forearm="Limb", hand="Dark",
-                          thigh="Limb", shin="Limb", foot="Dark"))
-    fish_fins(b, "Fin", "Orange",
+                          thigh="Limb", shin="Limb", foot="Dark"), shape=dict(FISH_BODY, belly=(0.78, 0.2, 0.72)))
+    hood = Hood(bumps=[(-90, -10, 0.08, 30)])
+    wear_hood(b, hood, fat_lip=0.075, eye_r=0.21)
+    fish_fins(b, "Fin", "Orange", crest_o=(0, 0.02, 5.42), ear_o=(0.86, 0.16, 4.5),
               tail_ctrl=[(-0.2, -0.04), (0.2, -0.04), (0.66, 0.4), (0.88, 0.84), (0.62, 1.04), (0, 1.0), (-0.62, 1.04),
                          (-0.88, 0.84), (-0.66, 0.4)])
     with b.part("LowerTorso__Tail"):

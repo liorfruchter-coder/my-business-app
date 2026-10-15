@@ -5,6 +5,7 @@
    "Head",
    "Head__Crest",
    "Head__Fins",
+   "Head__Hood",
    "LeftFoot",
    "LeftHand",
    "LeftLowerArm",
@@ -26,13 +27,13 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 29708,
-  "max_part_tris": 4940,
+  "tris": 40812,
+  "max_part_tris": 10304,
   "body_height": 5.2,
   "full_size": [
    4.87,
-   6.06,
-   2.29
+   5.97,
+   2.51
   ]
  },
  "Pufferfish": {
@@ -40,6 +41,7 @@
   "parts": [
    "Head",
    "Head__Fins",
+   "Head__Hood",
    "Head__Spikes",
    "LeftFoot",
    "LeftHand",
@@ -69,13 +71,13 @@
    "UpperTorso__DorsalFin",
    "UpperTorso__Spikes"
   ],
-  "tris": 25548,
-  "max_part_tris": 4940,
+  "tris": 36664,
+  "max_part_tris": 10304,
   "body_height": 5.2,
   "full_size": [
    4.87,
-   5.59,
-   2.53
+   5.89,
+   2.64
   ]
  },
  "Crab": {
@@ -134,11 +136,11 @@
    "UpperTorso",
    "UpperTorso__Tentacles"
   ],
-  "tris": 15642,
+  "tris": 17618,
   "max_part_tris": 3358,
   "body_height": 5.2,
   "full_size": [
-   4.0,
+   3.87,
    5.65,
    2.08
   ]
@@ -165,7 +167,7 @@
    "UpperTorso",
    "UpperTorso__Tentacles"
   ],
-  "tris": 34292,
+  "tris": 35668,
   "max_part_tris": 14416,
   "body_height": 5.2,
   "full_size": [
@@ -179,6 +181,7 @@
   "parts": [
    "Head",
    "Head__Crest",
+   "Head__Hood",
    "LeftFoot",
    "LeftHand",
    "LeftLowerArm",
@@ -196,13 +199,13 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 18436,
-  "max_part_tris": 6156,
+  "tris": 29540,
+  "max_part_tris": 10584,
   "body_height": 5.2,
   "full_size": [
-   4.2,
-   5.69,
-   2.59
+   4.12,
+   5.78,
+   2.93
   ]
  },
  "Shark": {
@@ -210,6 +213,7 @@
   "parts": [
    "Head",
    "Head__Fin",
+   "Head__Hood",
    "LeftFoot",
    "LeftHand",
    "LeftLowerArm",
@@ -230,13 +234,13 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 21264,
-  "max_part_tris": 4752,
+  "tris": 34048,
+  "max_part_tris": 10584,
   "body_height": 5.2,
   "full_size": [
    4.49,
-   6.31,
-   2.73
+   6.1,
+   3.12
   ]
  },
  "HammerheadShark": {
@@ -245,6 +249,7 @@
    "Head",
    "Head__Fin",
    "Head__Hammer",
+   "Head__Hood",
    "LeftFoot",
    "LeftHand",
    "LeftLowerArm",
@@ -265,13 +270,13 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 24760,
-  "max_part_tris": 4752,
+  "tris": 36344,
+  "max_part_tris": 9384,
   "body_height": 5.2,
   "full_size": [
    4.49,
-   6.45,
-   2.73
+   6.15,
+   3.04
   ]
  },
  "Orca": {
@@ -279,6 +284,7 @@
   "parts": [
    "Head",
    "Head__Fin",
+   "Head__Hood",
    "LeftFoot",
    "LeftHand",
    "LeftLowerArm",
@@ -298,13 +304,13 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 16396,
-  "max_part_tris": 2724,
+  "tris": 30396,
+  "max_part_tris": 10584,
   "body_height": 5.2,
   "full_size": [
    5.2,
-   6.46,
-   2.32
+   6.17,
+   2.64
   ]
  },
  "GiantSquid": {
@@ -329,7 +335,7 @@
    "UpperTorso",
    "UpperTorso__Tentacles"
   ],
-  "tris": 40268,
+  "tris": 41644,
   "max_part_tris": 13252,
   "body_height": 5.2,
   "full_size": [
@@ -344,6 +350,7 @@
    "Head",
    "Head__Crest",
    "Head__Fins",
+   "Head__Hood",
    "LeftFoot",
    "LeftHand",
    "LeftLowerArm",
@@ -365,13 +372,13 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 29136,
-  "max_part_tris": 5120,
+  "tris": 41456,
+  "max_part_tris": 10304,
   "body_height": 5.2,
   "full_size": [
    4.87,
-   6.06,
-   2.28
+   5.97,
+   2.51
   ]
  }
 }

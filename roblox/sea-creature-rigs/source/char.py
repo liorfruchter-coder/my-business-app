@@ -485,6 +485,27 @@ class CharBuilder(kit.Builder):
         self._done(st, bm, f0)
         return pts, frames
 
+    def mesh_styled(self, verts, faces, styles):
+        """Add verts (local coordinates) and faces (index tuples), each face with its own style."""
+        for st in set(styles):
+            self._bm(st)
+        bm = self._bm(styles[0])
+        done = bm.faces.layers.int["done"]
+        mats = self.pmats[self.cur]
+        vs = [bm.verts.new(self.M @ V(p)) for p in verts]
+        for f, st in zip(faces, styles):
+            try:
+                face = bm.faces.new([vs[i] for i in f])
+            except ValueError:
+                continue
+            if st not in mats:
+                mats.append(st)
+            face.material_index = mats.index(st)
+            face[done] = 1
+        loose = [v for v in vs if not v.link_faces]
+        if loose:
+            bmesh.ops.delete(bm, geom=loose, context="VERTS")
+
     def skin_rings(self, st, sections, cap=True):
         """Skin closed rings (same point count) in order; caps close the two ends."""
         bm = self._bm(st)
@@ -524,81 +545,6 @@ class CharBuilder(kit.Builder):
             bmesh.ops.bevel(bm, geom=vs + es, offset=bev, offset_type="OFFSET", segments=segs, profile=0.5,
                             affect="EDGES", clamp_overlap=True)
         self._done(st, bm, f0)
-
-    def fin2(self, st, outline, M, thick=0.1, taper=0.7, curl=0.0, cup=0.0, rim=None, segs=2):
-        """A fin: outline (u, v) with v = height above the base line; local thickness axis is Y.
-        It thins toward the tip (taper), can curl sideways (curl) and cup (cup); rim = edge style."""
-        bm = self._bm(st)
-        fresh = bm.verts.layers.int.get("fresh") or bm.verts.layers.int.new("fresh")
-        done = bm.faces.layers.int["done"]
-        for v in bm.verts:
-            v[fresh] = 0
-        f0 = len(bm.faces)
-        h = thick / 2
-        n = len(outline)
-        top = [bm.verts.new((u, h, v)) for u, v in outline]
-        bot = [bm.verts.new((u, -h, v)) for u, v in outline]
-        for v in top + bot:
-            v[fresh] = 1
-        caps = [bm.faces.new(top[::-1]), bm.faces.new(bot)]
-        for i in range(n):
-            j = (i + 1) % n
-            bm.faces.new([top[i], top[j], bot[j], bot[i]])
-        cap_edges = [e for f in caps for e in f.edges]
-        cap_verts = top + bot
-        bmesh.ops.bevel(bm, geom=cap_verts + cap_edges, offset=h * 0.9, offset_type="OFFSET", segments=segs, profile=0.5,
-                        affect="EDGES", clamp_overlap=True)
-        # break the two flat membranes into an even triangle mesh so curl, cup and the
-        # colour gradient bend smoothly instead of across a few long n-gon triangles
-        for f in bm.faces:
-            f.normal_update()
-        caps = [f for f in bm.faces if not f[done] and abs(f.normal.y) > 0.99 and len(f.verts) > 4]
-        if caps:
-            tri = bmesh.ops.triangulate(bm, faces=caps, quad_method="BEAUTY", ngon_method="BEAUTY")["faces"]
-            tris = set(tri)
-            inner = [e for e in {e for f in tri for e in f.edges} if all(lf in tris for lf in e.link_faces)]
-            span = max(max(v for u, v in outline) - min(v for u, v in outline), max(us_ := [u for u, v in outline]) - min(us_))
-            cuts = max(1, min(4, int(span / 0.22)))
-            bmesh.ops.subdivide_edges(bm, edges=inner, cuts=cuts, use_grid_fill=True)
-            cap_faces = [f for f in bm.faces if not f[done] and abs(f.normal.y) > 0.99]
-            inner_v = [v for v in {v for f in cap_faces for v in f.verts}
-                       if all(lf in cap_faces or abs(lf.normal.y) > 0.99 for lf in v.link_faces)
-                       and not any(abs(lf.normal.y) <= 0.99 for lf in v.link_faces)]
-            for _ in range(4):
-                bmesh.ops.smooth_vert(bm, verts=inner_v, factor=0.5, use_axis_x=True, use_axis_z=True)
-        vmax = max(v for u, v in outline) or 1.0
-        us = [u for u, v in outline]
-        uc, uh = (max(us) + min(us)) / 2, max((max(us) - min(us)) / 2, 1e-3)
-        new = [v for v in bm.verts if v[fresh]]
-        tvals = {}
-        for v in new:
-            u, w, z = v.co
-            t = max(0.0, min(1.0, z / vmax))
-            w = w * (1 - taper * t) + curl * t * t + cup * ((u - uc) / uh) ** 2 * t
-            v.co = self.M @ M @ V((u, w, z))
-            v[fresh] = 0
-            tvals[v] = t
-        lay = bm.loops.layers.float_color.get("Grad") or bm.loops.layers.float_color.new("Grad")
-        newfaces = [f for f in bm.faces if not f[done]]
-        self._done(st, bm, f0)
-        mats = self.pmats[self.cur]
-        rim_idx = None
-        if rim:
-            if rim not in mats:
-                mats.append(rim)
-            rim_idx = mats.index(rim)
-        for f in newfaces:
-            f.normal_update()
-            for lp in f.loops:
-                g = tvals.get(lp.vert, 0.0)
-                lp[lay] = (g, g, g, 1.0)
-            if rim_idx is not None:
-                # rim = everything that is not a broad cap face
-                fn = f.normal
-                ax = (M.to_3x3() @ V((0, 1, 0)))
-                ax = (self.M.to_3x3() @ ax).normalized()
-                if abs(fn.dot(ax)) < 0.75:
-                    f.material_index = rim_idx
 
     def fin3(self, st, ctrl, M, thick=0.14, rays=0, pleat=0.0, scallop=0.0, curl=0.0, cup=0.0, per=6, cols=None,
              rows=16, flare=1.3, flare_len=0.22, sink=0.08):
@@ -695,27 +641,6 @@ class CharBuilder(kit.Builder):
                 lp[lay] = (g, r, z, 1.0)
         self._done(st, bm, f0)
 
-    def fin(self, st, pts, axis, offset, thick=0.08, rays=None, ray_st=None, edge=None, edge_st=None):
-        """A flat fin: outline pts (2D) in the plane normal to axis ('x', 'y' or 'z') at offset."""
-        h = thick / 2
-        if axis == "x":
-            self.prism_x(st, pts, offset - h, offset + h)
-        elif axis == "y":
-            self.prism_y(st, [(a, b) for a, b in pts], offset - h, offset + h)
-        else:
-            self.prism_z(st, pts, offset - h, offset + h)
-        if rays and ray_st:
-            for (p0, p1) in rays:
-                for s in (-1, 1):
-                    o = offset + s * (h + 0.012)
-                    if axis == "x":
-                        a, b_ = V((o, p0[0], p0[1])), V((o, p1[0], p1[1]))
-                    elif axis == "y":
-                        a, b_ = V((p0[0], o, p0[1])), V((p1[0], o, p1[1]))
-                    else:
-                        a, b_ = V((p0[0], p0[1], o)), V((p1[0], p1[1], o))
-                    self.cyl(ray_st, a, b_, 0.022, 4)
-
     def eye(self, c, r, look=(0, -1, 0), white="EyeWhite", pupil="Pupil"):
         c = V(c)
         d = V(look).normalized()
@@ -752,6 +677,138 @@ class CharBuilder(kit.Builder):
 
 
 # ---------------------------------------------------------------------------
+# Creature hoods: the regular head sits inside, its face shows through the mouth
+# ---------------------------------------------------------------------------
+
+def _unit(th, ph):
+    t, p = math.radians(th), math.radians(ph)
+    return V((math.cos(p) * math.cos(t), math.cos(p) * math.sin(t), math.sin(p)))
+
+
+class Hood:
+    """A creature head worn like a hoodie hat over the regular Roblox head.
+
+    A thick shell (outer skin, inner lining, rounded rims) around the head, open at the
+    bottom over the neck and with a mouth opening at the front that frames the face.
+    The shell is a grid in (azimuth th, elevation ph) degrees; the mouth is a block of grid
+    cells that is left out, and the grid around it is warped so the opening is a smooth
+    ellipse (hole = its half-size in degrees). bumps = [(th, ph, amount, width_deg)] swell
+    the shell outwards (snouts, foreheads, cheeks)."""
+
+    def __init__(self, c=(0, 0.08, 4.62), r=(0.92, 0.94, 0.86), t=0.11, bumps=(), hole=(39.375, 34.29), phc=-2.0,
+                 k=(7, 8), bottom=-49.0):
+        self.c, self.r, self.t = V(c), r, t
+        self.bumps = [(_unit(th, ph), amt, math.radians(w)) for th, ph, amt, w in bumps]
+        self.hth, self.hph = hole
+        self.kth, self.kph = k
+        self.dth, self.dph = self.hth / self.kth, self.hph / self.kph
+        self.n = int(round(360 / self.dth))
+        self.thc, self.phc = -90.0, phc
+        self.ic = int(round(self.thc / self.dth)) % self.n
+        self.j0 = int(round((phc - bottom) / self.dph))
+        self.jt = int((86 - phc) / self.dph)
+
+    def radial(self, th, ph):
+        d = _unit(th, ph)
+        m = 1.0
+        for bd, amt, w in self.bumps:
+            a = math.acos(max(-1.0, min(1.0, d.dot(bd))))
+            m += amt * math.exp(-a * a / (2 * w * w))
+        return V((d.x * self.r[0], d.y * self.r[1], d.z * self.r[2])) * m
+
+    def surf(self, th, ph, inner=False):
+        p = self.radial(th, ph)
+        if inner:
+            p = p * (1 - self.t / p.length)
+        return self.c + p
+
+    def normal(self, th, ph):
+        e = 0.5
+        a = self.surf(th + e, ph) - self.surf(th - e, ph)
+        b_ = self.surf(th, ph + e) - self.surf(th, ph - e)
+        n = a.cross(b_)
+        if n.length < 1e-9:
+            return _unit(th, ph)
+        n.normalize()
+        return n if n.dot(self.surf(th, ph) - self.c) > 0 else -n
+
+    def point(self, th, ph, out=0.0):
+        """A point on (or out from) the outer skin and the outward normal there."""
+        n = self.normal(th, ph)
+        return self.surf(th, ph) + n * out, n
+
+    def _angles(self, i, j):
+        di = ((i - self.ic + self.n // 2) % self.n) - self.n // 2
+        X, Y = di / self.kth, (j - self.j0) / self.kph
+        s = max(abs(X), abs(Y))
+        if 0 < s < 2.6:
+            f = s / math.hypot(X, Y)
+            t = min(1.0, max(0.0, (s - 1) / 1.6))
+            t = t * t * (3 - 2 * t)
+            sc = f + (1 - f) * t
+            X, Y = X * sc, Y * sc
+        return self.thc + X * self.hth, self.phc + Y * self.hph
+
+    def in_hole(self, i, j):
+        di = ((i - self.ic + self.n // 2) % self.n) - self.n // 2
+        return -self.kth <= di < self.kth and self.j0 - self.kph <= j < self.j0 + self.kph
+
+    def build(self, b, st, lining, lip, rim=None):
+        """Adds the shell to the current part. Returns the lip ring (points round the mouth)."""
+        n, J = self.n, self.j0 + self.jt
+        verts, faces, styles = [], [], []
+        ang = [[self._angles(i, j) for i in range(n)] for j in range(J + 1)]
+        O = [[len(verts) + j * n + i for i in range(n)] for j in range(J + 1)]
+        verts += [self.surf(*ang[j][i]) for j in range(J + 1) for i in range(n)]
+        I_ = [[len(verts) + j * n + i for i in range(n)] for j in range(J + 1)]
+        verts += [self.surf(*ang[j][i], inner=True) for j in range(J + 1) for i in range(n)]
+        po, pi = len(verts), len(verts) + 1
+        verts += [self.surf(0, 90), self.surf(0, 90, inner=True)]
+        for j in range(J):
+            for i in range(n):
+                if self.in_hole(i, j):
+                    continue
+                i2 = (i + 1) % n
+                faces.append((O[j][i], O[j][i2], O[j + 1][i2], O[j + 1][i]))
+                styles.append(st)
+                faces.append((I_[j][i], I_[j + 1][i], I_[j + 1][i2], I_[j][i2]))
+                styles.append(lining)
+        for i in range(n):
+            i2 = (i + 1) % n
+            faces.append((O[J][i], O[J][i2], po))
+            styles.append(st)
+            faces.append((I_[J][i2], I_[J][i], pi))
+            styles.append(lining)
+
+        def strip(loop, push, style, closed=True):
+            # outer -> rounded middle -> inner along a loop of grid indices
+            mids = []
+            for (i, j) in loop:
+                th, ph = ang[j][i]
+                po_, pi_ = verts[O[j][i]], verts[I_[j][i]]
+                mids.append(len(verts))
+                verts.append((po_ + pi_) / 2 + push(th, ph) * self.t * 0.7)
+            m = len(loop)
+            for k in range(m if closed else m - 1):
+                k2 = (k + 1) % m
+                (i, j), (i2, j2) = loop[k], loop[k2]
+                faces.append((O[j][i], mids[k], mids[k2], O[j2][i2]))
+                faces.append((mids[k], I_[j][i], I_[j2][i2], mids[k2]))
+                styles.extend([style, style])
+            return [verts[x] for x in mids]
+
+        strip([(i, 0) for i in range(n)], lambda th, ph: V((0, 0, -1)), rim or st)
+        kt, kp, j0 = self.kth, self.kph, self.j0
+        loop = ([((self.ic + a) % n, j0 - kp) for a in range(-kt, kt)] +
+                [((self.ic + kt) % n, j0 - kp + a) for a in range(0, 2 * kp)] +
+                [((self.ic + kt - a) % n, j0 + kp) for a in range(0, 2 * kt)] +
+                [((self.ic - kt) % n, j0 + kp - a) for a in range(0, 2 * kp)])
+        ring = strip(loop, self.normal, lip)
+        b.mesh_styled(verts, faces, styles)
+        return ring
+
+
+# ---------------------------------------------------------------------------
 # The standard body
 # ---------------------------------------------------------------------------
 
@@ -767,32 +824,67 @@ def head_profile(r=HEAD_R, h=HEAD_H, rc=0.27, n=7):
     return pts
 
 
-def standard_body(b, st, hands=True, feet=True, bev=0.075):
+BODY = dict(chest=(2.0, 1.0), chest_bot=(1.0, 1.0), chest_bev=0.075, waist=(2.0, 1.0), waist_bev=0.075,
+            arm=1.0, arm_bot=1.0, leg=1.0, leg_bot=1.0, limb_bev=0.075, belly=None, hand="block", foot="block",
+            chest_ball=None)
+
+
+def standard_body(b, st, hands=True, feet=True, shape=None):
     """st: style names for head, chest, waist, arm, forearm, hand, thigh, shin, foot.
-    Crisp R15 blocks (small bevels, the seams between parts read as grooves)."""
+    The R15 parts at their usual places, shaped by shape (see BODY): torso width / depth and
+    taper (chest_bot scales the bottom of the chest: a V for sharks, a sack for octopuses),
+    roundness (bevels), limb thickness and taper, a belly bulge (sx, sy, sz), mitt hands and
+    flipper feet; chest_ball (rx, ry, rz) makes the chest a ball (pufferfish).
+    With no shape it is the crisp blocky R15 body."""
+    sh = dict(BODY, **(shape or {}))
+    segs = 3 if sh["chest_bev"] < 0.15 else 5
+    lsegs = 3 if sh["limb_bev"] < 0.15 else 4
     with b.part("Head"):
         b.lathe(st["head"], head_profile(), c=(0, 0, HEAD_Z0), n=48)
+    cw, cd = sh["chest"]
     with b.part("UpperTorso"):
-        b.rbox(st["chest"], (0, 0, 3.2), (2.0, 1.0, 1.6), bev=bev, segs=3)
+        if sh["chest_ball"]:
+            b.ball(st["chest"], (0, 0, 3.18), 1.0, seg=(40, 28), sc=sh["chest_ball"])
+        else:
+            b.rbox(st["chest"], (0, 0, 3.2), (cw, cd, 1.6), bot=sh["chest_bot"], bev=sh["chest_bev"], segs=segs)
+        if sh["belly"]:
+            bx, by, bz = sh["belly"]
+            b.ball(st["chest"], (0, -cd / 2 + by * 0.35, 3.08), 1.0, seg=(32, 20), sc=(bx, by, bz))
+    ww, wd = sh["waist"]
     with b.part("LowerTorso"):
-        b.rbox(st["waist"], (0, 0, 2.2), (2.0, 1.0, 0.4), bev=bev, segs=3)
+        b.rbox(st["waist"], (0, 0, 2.2), (ww, wd, 0.4), bot=(0.96, 0.96), bev=min(sh["waist_bev"], 0.18), segs=segs)
+    aw, ab, lw, lb, lbev = sh["arm"], sh["arm_bot"], sh["leg"], sh["leg_bot"], sh["limb_bev"]
     for side, sx in (("Left", 1), ("Right", -1)):
         x = sx * ARM_X
+        mid = aw + (ab * aw - aw) * 0.62           # forearm width where the upper arm stops
         with b.part(f"{side}UpperArm"):
-            b.rbox(st["arm"], (x, 0, 3.49), (1.0, 1.0, 1.02), bev=bev, segs=3)
+            b.rbox(st["arm"], (x, 0, 3.49), (aw, aw, 1.02), bot=(mid / aw, mid / aw), bev=lbev, segs=lsegs)
         with b.part(f"{side}LowerArm"):
-            b.rbox(st["forearm"], (x, 0, 2.66), (1.0, 1.0, 0.64), bev=bev, segs=3)
+            b.rbox(st["forearm"], (x, 0, 2.66), (mid, mid, 0.64), bot=(ab * aw / mid, ab * aw / mid), bev=min(lbev, 0.2),
+                   segs=lsegs)
         if hands:
+            hw = ab * aw
             with b.part(f"{side}Hand"):
-                b.rbox(st["hand"], (x, 0, 2.17), (1.0, 1.0, 0.34), bev=bev, segs=3)
+                if sh["hand"] == "mitt":
+                    b.rbox(st["hand"], (x, 0, 2.15), (hw * 0.98, hw * 0.96, 0.38), bot=(0.9, 0.9), bev=min(0.16, hw * 0.2), segs=4)
+                    b.rbox(st["hand"], (x - sx * hw * 0.42, -hw * 0.3, 2.2), (0.24, 0.3, 0.3), bev=0.1, segs=3)
+                else:
+                    b.rbox(st["hand"], (x, 0, 2.17), (hw, hw, 0.34), bev=min(lbev, 0.12), segs=3)
         xl = sx * LEG_X
+        lmid = lw + (lb * lw - lw) * 0.55
         with b.part(f"{side}UpperLeg"):
-            b.rbox(st["thigh"], (xl, 0, 1.55), (1.0, 1.0, 0.9), bev=bev, segs=3)
+            b.rbox(st["thigh"], (xl, 0, 1.55), (lw, lw, 0.9), bot=(lmid / lw, lmid / lw), bev=lbev, segs=lsegs)
         with b.part(f"{side}LowerLeg"):
-            b.rbox(st["shin"], (xl, 0, 0.73), (1.0, 1.0, 0.74), bev=bev, segs=3)
+            b.rbox(st["shin"], (xl, 0, 0.73), (lmid, lmid, 0.74), bot=(lb * lw / lmid, lb * lw / lmid), bev=min(lbev, 0.2),
+                   segs=lsegs)
         if feet:
+            fw = lb * lw
             with b.part(f"{side}Foot"):
-                b.rbox(st["foot"], (xl, 0, 0.18), (1.0, 1.0, 0.36), bev=bev, segs=3)
+                if sh["foot"] == "flipper":
+                    # a wide, flat webbed foot that sticks out in front
+                    b.rbox(st["foot"], (xl, -0.12, 0.15), (fw * 1.08, 1.24, 0.3), bot=(1.06, 1.04), bev=0.12, segs=4)
+                else:
+                    b.rbox(st["foot"], (xl, 0, 0.18), (fw, fw, 0.36), bev=min(lbev, 0.12), segs=3)
 
 
 def smooth_outline(ctrl, per=5):
