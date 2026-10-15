@@ -19,6 +19,7 @@ from contextlib import contextmanager
 import bmesh
 import bpy
 from mathutils import Matrix, Vector
+from mathutils.bvhtree import BVHTree
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "blender"))
 import kit  # noqa: E402
@@ -374,6 +375,8 @@ class CharBuilder(kit.Builder):
         self.pbms = {}
         self.pmats = {}
         self.gradfn = None
+        self.dims = {}        # body part -> (z0, z1, width at z0, width at z1), set by standard_body
+        self._bvh = {}
 
     @contextmanager
     def grad(self, fn):
@@ -524,6 +527,61 @@ class CharBuilder(kit.Builder):
                     vs = [ring[i], ring[j], c]
                     bm.faces.new(vs[::-1] if rev else vs)
         self._done(st, bm, f0)
+
+    def rtube(self, st, c, size, bot=(1.0, 1.0), side=0.2, top=0.04, bottom=0.04, segs=4):
+        """A rounded block for the body: side rounds the four upright edges, top and bottom round the
+        two ends separately, so parts that meet at a joint can stay flat there and line up flush while
+        the outer ends (shoulders, fists, feet) are soft. bot scales the bottom (tapers)."""
+        sx, sy, sz = size
+        bx, by = sx * bot[0] / 2, sy * bot[1] / 2
+        tx, ty = sx / 2, sy / 2
+        x, y, z = c
+        z0, z1 = z - sz / 2, z + sz / 2
+        bm = self._bm(st)
+        f0 = len(bm.faces)
+        done = bm.faces.layers.int["done"]
+        P = [(x - bx, y - by, z0), (x + bx, y - by, z0), (x + bx, y + by, z0), (x - bx, y + by, z0),
+             (x - tx, y - ty, z1), (x + tx, y - ty, z1), (x + tx, y + ty, z1), (x - tx, y + ty, z1)]
+        vs = [bm.verts.new(V(p)) for p in P]
+        for f in ([3, 2, 1, 0], [4, 5, 6, 7], [0, 1, 5, 4], [1, 2, 6, 5], [2, 3, 7, 6], [3, 0, 4, 7]):
+            bm.faces.new([vs[i] for i in f])
+        upright = [e for e in {e for v in vs for e in v.link_edges} if abs(e.verts[0].co.z - e.verts[1].co.z) > 1e-6]
+        r = min(side, 0.49 * min(sx * min(1, bot[0]), sy * min(1, bot[1])))
+        if r > 0.005:
+            bmesh.ops.bevel(bm, geom=upright, offset=r, offset_type="OFFSET", segments=segs, profile=0.5, affect="EDGES",
+                            clamp_overlap=True)
+        for zz, rr in ((z1, top), (z0, bottom)):
+            if rr <= 0.005:
+                continue
+            for f in bm.faces:
+                f.normal_update()
+            cap = [f for f in bm.faces if not f[done] and abs(f.normal.z) > 0.999 and abs(f.calc_center_median().z - zz) < 1e-4]
+            if cap:
+                bmesh.ops.bevel(bm, geom=list(cap[0].edges), offset=rr, offset_type="OFFSET", segments=max(2, segs - 1),
+                                profile=0.5, affect="EDGES", clamp_overlap=True)
+        new_faces = [f for f in bm.faces if not f[done]]
+        for v in {v for f in new_faces for v in f.verts}:
+            v.co = self.M @ v.co
+        self._done(st, bm, f0)
+
+    def hit(self, part, origin, direction):
+        """Where a ray from origin along direction first meets body part `part` (cast from outside
+        it gives the outermost surface). Returns (point, outward normal) or (None, None)."""
+        bm = self.pbms[part]
+        key = len(bm.faces), len(bm.verts)
+        if part not in self._bvh or self._bvh[part][0] != key:
+            self._bvh[part] = (key, BVHTree.FromBMesh(bm))
+        d = V(direction).normalized()
+        loc, nrm, _, _ = self._bvh[part][1].ray_cast(V(origin), d)
+        if loc is None:
+            return None, None
+        return loc, (-nrm if nrm.dot(d) > 0 else nrm)
+
+    def half_width(self, part, z):
+        """Half the width of a body part at height z (from the sizes standard_body used)."""
+        z0, z1, w0, w1 = self.dims[part]
+        t = min(1.0, max(0.0, (z - z0) / (z1 - z0)))
+        return (w0 + (w1 - w0) * t) / 2
 
     def rbox(self, st, c, size, bot=(1.0, 1.0), bev=0.18, segs=4, shift=(0.0, 0.0)):
         """A rounded box whose bottom face is scaled by bot (tapered limbs, torso)."""
@@ -824,67 +882,90 @@ def head_profile(r=HEAD_R, h=HEAD_H, rc=0.27, n=7):
     return pts
 
 
-BODY = dict(chest=(2.0, 1.0), chest_bot=(1.0, 1.0), chest_bev=0.075, waist=(2.0, 1.0), waist_bev=0.075,
-            arm=1.0, arm_bot=1.0, leg=1.0, leg_bot=1.0, limb_bev=0.075, belly=None, hand="block", foot="block",
-            chest_ball=None)
+BODY = dict(chest=(2.0, 1.0), chest_bot=(1.0, 1.0), chest_bev=0.075, shoulder=None, arm=1.0, arm_bot=1.0, leg=1.0,
+            leg_bot=1.0, limb_bev=0.075, belly=None, back=None, hand="block", foot="block")
 
 
 def standard_body(b, st, hands=True, feet=True, shape=None):
     """st: style names for head, chest, waist, arm, forearm, hand, thigh, shin, foot.
     The R15 parts at their usual places, shaped by shape (see BODY): torso width / depth and
     taper (chest_bot scales the bottom of the chest: a V for sharks, a sack for octopuses),
-    roundness (bevels), limb thickness and taper, a belly bulge (sx, sy, sz), mitt hands and
-    flipper feet; chest_ball (rx, ry, rz) makes the chest a ball (pufferfish).
-    With no shape it is the crisp blocky R15 body."""
+    roundness (chest_bev, limb_bev), limb thickness and taper, belly / back bulges (sx, sy, sz),
+    mitt hands and flipper feet. With no shape it is the crisp blocky R15 body.
+
+    Parts are built so they connect: each limb segment starts exactly as wide as the one above
+    it ends, the joints are flat (only the outer ends are rounded), the arms are at least wide
+    enough to reach the side of the chest and the legs and feet tuck into the parts above."""
     sh = dict(BODY, **(shape or {}))
-    segs = 3 if sh["chest_bev"] < 0.15 else 5
-    lsegs = 3 if sh["limb_bev"] < 0.15 else 4
+    cw, cd = sh["chest"]
+    cbx, cby = sh["chest_bot"]
+    cb, lb_ = sh["chest_bev"], sh["limb_bev"]
+    segs = 3 if cb < 0.15 else 5
+    lsegs = 3 if lb_ < 0.15 else 4
     with b.part("Head"):
         b.lathe(st["head"], head_profile(), c=(0, 0, HEAD_Z0), n=48)
-    cw, cd = sh["chest"]
+    shoulder = sh["shoulder"] if sh["shoulder"] is not None else min(0.22, cb)
     with b.part("UpperTorso"):
-        if sh["chest_ball"]:
-            b.ball(st["chest"], (0, 0, 3.18), 1.0, seg=(40, 28), sc=sh["chest_ball"])
-        else:
-            b.rbox(st["chest"], (0, 0, 3.2), (cw, cd, 1.6), bot=sh["chest_bot"], bev=sh["chest_bev"], segs=segs)
+        b.rtube(st["chest"], (0, 0, 3.2), (cw, cd, 1.6), bot=(cbx, cby), side=cb, top=shoulder, bottom=0.03, segs=segs)
         if sh["belly"]:
             bx, by, bz = sh["belly"]
-            b.ball(st["chest"], (0, -cd / 2 + by * 0.35, 3.08), 1.0, seg=(32, 20), sc=(bx, by, bz))
-    ww, wd = sh["waist"]
+            b.ball(st["chest"], (0, -cd * (0.5 + 0.5 * cby) / 2 + by * 0.35, 3.08), 1.0, seg=(32, 20), sc=(bx, by, bz))
+        if sh["back"]:
+            bx, by, bz = sh["back"]
+            b.ball(st["chest"], (0, cd * (0.5 + 0.5 * cby) / 2 - by * 0.35, 3.2), 1.0, seg=(32, 20), sc=(bx, by, bz))
+    ww, wd = cw * cbx, cd * cby
     with b.part("LowerTorso"):
-        b.rbox(st["waist"], (0, 0, 2.2), (ww, wd, 0.4), bot=(0.96, 0.96), bev=min(sh["waist_bev"], 0.18), segs=segs)
-    aw, ab, lw, lb, lbev = sh["arm"], sh["arm_bot"], sh["leg"], sh["leg_bot"], sh["limb_bev"]
+        b.rtube(st["waist"], (0, 0, 2.21), (ww, wd, 0.42), bot=(0.97, 0.97), side=min(cb, 0.45 * min(ww, wd)), top=0.03,
+                bottom=0.06, segs=segs)
+    b.dims["UpperTorso"] = (2.4, 4.0, cw * cbx, cw)
+    b.dims["LowerTorso"] = (2.0, 2.42, ww * 0.97, ww)
+    # arms: at least wide enough to touch the side of the chest
+    aw = max(sh["arm"], 2 * (ARM_X - cw / 2) + 0.06)
+    ab = aw * sh["arm_bot"]
+    mid = aw + (ab - aw) * 0.62
+    lw = sh["leg"]
+    lfoot = lw * sh["leg_bot"]
+    lmid = lw + (lfoot - lw) * 0.55
     for side, sx in (("Left", 1), ("Right", -1)):
         x = sx * ARM_X
-        mid = aw + (ab * aw - aw) * 0.62           # forearm width where the upper arm stops
+        rs = min(lb_, 0.45 * ab)
         with b.part(f"{side}UpperArm"):
-            b.rbox(st["arm"], (x, 0, 3.49), (aw, aw, 1.02), bot=(mid / aw, mid / aw), bev=lbev, segs=lsegs)
+            b.rtube(st["arm"], (x, 0, 3.49), (aw, aw, 1.02), bot=(mid / aw, mid / aw), side=rs, top=min(0.24, lb_ + 0.04),
+                    bottom=0.03, segs=lsegs)
         with b.part(f"{side}LowerArm"):
-            b.rbox(st["forearm"], (x, 0, 2.66), (mid, mid, 0.64), bot=(ab * aw / mid, ab * aw / mid), bev=min(lbev, 0.2),
-                   segs=lsegs)
+            b.rtube(st["forearm"], (x, 0, 2.66), (mid, mid, 0.64), bot=(ab / mid, ab / mid), side=rs, top=0.03, bottom=0.03,
+                    segs=lsegs)
+        b.dims[f"{side}UpperArm"] = (2.98, 4.0, mid, aw)
+        b.dims[f"{side}LowerArm"] = (2.34, 2.98, ab, mid)
         if hands:
-            hw = ab * aw
             with b.part(f"{side}Hand"):
                 if sh["hand"] == "mitt":
-                    b.rbox(st["hand"], (x, 0, 2.15), (hw * 0.98, hw * 0.96, 0.38), bot=(0.9, 0.9), bev=min(0.16, hw * 0.2), segs=4)
-                    b.rbox(st["hand"], (x - sx * hw * 0.42, -hw * 0.3, 2.2), (0.24, 0.3, 0.3), bev=0.1, segs=3)
+                    b.rtube(st["hand"], (x, 0, 2.15), (ab, ab, 0.38), bot=(0.94, 0.94), side=rs, top=0.03,
+                            bottom=min(0.16, ab * 0.22), segs=4)
+                    b.rtube(st["hand"], (x - sx * ab * 0.4, -ab * 0.28, 2.2), (0.24, 0.3, 0.3), side=0.1, top=0.08,
+                            bottom=0.08, segs=3)
                 else:
-                    b.rbox(st["hand"], (x, 0, 2.17), (hw, hw, 0.34), bev=min(lbev, 0.12), segs=3)
+                    b.rtube(st["hand"], (x, 0, 2.17), (ab, ab, 0.34), side=rs, top=0.03, bottom=min(lb_, 0.1), segs=3)
+            b.dims[f"{side}Hand"] = (1.96, 2.34, ab * 0.94, ab)
         xl = sx * LEG_X
-        lmid = lw + (lb * lw - lw) * 0.55
+        rl = min(lb_, 0.45 * lfoot)
         with b.part(f"{side}UpperLeg"):
-            b.rbox(st["thigh"], (xl, 0, 1.55), (lw, lw, 0.9), bot=(lmid / lw, lmid / lw), bev=lbev, segs=lsegs)
+            # the top tucks up into the hips
+            b.rtube(st["thigh"], (xl, 0, 1.58), (lw, lw, 0.96), bot=(lmid / lw, lmid / lw), side=rl, top=min(0.12, lb_),
+                    bottom=0.03, segs=lsegs)
         with b.part(f"{side}LowerLeg"):
-            b.rbox(st["shin"], (xl, 0, 0.73), (lmid, lmid, 0.74), bot=(lb * lw / lmid, lb * lw / lmid), bev=min(lbev, 0.2),
-                   segs=lsegs)
+            b.rtube(st["shin"], (xl, 0, 0.73), (lmid, lmid, 0.74), bot=(lfoot / lmid, lfoot / lmid), side=rl, top=0.03,
+                    bottom=0.03, segs=lsegs)
+        b.dims[f"{side}UpperLeg"] = (1.1, 2.06, lmid, lw)
+        b.dims[f"{side}LowerLeg"] = (0.36, 1.1, lfoot, lmid)
         if feet:
-            fw = lb * lw
             with b.part(f"{side}Foot"):
                 if sh["foot"] == "flipper":
-                    # a wide, flat webbed foot that sticks out in front
-                    b.rbox(st["foot"], (xl, -0.12, 0.15), (fw * 1.08, 1.24, 0.3), bot=(1.06, 1.04), bev=0.12, segs=4)
+                    # a wide, flat webbed foot that reaches forward; its top meets the shin
+                    b.rtube(st["foot"], (xl, -0.12, 0.19), (lfoot * 1.08, 1.24, 0.38), bot=(1.06, 1.04), side=0.22,
+                            top=0.08, bottom=0.05, segs=4)
                 else:
-                    b.rbox(st["foot"], (xl, 0, 0.18), (fw, fw, 0.36), bev=min(lbev, 0.12), segs=3)
+                    b.rtube(st["foot"], (xl, 0, 0.19), (lfoot, lfoot, 0.38), side=rl, top=0.03, bottom=min(lb_, 0.08), segs=3)
 
 
 def smooth_outline(ctrl, per=5):

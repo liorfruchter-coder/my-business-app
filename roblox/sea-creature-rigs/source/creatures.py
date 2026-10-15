@@ -6,8 +6,8 @@ the faces that look that way, plus wrap-around bands. Fins are fin2 surfaces
 that thin toward the edge, curve, carry a base-to-tip colour and a darker rim.
 Anything that sticks out lives in "<BodyPart>__<Piece>" objects that Roblox
 welds on; the Head stays the regular Roblox head and its pieces keep clear of
-the face. The fish, sharks, eel and orca wear their head as a hood (char.Hood)
-with the face looking out through the mouth. Each body has its own shape
+the face. The fish, sharks, eel, orca, octopus and squid wear their head as a
+hood (char.Hood) with the face looking out through the mouth. Each body has its own shape
 (FISH_BODY, SHARK_BODY ...) on the same R15 layout.
 """
 import math
@@ -95,25 +95,24 @@ def spike(b, st, p, n, L=0.3, r=0.08):
 
 
 # body shapes per creature (see char.BODY): still the R15 parts, but each reads as that animal
-FISH_BODY = dict(chest=(2.0, 1.12), chest_bot=(0.9, 0.92), chest_bev=0.26, waist=(1.8, 1.02), waist_bev=0.16, arm=0.92,
-                 arm_bot=0.86, leg=0.94, leg_bot=0.88, limb_bev=0.2, hand="mitt", foot="flipper")
-SHARK_BODY = dict(chest=(2.12, 1.06), chest_bot=(0.8, 0.86), chest_bev=0.2, waist=(1.7, 0.92), waist_bev=0.14, arm=0.98,
-                  arm_bot=0.82, leg=0.96, leg_bot=0.86, limb_bev=0.18, hand="mitt", foot="flipper")
-ORCA_BODY = dict(chest=(2.1, 1.16), chest_bot=(0.9, 0.92), chest_bev=0.32, waist=(1.9, 1.06), waist_bev=0.18, arm=0.98,
-                 arm_bot=0.86, leg=0.98, leg_bot=0.9, limb_bev=0.24, belly=(0.8, 0.2, 0.76), hand="mitt", foot="flipper")
-PUFFER_BODY = dict(chest_ball=(1.12, 0.8, 0.92), waist=(1.7, 1.1), waist_bev=0.18, arm=0.88, arm_bot=0.9, leg=0.92,
-                   leg_bot=0.96, limb_bev=0.26, hand="mitt")
-CRAB_BODY = dict(chest=(2.2, 1.0), chest_bot=(0.82, 0.9), chest_bev=0.1, waist=(1.66, 0.92), waist_bev=0.08, arm=1.0,
-                 arm_bot=0.9, leg=0.9, leg_bot=0.8, limb_bev=0.1)
-JELLY_BODY = dict(chest=(1.96, 1.0), chest_bot=(0.92, 0.94), chest_bev=0.36, waist=(1.8, 0.96), waist_bev=0.18, arm=0.9,
-                  arm_bot=0.84, leg=0.92, leg_bot=0.86, limb_bev=0.3, hand="mitt")
-OCTO_BODY = dict(chest=(1.96, 1.06), chest_bot=(1.04, 1.06), chest_bev=0.4, waist=(2.0, 1.08), waist_bev=0.18, arm=0.94,
-                 arm_bot=0.78, leg=0.96, leg_bot=0.8, limb_bev=0.32)
-EEL_BODY = dict(chest=(1.86, 0.98), chest_bot=(0.92, 0.94), chest_bev=0.26, waist=(1.68, 0.92), waist_bev=0.16, arm=0.86,
-                arm_bot=0.86, leg=0.88, leg_bot=0.88, limb_bev=0.22, hand="mitt", foot="flipper")
-SQUID_BODY = dict(chest=(1.92, 1.0), chest_bot=(0.86, 0.9), chest_bev=0.34, waist=(1.66, 0.9), waist_bev=0.18, arm=0.9,
-                  arm_bot=0.84, leg=0.9, leg_bot=0.84, limb_bev=0.28)
-
+FISH_BODY = dict(chest=(2.0, 1.12), chest_bot=(0.9, 0.92), chest_bev=0.26, arm=0.92, arm_bot=0.86, leg=0.94, leg_bot=0.88,
+                 limb_bev=0.2, hand="mitt", foot="flipper")
+SHARK_BODY = dict(chest=(2.12, 1.06), chest_bot=(0.8, 0.86), chest_bev=0.2, arm=0.98, arm_bot=0.82, leg=0.96, leg_bot=0.86,
+                  limb_bev=0.18, hand="mitt", foot="flipper")
+ORCA_BODY = dict(chest=(2.1, 1.16), chest_bot=(0.9, 0.92), chest_bev=0.32, arm=0.98, arm_bot=0.86, leg=0.98, leg_bot=0.9,
+                 limb_bev=0.24, belly=(0.8, 0.2, 0.76), hand="mitt", foot="flipper")
+PUFFER_BODY = dict(chest=(2.0, 1.0), chest_bot=(0.92, 0.96), chest_bev=0.42, shoulder=0.3, belly=(0.96, 0.36, 0.82),
+                   back=(0.9, 0.3, 0.78), arm=0.88, arm_bot=0.9, leg=0.92, leg_bot=0.96, limb_bev=0.26, hand="mitt")
+CRAB_BODY = dict(chest=(2.2, 1.0), chest_bot=(0.82, 0.9), chest_bev=0.1, arm=1.0, arm_bot=0.9, leg=0.9, leg_bot=0.8,
+                 limb_bev=0.1)
+JELLY_BODY = dict(chest=(2.0, 1.0), chest_bot=(0.92, 0.94), chest_bev=0.36, arm=0.9, arm_bot=0.84, leg=0.92, leg_bot=0.86,
+                  limb_bev=0.3, hand="mitt")
+OCTO_BODY = dict(chest=(2.0, 1.06), chest_bot=(1.02, 1.04), chest_bev=0.4, arm=0.94, arm_bot=0.78, leg=0.96, leg_bot=0.8,
+                 limb_bev=0.32)
+EEL_BODY = dict(chest=(2.0, 0.94), chest_bot=(0.86, 0.94), chest_bev=0.26, arm=0.86, arm_bot=0.84, leg=0.88, leg_bot=0.88,
+                limb_bev=0.22, hand="mitt", foot="flipper")
+SQUID_BODY = dict(chest=(2.0, 1.0), chest_bot=(0.84, 0.9), chest_bev=0.34, arm=0.9, arm_bot=0.84, leg=0.9, leg_bot=0.84,
+                  limb_bev=0.28)
 
 # painted shapes (studs; front view u = x, side view u = y with the front at -y)
 def shield(top=3.92, bot=2.04, wt=0.42, wm=0.7, wb=0.5, zm=3.25):
@@ -156,23 +155,69 @@ def head_ring_points(z, step_deg=30, skip_front=60, r=0.6, phase=0.0):
     return out
 
 
+def tooth(b, st, base, aim, face, w=0.11, L=0.15, t=0.05, curve=0.025):
+    """A cartoon tooth: a flat triangular blade that bends back a little toward its point.
+    base: centre of the root (sunk in the gum), aim: where the point goes, face: the side its flat
+    face shows to."""
+    d = V(aim).normalized()
+    o = V(face)
+    o = (o - d * o.dot(d)).normalized()
+    sw = d.cross(o).normalized()
+    base = V(base)
+    n = 10
+    rings = []
+    for f, ws, ts in ((0.0, 1.0, 1.0), (0.45, 0.62, 0.78), (0.78, 0.26, 0.45)):
+        c = base + d * L * f - o * curve * f * f
+        rings.append([c + sw * (w / 2) * ws * math.cos(TAU * k / n) + o * (t / 2) * ts * math.sin(TAU * k / n)
+                      for k in range(n)])
+    tip = base + d * L - o * curve
+    verts = [p for ring in rings for p in ring] + [tip, base - d * 0.01]
+    faces = []
+    for r in range(len(rings) - 1):
+        for k in range(n):
+            k2 = (k + 1) % n
+            faces.append((r * n + k, r * n + k2, (r + 1) * n + k2, (r + 1) * n + k))
+    it, ib = len(verts) - 2, len(verts) - 1
+    last = (len(rings) - 1) * n
+    for k in range(n):
+        faces.append((last + k, last + (k + 1) % n, it))
+        faces.append(((k + 1) % n, k, ib))
+    b.mesh_styled(verts, faces, [st] * len(faces))
+
+
 def wear_hood(b, hood, st="Hood", lining="Lining", lip="Lip", fat_lip=0.0, teeth=None, eye_r=0.2, eye_at=(42, 30),
               eyes=True):
-    """Put a creature hood on the head: the shell, optional fat lips round the mouth, teeth
-    (style, length, radius, every n-th lip point) and a pair of cartoon eyes."""
+    """Put a creature hood on the head: the shell, optional fat lips (gums) round the mouth,
+    teeth = (style, width, length, spacing) along the top and bottom of the mouth, and a pair of
+    cartoon eyes."""
     with b.part("Head__Hood"):
         ring = hood.build(b, st, lining, lip)
         if fat_lip:
             b.ttube(lip, ring + [ring[0]], [fat_lip] * (len(ring) + 1), n=12, cap=False, grad=False)
         if teeth:
-            tst, L, r, every = teeth
+            tst, w, L, gap = teeth
             hc = hood.surf(-90, hood.phc)
-            for k, p in enumerate(ring):
-                off = p - hc
-                if k % every or abs(off.z) < 0.6 * max(abs(off.x), 1e-3) * (hood.hph / hood.hth):
-                    continue
-                d = ((hc - p).normalized() + (hood.c - p).normalized() * 0.35).normalized()
-                spike(b, tst, p + d * 0.02, d, L, r)
+            sx_, sz_ = math.sin(math.radians(hood.hth)), math.sin(math.radians(hood.hph))
+            # walk round the gum line and set a tooth every `gap` studs on the upper and lower jaw
+            run, next_at = 0.0, gap / 2
+            loop = ring + [ring[0]]
+            for p, q in zip(loop, loop[1:]):
+                seg = (q - p).length
+                while next_at <= run + seg:
+                    pt = p.lerp(q, (next_at - run) / seg)
+                    next_at += gap
+                    off = pt - hc
+                    ang = math.atan2(off.z / sz_, off.x / sx_)
+                    up = abs(math.sin(ang))
+                    if up < 0.5:
+                        continue
+                    th = math.degrees(math.atan2(pt.y - hood.c.y, pt.x - hood.c.x))
+                    ph = math.degrees(math.asin(max(-1.0, min(1.0, (pt.z - hood.c.z) / ((pt - hood.c).length or 1)))))
+                    face = hood.normal(th, ph)
+                    aim = ((hc - pt).normalized() + (hood.c - pt).normalized() * 0.3).normalized()
+                    k = 0.72 + 0.28 * (up - 0.5) / 0.5
+                    tooth(b, tst, pt + aim * 0.01, aim, face, w * (0.85 + 0.15 * k), L * k)
+                run += seg
         if eyes:
             for sx in (-1, 1):
                 P, N = hood.point(-90 + sx * eye_at[0], eye_at[1])
@@ -209,11 +254,13 @@ def fish_fins(b, fin_st, body, head="Head", tail_ctrl=None, dorsal=True, forearm
         if forearm:
             with b.part(f"{side}LowerArm__Fin"):
                 fin(b, fin_st, [(-0.3, -0.04), (0.42, -0.04), (0.66, 0.3), (0.52, 0.66), (0.16, 0.78), (-0.16, 0.58)],
-                    Fm((sx * 1.94, 0.18, 2.72), (0, 0.25, -1), (sx, 0.75, 0.1)), thick=0.12, rays=4, pleat=pleat * 0.8, scale=scale)
+                    Fm((sx * (ARM_X + b.half_width(f"{side}LowerArm", 2.72) - 0.02), 0.18, 2.72), (0, 0.25, -1), (sx, 0.75, 0.1)),
+                    thick=0.12, rays=4, pleat=pleat * 0.8, scale=scale)
         if calf:
             with b.part(f"{side}LowerLeg__Fin"):
                 fin(b, fin_st, [(-0.24, -0.04), (0.3, -0.04), (0.44, 0.28), (0.24, 0.5), (-0.06, 0.4)],
-                    Fm((sx * 0.94, 0.2, 0.8), (0, 0.25, -1), (sx, 0.8, 0.1)), thick=0.11, rays=3, pleat=pleat * 0.7, scale=scale)
+                    Fm((sx * (LEG_X + b.half_width(f"{side}LowerLeg", 0.8) - 0.02), 0.2, 0.8), (0, 0.25, -1), (sx, 0.8, 0.1)),
+                    thick=0.11, rays=3, pleat=pleat * 0.7, scale=scale)
 
 
 # ---------------------------------------------------------------------------
@@ -239,21 +286,19 @@ def tiny_fish():
     b = CharBuilder("TinyFish", styles)
     standard_body(b, dict(head="Head", chest="Body", waist="Body", arm="Limb", forearm="Limb", hand="Dark",
                           thigh="Limb", shin="Limb", foot="Dark"), shape=FISH_BODY)
-    belly_plates(b, "Belly", y=-0.56)
+    belly_plates(b, "Belly")
     wear_hood(b, Hood(bumps=[(-90, -10, 0.07, 30)]), fat_lip=0.07)
     fish_fins(b, "Fin", "Body", crest_o=(0, 0.02, 5.42), ear_o=(0.86, 0.16, 4.5))
     return b
 
 
-def belly_plates(b, st, rows=((3.6, 0.36, 0.98), (3.18, 0.36, 1.06), (2.76, 0.36, 1.0)), low=(2.21, 0.3, 0.84), y=-0.5):
-    """Raised belly scutes down the front of the torso."""
-    with b.part("UpperTorso"):
-        for z, h, w in rows:
-            b.rbox(st, (0, y, z), (w, 0.12, h), bot=(0.94, 1.0), bev=0.05, segs=3)
-    if low:
-        with b.part("LowerTorso"):
-            z, h, w = low
-            b.rbox(st, (0, y, z), (w, 0.12, h), bot=(0.9, 1.0), bev=0.05, segs=3)
+def belly_plates(b, st, rows=((3.6, 0.36, 0.98), (3.18, 0.36, 1.06), (2.76, 0.36, 1.0)), low=(2.21, 0.3, 0.84)):
+    """Raised belly scutes down the front of the torso, half sunk into it."""
+    for part, rr in (("UpperTorso", rows), ("LowerTorso", [low] if low else [])):
+        for z, h, w in rr:
+            p, _ = b.hit(part, (0, -3, z), (0, 1, 0))
+            with b.part(part):
+                b.rbox(st, (0, p.y - 0.01, z), (w, 0.14, h), bot=(0.94, 1.0), bev=0.05, segs=3)
 
 
 # ---------------------------------------------------------------------------
@@ -279,20 +324,21 @@ def pufferfish():
     b = CharBuilder("Pufferfish", styles)
     standard_body(b, dict(head="Head", chest="Body", waist="Body", arm="Limb", forearm="Limb", hand="Dark",
                           thigh="Limb", shin="Limb", foot="Dark"), shape=PUFFER_BODY)
-    rx, ry, rz = PUFFER_BODY["chest_ball"]
     with b.part("UpperTorso__Spikes"):
-        # spikes all over the puffed-up ball, leaving the neck and the shoulders free
-        n = 90
+        # spikes all over the puffed-up body, leaving the neck and the shoulders free
+        n = 96
+        c0 = V((0, 0, 3.18))
         for k in range(n):
             zc = 1 - 2 * (k + 0.5) / n
             rr = math.sqrt(1 - zc * zc)
             a = k * 2.39996
-            d = V((math.cos(a) * rr, math.sin(a) * rr, zc))
-            if d.z > 0.72 or (abs(d.x) > 0.62 and d.z > -0.1) or d.z < -0.82:
+            d = V((math.cos(a) * rr, math.sin(a) * rr * 0.8, zc * 0.9)).normalized()
+            if d.z > 0.62 or (abs(d.x) > 0.6 and d.z > -0.2) or d.z < -0.7:
                 continue
-            p = V((0, 0, 3.18)) + V((d.x * rx, d.y * ry, d.z * rz))
-            nrm = V((d.x / rx, d.y / ry, d.z / rz)).normalized()
-            spike(b, "Spike", p - nrm * 0.02, nrm, 0.3 if d.y < 0 else 0.36, 0.085)
+            p, nrm = b.hit("UpperTorso", c0 + d * 4, -d)
+            if p is None or not 2.5 < p.z < 3.9:
+                continue
+            spike(b, "Spike", p - nrm * 0.02, (nrm + d).normalized(), 0.3 if d.y < 0 else 0.36, 0.085)
     hood = Hood(c=(0, 0.1, 4.64), r=(1.0, 1.0, 0.9), t=0.12, bumps=[(-90, -10, 0.06, 30)])
     wear_hood(b, hood, fat_lip=0.1, eye_r=0.24, eye_at=(40, 32))
     with b.part("Head__Spikes"):
@@ -309,17 +355,16 @@ def pufferfish():
               tail_ctrl=[(-0.2, -0.04), (0.2, -0.04), (0.62, 0.36), (0.86, 0.78), (0.52, 0.88), (0, 0.72), (-0.52, 0.88),
                          (-0.86, 0.78), (-0.62, 0.36)])
     for side, sx in (("Left", 1), ("Right", -1)):
-        for part, zs in (("UpperArm", (3.2, 3.68)), ("LowerArm", (2.5, 2.82))):
+        for part, cx, zs in (("UpperArm", ARM_X, (3.2, 3.68)), ("LowerArm", ARM_X, (2.5, 2.82)),
+                             ("UpperLeg", LEG_X, (1.36, 1.76)), ("LowerLeg", LEG_X, (0.6, 0.92))):
             with b.part(f"{side}{part}__Spikes"):
                 for z in zs:
-                    for y in (-0.22, 0.22):
-                        spike(b, "Spike", (sx * 1.9, y, z), (sx, y * 0.5, 0.15), 0.24, 0.07)
-                    spike(b, "Spike", (sx * 1.5, -0.4, z - 0.1), (sx * 0.2, -1, 0.1), 0.22, 0.065)
-        for part, zs in (("UpperLeg", (1.36, 1.76)), ("LowerLeg", (0.6, 0.92))):
-            with b.part(f"{side}{part}__Spikes"):
-                for z in zs:
-                    spike(b, "Spike", (sx * 0.92, 0, z), (sx, 0, 0.1), 0.22, 0.065)
-                    spike(b, "Spike", (sx * 0.5, -0.42, z - 0.1), (sx * 0.2, -1, 0.1), 0.2, 0.06)
+                    for dvec in ((sx, -0.45, 0.1), (sx, 0.45, 0.1), (sx * 0.2, -1, 0.0)):
+                        d = V(dvec).normalized()
+                        o = V((sx * cx, 0, z))
+                        p, nrm = b.hit(f"{side}{part}", o + d * 3, -d)
+                        if p is not None:
+                            spike(b, "Spike", p - nrm * 0.02, (nrm + d).normalized(), 0.22, 0.065)
     return b
 
 
@@ -388,14 +433,16 @@ def crab():
         with b.part(f"{side}Hand"):
             claw(b, x, sx)
         with b.part(f"{side}UpperArm"):
-            b.rbox("ShellDark", (x, 0, 3.1), (1.08, 1.08, 0.12), bev=0.05, segs=2)
+            w = 2 * b.half_width(f"{side}UpperArm", 3.1) + 0.08
+            b.rbox("ShellDark", (x, 0, 3.1), (w, w, 0.12), bev=0.05, segs=2)
             for y in (-0.25, 0.25):
                 spike(b, "ClawTip", (x, y, 3.98), (sx * 0.3, y, 1), 0.18, 0.07)
         with b.part(f"{side}LowerArm"):
             for z in (2.55, 2.85):
                 spike(b, "ClawTip", (x + sx * 0.46, 0, z), (sx, 0, 0.25), 0.16, 0.06)
         with b.part(f"{side}LowerLeg"):
-            b.rbox("ShellDark", (sx * LEG_X, 0, 1.12), (1.08, 1.08, 0.1), bev=0.04, segs=2)
+            w = 2 * b.half_width(f"{side}LowerLeg", 1.0) + 0.08
+            b.rbox("ShellDark", (sx * LEG_X, 0, 1.0), (w, w, 0.1), bev=0.04, segs=2)
     with b.part("Head__EyeStalks"):
         for sx in (-1, 1):
             pts = [(sx * 0.26, 0.0, 5.1), (sx * 0.34, -0.04, 5.48), (sx * 0.43, -0.08, 5.78)]
@@ -426,27 +473,36 @@ def jellyfish():
     b = CharBuilder("Jellyfish", styles)
     standard_body(b, dict(head="Head", chest="Jelly", waist="Jelly", arm="Jelly", forearm="Jelly", hand="Jelly",
                           thigh="Jelly", shin="Jelly", foot="Jelly"), shape=JELLY_BODY)
-    BZ = 4.9
+    # the bell sits on the crown, tipped back so its front rim stays above the face
+    BZ, BR, BH, TILT = 4.86, 0.9, 0.6, math.radians(-14)
+    rot = Matrix.Rotation(TILT, 4, "X")
+
+    def bell(x, y, z):
+        return tuple(V((0, 0, BZ)) + rot @ V((x, y, z - BZ)))
     with b.part("Head__BellGlass"):
-        with b.grad(lambda co: (co.z - BZ) / 0.75):
-            b.dome("BellGlass", (0, 0.06, BZ), 0.94, seg=40, rings=12, sc=(1, 1, 0.8))
-        for k in range(24):
-            a = TAU * k / 24
-            b.ball("BellGlass", (math.cos(a) * 0.9, 0.06 + math.sin(a) * 0.9, BZ - 0.03), 0.14, seg=(10, 6), sc=(1, 1, 0.55))
+        with b.grad(lambda co: (co.z - BZ) / BH):
+            b.dome("BellGlass", (0, 0, BZ), BR, seg=40, rings=12, sc=(1, 1, BH / BR), rx=TILT)
+        for k in range(18):
+            a = TAU * k / 18
+            # scalloped skirt round the rim
+            b.ball("BellGlass", bell(math.cos(a) * (BR - 0.02), math.sin(a) * (BR - 0.02), BZ - 0.04), 0.17,
+                   seg=(12, 8), sc=(1, 1, 0.5), rx=TILT)
     with b.part("Head__BellGlow"):
         for k in range(4):
             a = TAU * k / 4 + PI / 4
-            b.torus("GlowPink", (math.cos(a) * 0.32, 0.06 + math.sin(a) * 0.32, BZ + 0.62), 0.16, 0.05, 16, 6,
-                    rz=a + PI / 2, a0=0, a1=PI * 1.4)
-        for k in range(24):
-            a = TAU * (k + 0.5) / 24
-            b.ball("Glow", (math.cos(a) * 0.93, 0.06 + math.sin(a) * 0.93, BZ + 0.02), 0.05, seg=(6, 4))
+            r = 0.36
+            zt = BZ + BH * math.sqrt(1 - (r / BR) ** 2) - 0.16       # inside the bell, seen through the jelly
+            b.torus("GlowPink", bell(math.cos(a) * r, math.sin(a) * r, zt), 0.14, 0.04, 16, 6,
+                    rx=TILT, rz=a + PI / 2, a0=0, a1=PI * 1.4)
+        for k in range(18):
+            a = TAU * (k + 0.5) / 18
+            b.ball("Glow", bell(math.cos(a) * (BR + 0.02), math.sin(a) * (BR + 0.02), BZ - 0.02), 0.05, seg=(6, 4))
     with b.part("Head__Tentacles"):
         for k in range(14):
             a = math.radians(-30 + k * 18)
             if abs(((math.degrees(a) - 270) + 180) % 360 - 180) < 78:
                 continue
-            x0, y0 = math.cos(a) * 0.8, 0.06 + math.sin(a) * 0.8
+            x0, y0 = math.cos(a) * (BR - 0.08), math.sin(a) * (BR - 0.08)
             back = math.sin(a) > 0.35
             L = 1.4 if back else 0.5
             pts = []
@@ -456,36 +512,40 @@ def jellyfish():
                 pts.append((x0 * (1 + 0.12 * t) + w * math.sin(a), y0 * (1 + 0.18 * t) + w * math.cos(a), BZ - 0.06 - L * t))
             b.ttube("Frill", pts, taper(10, 0.06, 0.018), n=7)
     with b.part("LowerTorso__Tentacles"):
-        for k, x in enumerate((-0.78, -0.5, -0.2, 0.1, 0.4, 0.7)):
-            pts = []
-            for i in range(16):
-                t = i / 15
-                pts.append((x + math.sin(t * 7 + k) * 0.12, 0.6 + 0.3 * t + math.cos(t * 5 + k) * 0.07, 2.5 - 2.38 * t))
+        # long trailing tentacles growing out of the lower back
+        for k, x in enumerate((-0.66, -0.4, -0.14, 0.12, 0.38, 0.64)):
+            yb = b.hit("LowerTorso", (x, 3, 2.25), (0, -1, 0))[0].y
+            pts = [(x, yb - 0.12, 2.3)]
+            for i in range(15):
+                t = i / 14
+                pts.append((x + math.sin(t * 7 + k) * 0.1, yb + 0.1 + 0.3 * t + math.cos(t * 5 + k) * 0.06, 2.22 - 2.1 * t))
             if k % 2 == 0:
                 b.ttube("Frill", pts, taper(16, 0.17, 0.04), n=10, flat_b=0.3)
             else:
-                b.ttube("Frill", pts, taper(16, 0.065, 0.02), n=7)
+                b.ttube("Frill", pts, taper(16, 0.07, 0.02), n=7)
             b.ball("Glow", tuple(V(pts[-1])), 0.08, seg=(8, 6))
     with b.part("UpperTorso__Tentacles"):
-        # glowing ribbons hanging down the front from under the bell
+        # glowing ribbons growing out of the chest under the bell
         for k, x0 in enumerate((-0.6, -0.3, 0.0, 0.3, 0.6)):
-            L = (1.7, 2.1, 2.4, 2.1, 1.7)[k]
-            pts = []
-            for i in range(14):
-                t = i / 13
-                pts.append((x0 * (1 + 0.15 * t) + math.sin(t * 6.5 + k * 1.7) * 0.06, -0.56 - 0.12 * t - 0.1 * math.sin(t * PI),
-                            3.98 - L * t))
+            L = (1.5, 1.9, 2.2, 1.9, 1.5)[k]
+            yf = b.hit("UpperTorso", (x0, -3, 3.72), (0, 1, 0))[0].y
+            pts = [(x0, yf + 0.14, 3.78)]
+            for i in range(13):
+                t = i / 12
+                pts.append((x0 * (1 + 0.15 * t) + math.sin(t * 6.5 + k * 1.7) * 0.06, yf - 0.06 - 0.12 * t - 0.08 * math.sin(t * PI),
+                            3.66 - L * t))
             if k % 2 == 0:
                 b.ttube("Frill", pts, taper(14, 0.11, 0.03), n=10, flat_b=0.35)
             else:
-                b.ttube("Frill", pts, taper(14, 0.05, 0.018), n=7)
+                b.ttube("Frill", pts, taper(14, 0.055, 0.018), n=7)
             b.ball("Glow", tuple(V(pts[-1])), 0.065, seg=(8, 6))
     for side, sx in (("Left", 1), ("Right", -1)):
-        with b.part(f"{side}LowerArm__Frills"):
-            for k, (dx, dy) in enumerate(((0.26, -0.22), (-0.2, 0.16), (0.12, 0.32), (-0.05, -0.3))):
+        with b.part(f"{side}Hand__Frills"):
+            # short stinging frills hanging from the hands
+            for k, (dx, dy) in enumerate(((0.22, -0.2), (-0.18, 0.14), (0.1, 0.26), (-0.06, -0.24))):
                 x = sx * ARM_X + dx
-                pts = [(x + math.sin(i * 0.9 + k) * 0.07, dy, 2.25 - i * 0.12) for i in range(9)]
-                b.ttube("Frill", pts, taper(9, 0.055, 0.02), n=6)
+                pts = [(x + math.sin(i * 0.9 + k) * 0.06, dy, 2.12 - i * 0.12) for i in range(9)]
+                b.ttube("Frill", pts, taper(9, 0.06, 0.02), n=6)
                 b.ball("Glow", pts[-1], 0.06, seg=(6, 4))
     return b
 
@@ -509,15 +569,30 @@ def octopus():
                   Sucker=dict(color=(252, 168, 220), grad=0),
                   SuckerIn=dict(color=(218, 100, 176), grad=0),
                   Bump=dict(color=(196, 140, 244), grad=0),
-                  Head=dict(color=(152, 80, 222), grad=0.08, front_clean=True, patterns=pat))
+                  Head=dict(color=(176, 116, 236), grad=0.08),
+                  Hood=dict(color=(150, 76, 220), grad=0.12, rough=0.4, patterns=[("mottle", 5, (112, 46, 176), 0.6),
+                                                                                   ("spots", 6, (190, 130, 246), 0.14)]),
+                  Lining=dict(color=(70, 26, 110), grad=0.1),
+                  Lip=dict(color=(196, 140, 244), grad=0.05, rough=0.35))
     b = CharBuilder("Octopus", styles)
     standard_body(b, dict(head="Head", chest="Skin", waist="Skin", arm="Skin", forearm="Skin", hand="Skin",
                           thigh="Skin", shin="Skin", foot="Skin"), hands=False, shape=OCTO_BODY)
-    with b.part("Head__Mantle"):
-        b.ball("Skin", (0, 0.34, 5.58), 1.0, seg=(40, 26), sc=(0.84, 0.8, 0.98))
-        for (x, y, z, r) in ((0.36, -0.02, 6.25, 0.1), (-0.3, 0.08, 6.36, 0.09), (0.0, 0.5, 6.45, 0.11), (0.58, 0.5, 5.86, 0.09),
-                             (-0.56, 0.46, 5.9, 0.1), (0.2, 0.75, 6.1, 0.08), (-0.25, 0.8, 5.8, 0.08)):
-            b.ball("Bump", (x, y, z), r, seg=(10, 8), sc=(1, 1, 0.55))
+    # the octopus head is a hood whose mantle swells up and back into a soft bulb
+    hood = Hood(r=(0.94, 0.96, 0.88), bumps=[(90, 52, 0.62, 36), (-90, 50, 0.14, 30), (0, 80, 0.12, 40)])
+    wear_hood(b, hood, fat_lip=0.045, eye_r=0.19, eye_at=(30, 40))
+    with b.part("Head__Hood"):
+        for th, ph, r in ((60, 40, 0.07), (120, 44, 0.08), (90, 66, 0.09), (40, 62, 0.06), (140, 62, 0.07), (70, 82, 0.06),
+                          (110, 80, 0.07), (165, 30, 0.06), (15, 28, 0.06)):
+            P, N = hood.point(th, ph)
+            b.ball("Bump", tuple(P - N * r * 0.35), r, seg=(10, 8), sc=(1, 1, 0.6))
+    with b.part("Head__Curls"):
+        # little tentacles curling out from under the back of the hood
+        for th in (20, 55, 90, 125, 160):
+            P, N = hood.point(th, -44)
+            out = V((N.x, N.y, 0)).normalized()
+            pts = [P - N * 0.06 + V((0, 0, 0.04)), P + out * 0.12 - V((0, 0, 0.1)), P + out * 0.32 - V((0, 0, 0.16)),
+                   P + out * 0.46 - V((0, 0, 0.04)), P + out * 0.4 + V((0, 0, 0.08)), P + out * 0.3 + V((0, 0, 0.04))]
+            tentacle(b, "Arm", pts, 0.09, 0.025, sucker="Sucker", per=5, rows=1, face=(0, 0, -1), every=3)
     with b.part("LowerTorso__Tentacles"):
         for sx in (-1, 1):
             pts = [(sx * 0.7, 0.4, 2.26), (sx * 1.45, 0.78, 2.0), (sx * 2.25, 0.72, 2.25), (sx * 2.72, 0.48, 2.85),
@@ -538,7 +613,8 @@ def octopus():
         with b.part(f"{side}LowerArm"):
             for z in (2.48, 2.8):
                 for y in (-0.18, 0.18):
-                    b.cyl("Sucker", (x + sx * 0.46, y, z), (x + sx * 0.54, y, z), 0.11, 10)
+                    p, nrm = b.hit(f"{side}LowerArm", (x + sx * 3, y, z), (-sx, 0, 0))
+                    b.cyl("Sucker", tuple(p - nrm * 0.04), tuple(p + nrm * 0.05), 0.1, 10)
     return b
 
 
@@ -569,7 +645,7 @@ def moray_eel():
     standard_body(b, dict(head="Head", chest="Skin", waist="Skin", arm="Limb", forearm="Limb", hand="Dark",
                           thigh="Limb", shin="Limb", foot="Dark"), shape=EEL_BODY)
     hood = Hood(r=(0.88, 0.96, 0.9), bumps=[(-90, 30, 0.2, 26), (-90, -40, 0.12, 24)])
-    wear_hood(b, hood, fat_lip=0.05, teeth=("Tooth", 0.17, 0.045, 2), eye_r=0.17, eye_at=(38, 44))
+    wear_hood(b, hood, fat_lip=0.05, teeth=("Tooth", 0.07, 0.2, 0.15), eye_r=0.17, eye_at=(38, 44))
     with b.part("Head__Crest"):
         # the long eel dorsal fin starts on the crown and runs down the back
         fin(b, "Fin", [(-0.36, -0.04), (0.76, -0.04), (0.9, 0.14), (0.74, 0.4), (0.34, 0.54), (-0.06, 0.5), (-0.28, 0.28)],
@@ -637,7 +713,8 @@ def _shark_body(b, dorsal=True):
         with b.part(f"{side}UpperArm__Fin"):
             fin(b, "Fin", [(-0.34, -0.04), (0.32, -0.04), (0.42, 0.2), (0.54, 0.46), (0.62, 0.7), (0.52, 0.8), (0.36, 0.7),
                            (0.08, 0.4), (-0.18, 0.18)],
-                Fm((sx * 1.95, 0.0, 3.46), (0, 1, 0.3), (sx * 0.55, 0.45, -1)), thick=0.17, scale=0.72, flare=1.6)
+                Fm((sx * (ARM_X + b.half_width(f"{side}UpperArm", 3.46) - 0.02), 0.0, 3.46), (0, 1, 0.3), (sx * 0.55, 0.45, -1)),
+                thick=0.17, scale=0.72, flare=1.6)
     with b.part("LowerTorso__Fins"):
         for sx in (-1, 1):
             fin(b, "Fin", [(-0.2, -0.04), (0.22, -0.04), (0.34, 0.26), (0.38, 0.4), (0.2, 0.36), (-0.02, 0.18)],
@@ -649,7 +726,7 @@ def shark():
     _shark_body(b)
     # the shark's head is a hood: snout over the face, the face in its jaws
     hood = Hood(r=(0.92, 0.96, 0.88), bumps=[(-90, 34, 0.24, 26), (-90, -42, 0.1, 22)])
-    wear_hood(b, hood, fat_lip=0.05, teeth=("Tooth", 0.15, 0.05, 2), eye_r=0.14, eye_at=(58, 22))
+    wear_hood(b, hood, fat_lip=0.055, teeth=("Tooth", 0.135, 0.2, 0.125), eye_r=0.14, eye_at=(58, 22))
     with b.part("Head__Fin"):
         # the big head fin, with a cartoon bite taken out of its back edge
         bitten = SHARK_FIN[:4] + [(0.47, 0.42), (0.53, 0.5)] + SHARK_FIN[4:]
@@ -660,31 +737,34 @@ def shark():
 
 def hammerhead():
     st = _shark_styles((90, 142, 200), (60, 102, 158), (84, 134, 192), (54, 92, 146))
-    st["Hammer"] = dict(color=(90, 142, 200), grad=0, rough=0.38, patterns=[("zgrad", 5.22, 5.27, (236, 242, 248))])
+    st["Hammer"] = dict(color=(90, 142, 200), grad=0, rough=0.38, patterns=[("zgrad", 5.2, 5.25, (236, 242, 248))])
     b = CharBuilder("HammerheadShark", st)
     _shark_body(b)
     hood = Hood(r=(0.92, 0.96, 0.88), bumps=[(-90, 30, 0.14, 26), (-90, -42, 0.1, 22)])
-    wear_hood(b, hood, fat_lip=0.05, teeth=("Tooth", 0.15, 0.05, 2), eyes=False)
+    wear_hood(b, hood, fat_lip=0.055, teeth=("Tooth", 0.135, 0.2, 0.125), eyes=False)
     with b.part("Head__Hammer"):
-        # the hammer: a chunky wing across the crown, swept forward, bulging at the eye ends
+        # the hammer: a flat, wide wing across the crown, swept forward, with round eye lobes at its tips
         secs = []
         n = 41
         for i in range(n):
             t = -1 + 2 * i / (n - 1)
-            x = 1.7 * t
+            x = 1.42 * t
             k = abs(t)
-            end = math.sqrt(max(0.0, 1 - ((k - 0.84) / 0.16) ** 2)) if k > 0.84 else 1.0
-            d = (0.56 - 0.14 * k) * (0.3 + 0.7 * end)
-            th = (0.3 + 0.06 * k * k) * (0.3 + 0.7 * end)
-            yc = 0.08 - 0.24 * k * k
-            zc = 5.36 + 0.04 * k
-            secs.append([(x, yc + d * math.cos(a), zc + th * math.sin(a) * (1.0 if math.sin(a) > 0 else 0.8))
+            end = math.sqrt(max(0.0, 1 - ((k - 0.8) / 0.2) ** 2)) if k > 0.8 else 1.0
+            lobe = math.exp(-((k - 0.86) / 0.1) ** 2)          # the eye lobe swells a little
+            d = (0.46 - 0.1 * k + 0.06 * lobe) * (0.35 + 0.65 * end)
+            th = (0.2 + 0.04 * k + 0.06 * lobe) * (0.35 + 0.65 * end)
+            yc = 0.02 - 0.2 * k * k
+            zc = 5.3 + 0.02 * k
+            secs.append([(x, yc + d * math.cos(a), zc + th * math.sin(a) * (1.0 if math.sin(a) > 0 else 0.75))
                          for a in (TAU * j / 28 for j in range(28))])
         b.skin_rings("Hammer", secs)
         for sx in (-1, 1):
-            b.eye((sx * 1.56, -0.22, 5.42), 0.3, look=(sx * 1.0, -0.75, 0.05))
+            b.eye((sx * 1.3, -0.26, 5.36), 0.24, look=(sx * 1.0, -0.8, 0.1))
+            for dy in (-0.05, 0.05):
+                b.ball("Dark", (sx * 0.62, -0.38 + dy * 0.2, 5.33 + dy), 0.035, seg=(8, 6))
     with b.part("Head__Fin"):
-        fin(b, "Fin", [(x * 0.52, y * 0.52) for x, y in SHARK_FIN], Fm((0, 0.16, 5.62), (0, 1, 0), (0, 0, 1)),
+        fin(b, "Fin", [(x * 0.56, y * 0.56) for x, y in SHARK_FIN], Fm((0, 0.12, 5.52), (0, 1, 0), (0, 0, 1)),
             thick=0.21, scale=0.82)
     return b
 
@@ -699,7 +779,8 @@ def orca():
                         (-0.5, 2.02), (-0.56, 2.32), (-0.4, 2.72), (-0.6, 3.0), (-0.74, 3.5)])
     flank = ("smooth", [(-0.3, 2.2), (0.1, 2.12), (0.5, 2.3), (0.56, 2.62), (0.3, 2.86), (0.12, 2.6), (-0.2, 2.5)])
     saddle = ("smooth", [(-0.62, 3.0), (0, 2.86), (0.62, 3.0), (0.4, 3.3), (0, 3.36), (-0.4, 3.3)])
-    eye = ("smooth", [(-0.18, 4.72), (0.0, 4.9), (0.3, 4.94), (0.46, 4.86), (0.26, 4.74), (0.02, 4.68)])
+    eye = ("smooth", [(-0.3, 4.86), (-0.12, 5.06), (0.2, 5.16), (0.52, 5.1), (0.62, 4.98), (0.4, 4.88), (0.08, 4.82),
+                      (-0.18, 4.78)])
     styles = dict(EYES,
                   Black=dict(color=black, grad=0.06, rough=0.28,
                              paint=[("front", white, [belly]), ("side", white, [flank]), ("back", (132, 138, 152), [saddle])]),
@@ -707,21 +788,22 @@ def orca():
                   White=dict(color=white, grad=0.04),
                   Fin=dict(color=(30, 30, 38), tip=(52, 54, 66), tip_from=0.6, grad=0, rough=0.28),
                   Head=dict(color=(238, 238, 244), grad=0.05, rough=0.3),   # white face inside the hood so the face reads
-                  Hood=dict(color=(30, 30, 38), grad=0.06, rough=0.28,
-                            paint=[("side", white, [eye]), ("front", white, [("rect", (-1.2, 3.7, 1.2, 4.18))])]),
+                  Hood=dict(color=(30, 30, 38), grad=0.06, rough=0.26,
+                            paint=[("side", white, [eye]), ("front", white, [("rect", (-1.2, 3.7, 1.2, 4.18))]),
+                                   ("back", (120, 126, 140), [("ellipse", (0, 4.3, 0.5, 0.18))])]),
                   Lining=dict(color=(92, 30, 44), grad=0.1),
                   Lip=dict(color=(222, 112, 132), grad=0.05, rough=0.35),
                   Tooth=dict(color=(255, 255, 250), grad=0, rough=0.25))
     b = CharBuilder("Orca", styles)
     standard_body(b, dict(head="Head", chest="Black", waist="Black", arm="Limb", forearm="Limb", hand="Limb",
                           thigh="Limb", shin="Limb", foot="White"), shape=ORCA_BODY)
-    hood = Hood(r=(0.94, 0.96, 0.88), bumps=[(-90, 30, 0.16, 32)])
-    wear_hood(b, hood, fat_lip=0.05, teeth=("Tooth", 0.1, 0.04, 2), eye_r=0.11, eye_at=(62, 10))
+    hood = Hood(r=(0.94, 0.96, 0.88), bumps=[(-90, 34, 0.2, 30), (-90, -44, 0.08, 24), (0, 85, 0.06, 40)])
+    wear_hood(b, hood, fat_lip=0.05, teeth=("Tooth", 0.08, 0.11, 0.1), eye_r=0.13, eye_at=(60, 12))
     with b.part("Head__Fin"):
         # the tall orca dorsal fin, leaning back a little
         fin(b, "Fin", [(-0.52, -0.04), (0.4, -0.04), (0.38, 0.4), (0.36, 0.86), (0.38, 1.3), (0.34, 1.62), (0.2, 1.6),
                        (0.02, 1.14), (-0.22, 0.62)],
-            Fm((0, 0.06, 5.46), (0, 1, 0), (0, 0, 1)), thick=0.2, scale=0.42)
+            Fm((0, 0.08, 5.48), (0, 1, 0), (0, 0, 1)), thick=0.2, scale=0.46)
     with b.part("UpperTorso__DorsalFin"):
         fin(b, "Fin", [(-0.5, -0.04), (0.5, -0.04), (0.5, 0.3), (0.5, 0.62), (0.36, 0.78), (0.12, 0.6), (-0.2, 0.3)],
             Fm((0, 0.46, 3.5), (0, 0.4, -1), (0, 1, 0.4)), thick=0.18, scale=0.85)
@@ -734,7 +816,8 @@ def orca():
     for side, sx in (("Left", 1), ("Right", -1)):
         with b.part(f"{side}UpperArm__Paddle"):
             fin(b, "Fin", [(-0.3, -0.04), (0.3, -0.04), (0.44, 0.36), (0.36, 0.8), (0.02, 1.0), (-0.3, 0.8), (-0.42, 0.36)],
-                Fm((sx * 1.94, 0.12, 3.3), (0, 1, 0), (sx * 0.9, 0.35, -0.6)), thick=0.18, curl=0.05, scale=0.78)
+                Fm((sx * (ARM_X + b.half_width(f"{side}UpperArm", 3.3) - 0.02), 0.12, 3.3), (0, 1, 0), (sx * 0.9, 0.35, -0.6)),
+                thick=0.18, curl=0.05, scale=0.78)
     return b
 
 
@@ -753,17 +836,25 @@ def giant_squid():
                   Light=dict(color=(246, 116, 130), grad=0.08),
                   Sucker=dict(color=(255, 172, 196), grad=0),
                   SuckerIn=dict(color=(230, 100, 140), grad=0),
-                  Head=dict(color=(230, 54, 66), grad=0.08, front_clean=True, patterns=pat))
+                  Head=dict(color=(246, 120, 132), grad=0.08),
+                  Hood=dict(color=(228, 50, 62), grad=0.1, rough=0.4, patterns=pat,
+                            paint=[("front", (246, 118, 130), [("rect", (-1.2, 3.7, 1.2, 4.16))])]),
+                  Lining=dict(color=(110, 20, 34), grad=0.1),
+                  Lip=dict(color=(250, 140, 156), grad=0.05, rough=0.35))
     b = CharBuilder("GiantSquid", styles)
     standard_body(b, dict(head="Head", chest="Skin", waist="Skin", arm="Skin", forearm="Skin", hand="Skin",
                           thigh="Skin", shin="Skin", foot="Skin"), hands=False, shape=SQUID_BODY)
-    with b.part("Head__Mantle"):
-        with b.grad(lambda co: (co.z - 5.0) / 2.5):
-            b.lathe("Mantle", [(0, 4.98), (0.7, 4.98), (0.72, 5.3), (0.66, 5.9), (0.52, 6.5), (0.32, 7.0), (0.1, 7.38), (0, 7.45)],
-                    c=(0, 0.04, 0), n=36)
+    # the squid head is a hood that rises into a pointed mantle
+    hood = Hood(r=(0.92, 0.96, 0.88), bumps=[(0, 90, 0.62, 22), (0, 90, 0.34, 40), (90, 40, 0.1, 40)])
+    wear_hood(b, hood, fat_lip=0.045, eye_r=0.2, eye_at=(58, 16))
+    top = hood.surf(0, 90)
+    with b.part("Head__Fins"):
         for sx in (-1, 1):
-            fin(b, "Mantle", [(-0.74, -0.04), (0.5, -0.04), (0.42, 0.3), (0.16, 0.62), (-0.2, 0.78), (-0.52, 0.52)],
-                Fm((sx * 0.34, 0.04, 6.74), (0, 0, 1), (sx, 0, -0.2)), thick=0.16, curl=0.04, scale=0.85)
+            P, N = hood.point(90 - 90 * sx, 72)
+            fin(b, "Mantle", [(-0.5, -0.04), (0.42, -0.04), (0.36, 0.22), (0.12, 0.46), (-0.16, 0.54), (-0.4, 0.34)],
+                Fm(tuple(P - N * 0.02), (0, 0, 1), (sx, 0, -0.25)), thick=0.14, curl=0.03, scale=0.85)
+    with b.part("Head__Hood"):
+        b.ball("Mantle", tuple(top - V((0, 0, 0.06))), 0.1, seg=(12, 8))
     with b.part("LowerTorso__Arms"):
         for k, deg in enumerate((20, 58, 122, 160)):
             a = math.radians(deg)

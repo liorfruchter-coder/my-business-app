@@ -2,13 +2,15 @@
 
 Eleven playable sea creature characters on the default blocky R15 rig, built in Blender.
 Each one is 5.2 studs tall like the default character and keeps the regular Roblox head, so the player's face shows.
-The fish, sharks, eel and orca wear their creature's head as a hood: the player's face looks out through its mouth.
-The crab, jellyfish, octopus and squid keep the bare head with eye stalks, a bell or a mantle on it.
+The fish, sharks, eel, orca, octopus and squid wear their creature's head as a hood: the player's face looks out through its mouth.
+The crab keeps the bare head with eye stalks on it, and the jellyfish wears its glowing bell as a cap.
 Each body is shaped like its animal (round pufferfish, V-shaped shark, soft octopus, armoured crab) while staying a normal R15 humanoid.
 
 ![Front](previews/Lineup_Front.jpg)
 
 ![Back](previews/Lineup_Back.jpg)
+
+![Heads](previews/Heads.jpg)
 
 ## What's here
 
@@ -18,7 +20,7 @@ Each body is shaped like its animal (round pufferfish, V-shaped shark, soft octo
 | `textures/<Creature>.png` | The creature's 1024×1024 texture; every part of a creature shares it |
 | `roblox/SeaCreatureRigSetup.lua` | ModuleScript: turns an imported FBX into a working R15 character, and morphs players |
 | `blend/<Creature>.blend` | Editable Blender scenes (saved from Blender 5.2) |
-| `previews/` | `Lineup_Front.jpg`, `Lineup_Back.jpg` and one `<Creature>.jpg` each |
+| `previews/` | `Lineup_Front.jpg`, `Lineup_Back.jpg`, `Heads.jpg` (close-ups) and one `<Creature>.jpg` each |
 | `source/` | The Python that builds everything. Edit it and re-run to change a creature |
 | `rigs.json` | Parts, triangles and size of each rig |
 
@@ -51,26 +53,27 @@ To make a creature the default character instead, copy its rig into **StarterPla
 
 - Body parts are named exactly as in R15 (`Head`, `UpperTorso`, `LeftUpperArm` …) and keep the blocky R15 sizes.
 - Creature pieces are named `<BodyPart>__<Piece>`, for example `Head__Fin` or `LowerTorso__Tail`. The setup script welds each one to the body part before the `__`.
-- `Head__Hood` is the hood on the fish and sharks. It is welded to the head and has an opening for the face.
+- `Head__Hood` is the creature hood. It is welded to the head and has an opening for the face.
 - Pieces stay clear of the face on the front of the head.
 - `Joint_<Name>` cubes mark the R15 joints; the setup script turns them into rig attachments and deletes them.
 - Every part is under Roblox's 20,000-triangle limit.
+- Nothing floats: `source/check_attach.py` checks that every piece touches the body part it is welded to (the hood and the jelly bell count as part of the head).
 
 ## The rigs
 
 | # | Creature | Parts | Triangles | Largest part (tris) | Size W × H × D (studs) |
 |---:|---|---:|---:|---:|---|
-| 1 | Tiny Fish | 24 | 40,812 | 10,304 | 4.87 × 5.97 × 2.51 |
-| 2 | Pufferfish | 31 | 36,664 | 10,304 | 4.87 × 5.89 × 2.64 |
+| 1 | Tiny Fish | 24 | 41,100 | 10,304 | 4.89 × 5.97 × 2.51 |
+| 2 | Pufferfish | 31 | 37,776 | 10,304 | 4.93 × 5.89 × 2.57 |
 | 3 | Crab | 17 | 17,686 | 3,134 | 4.25 × 6.22 × 2.73 |
-| 4 | Jellyfish | 22 | 17,618 | 3,358 | 3.87 × 5.65 × 2.08 |
-| 5 | Octopus | 18 | 35,668 | 14,416 | 6.13 × 6.57 × 2.53 |
-| 6 | Moray Eel | 19 | 29,540 | 10,584 | 4.12 × 5.78 × 2.93 |
-| 7 | Shark | 22 | 34,048 | 10,584 | 4.49 × 6.1 × 3.12 |
-| 8 | Hammerhead Shark | 23 | 36,344 | 9,384 | 4.49 × 6.15 × 3.04 |
-| 9 | Orca | 21 | 30,396 | 10,584 | 5.2 × 6.17 × 2.64 |
-| 10 | Giant Squid | 18 | 41,644 | 13,252 | 4.13 × 7.45 × 2.67 |
-| 11 | Clownfish | 24 | 41,456 | 10,304 | 4.87 × 5.97 × 2.51 |
+| 4 | Jellyfish | 22 | 18,282 | 3,982 | 4.04 × 5.48 × 2.02 |
+| 5 | Octopus | 19 | 48,836 | 14,416 | 6.13 × 6.03 × 2.64 |
+| 6 | Moray Eel | 19 | 30,628 | 11,384 | 4.22 × 5.78 × 2.93 |
+| 7 | Shark | 22 | 35,316 | 11,564 | 4.47 × 6.1 × 3.12 |
+| 8 | Hammerhead Shark | 23 | 37,872 | 10,304 | 4.47 × 6.09 × 3.04 |
+| 9 | Orca | 21 | 32,024 | 11,924 | 5.2 × 6.26 × 2.69 |
+| 10 | Giant Squid | 19 | 51,908 | 13,252 | 4.13 × 6.52 × 2.67 |
+| 11 | Clownfish | 24 | 41,744 | 10,304 | 4.89 × 5.97 × 2.51 |
 
 Height is the whole model including fins, bells and mantles. The body itself is 5.2 studs tall on every rig.
 
@@ -128,4 +131,5 @@ python3 -m venv bvenv && ./bvenv/bin/pip install bpy==5.2.2 pillow numpy
 ./bvenv/bin/python source/build.py . draft only=Shark --no-export   # quick look at one creature
 ./bvenv/bin/python source/build.py . final                         # rebuild every FBX, texture, .blend and render
 ./bvenv/bin/python source/lineup.py . && python3 source/readme_rigs.py .
+./bvenv/bin/python source/check_attach.py                         # every piece must touch its body part
 ```

@@ -27,11 +27,11 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 40812,
+  "tris": 41100,
   "max_part_tris": 10304,
   "body_height": 5.2,
   "full_size": [
-   4.87,
+   4.89,
    5.97,
    2.51
   ]
@@ -71,13 +71,13 @@
    "UpperTorso__DorsalFin",
    "UpperTorso__Spikes"
   ],
-  "tris": 36664,
+  "tris": 37776,
   "max_part_tris": 10304,
   "body_height": 5.2,
   "full_size": [
-   4.87,
+   4.93,
    5.89,
-   2.64
+   2.57
   ]
  },
  "Crab": {
@@ -119,8 +119,8 @@
    "Head__Tentacles",
    "LeftFoot",
    "LeftHand",
+   "LeftHand__Frills",
    "LeftLowerArm",
-   "LeftLowerArm__Frills",
    "LeftLowerLeg",
    "LeftUpperArm",
    "LeftUpperLeg",
@@ -128,28 +128,29 @@
    "LowerTorso__Tentacles",
    "RightFoot",
    "RightHand",
+   "RightHand__Frills",
    "RightLowerArm",
-   "RightLowerArm__Frills",
    "RightLowerLeg",
    "RightUpperArm",
    "RightUpperLeg",
    "UpperTorso",
    "UpperTorso__Tentacles"
   ],
-  "tris": 17618,
-  "max_part_tris": 3358,
+  "tris": 18282,
+  "max_part_tris": 3982,
   "body_height": 5.2,
   "full_size": [
-   3.87,
-   5.65,
-   2.08
+   4.04,
+   5.48,
+   2.02
   ]
  },
  "Octopus": {
   "display": "Octopus",
   "parts": [
    "Head",
-   "Head__Mantle",
+   "Head__Curls",
+   "Head__Hood",
    "LeftFoot",
    "LeftHand",
    "LeftLowerArm",
@@ -167,13 +168,13 @@
    "UpperTorso",
    "UpperTorso__Tentacles"
   ],
-  "tris": 35668,
+  "tris": 48836,
   "max_part_tris": 14416,
   "body_height": 5.2,
   "full_size": [
    6.13,
-   6.57,
-   2.53
+   6.03,
+   2.64
   ]
  },
  "MorayEel": {
@@ -199,11 +200,11 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 29540,
-  "max_part_tris": 10584,
+  "tris": 30628,
+  "max_part_tris": 11384,
   "body_height": 5.2,
   "full_size": [
-   4.12,
+   4.22,
    5.78,
    2.93
   ]
@@ -234,11 +235,11 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 34048,
-  "max_part_tris": 10584,
+  "tris": 35316,
+  "max_part_tris": 11564,
   "body_height": 5.2,
   "full_size": [
-   4.49,
+   4.47,
    6.1,
    3.12
   ]
@@ -270,12 +271,12 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 36344,
-  "max_part_tris": 9384,
+  "tris": 37872,
+  "max_part_tris": 10304,
   "body_height": 5.2,
   "full_size": [
-   4.49,
-   6.15,
+   4.47,
+   6.09,
    3.04
   ]
  },
@@ -304,20 +305,21 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 30396,
-  "max_part_tris": 10584,
+  "tris": 32024,
+  "max_part_tris": 11924,
   "body_height": 5.2,
   "full_size": [
    5.2,
-   6.17,
-   2.64
+   6.26,
+   2.69
   ]
  },
  "GiantSquid": {
   "display": "Giant Squid",
   "parts": [
    "Head",
-   "Head__Mantle",
+   "Head__Fins",
+   "Head__Hood",
    "LeftFoot",
    "LeftHand",
    "LeftLowerArm",
@@ -335,12 +337,12 @@
    "UpperTorso",
    "UpperTorso__Tentacles"
   ],
-  "tris": 41644,
+  "tris": 51908,
   "max_part_tris": 13252,
   "body_height": 5.2,
   "full_size": [
    4.13,
-   7.45,
+   6.52,
    2.67
   ]
  },
@@ -372,11 +374,11 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 41456,
+  "tris": 41744,
   "max_part_tris": 10304,
   "body_height": 5.2,
   "full_size": [
-   4.87,
+   4.89,
    5.97,
    2.51
   ]
