@@ -30,7 +30,7 @@ BODY_PARTS = ["Head", "UpperTorso", "LowerTorso",
               "LeftUpperLeg", "LeftLowerLeg", "LeftFoot", "RightUpperLeg", "RightLowerLeg", "RightFoot"]
 
 # R15 joints (Blender coordinates). Left = +X.
-ARM_X, LEG_X = 1.5, 0.5
+ARM_X, LEG_X = 1.45, 0.5      # shoulders a touch narrower than stock R15 (1.5)
 JOINTS = {
     "Root": (0, 0, 2.2), "Waist": (0, 0, 2.4), "Neck": (0, 0, 4.0),
     "LeftShoulder": (ARM_X, 0, 3.75), "LeftElbow": (ARM_X, 0, 2.98), "LeftWrist": (ARM_X, 0, 2.34),
@@ -928,7 +928,7 @@ def standard_body(b, st, hands=True, feet=True, shape=None):
     b.dims["UpperTorso"] = (2.4, 4.0, cw * cbx, cw)
     b.dims["LowerTorso"] = (2.0, 2.42, ww * 0.97, ww)
     # arms: at least wide enough to touch the side of the chest
-    aw = max(sh["arm"], 2 * (ARM_X - cw / 2) + 0.06)
+    aw = max(sh["arm"], 2 * (ARM_X - cw / 2) + 0.02)
     ab = aw * sh["arm_bot"]
     mid = aw + (ab - aw) * 0.62
     lw = sh["leg"]
