@@ -338,15 +338,16 @@ def char_material(name, spec):
             rc, r0, r1 = spec["root"] if isinstance(spec["root"][0], tuple) else (spec["root"], 0.0, 1.0)
             col = sh.mix(sh.rgb(rc), col, sh.maprange(gv[2], r0, r1))
     if spec.get("light", True):
-        # a soft painted key light from above-front, baked into the texture
+        # cartoon toy shading baked into the texture: a soft two-tone light from above (lit tops,
+        # darker undersides, the same whichever way the character faces) and a glossy cap on top
         n = sh.sep(sh.geo.outputs["Normal"])
-        lv = sh.math("ADD", sh.math("MULTIPLY", n[2], 0.6), sh.math("MULTIPLY", n[1], -0.3))
-        lf = sh.maprange(lv, -0.9, 0.9, 0.8, 1.09)
+        lf = sh.maprange(n[2], -0.55, 0.25, 0.8, 1.06)
+        lf = sh.math("ADD", lf, sh.maprange(n[2], 0.72, 0.97, 0.0, 0.07))
         lc = sh.N.new("ShaderNodeCombineColor")
         for i in range(3):
             sh.L.new(lf, lc.inputs[i])
         col = sh.mix(col, lc.outputs[0], 1.0, "MULTIPLY")
-        ef = sh.maprange(sh.geo.outputs["Pointiness"], 0.46, 0.62, 0.95, 1.08)
+        ef = sh.maprange(sh.geo.outputs["Pointiness"], 0.44, 0.62, 0.9, 1.08)
         ec = sh.N.new("ShaderNodeCombineColor")
         for i in range(3):
             sh.L.new(ef, ec.inputs[i])
@@ -358,6 +359,11 @@ def char_material(name, spec):
     for i in range(3):
         sh.L.new(grain, gcol.inputs[i])
     col = sh.mix(col, gcol.outputs[0], 1.0, "MULTIPLY")
+    if spec.get("pop", 1.14) != 1.0:
+        hs = sh.N.new("ShaderNodeHueSaturation")
+        hs.inputs["Saturation"].default_value = spec.get("pop", 1.14)
+        sh.L.new(col, hs.inputs["Color"])
+        col = hs.outputs["Color"]
     sh.L.new(col, sh.bsdf.inputs["Base Color"])
     sh.bsdf.inputs["Roughness"].default_value = spec.get("rough", 0.5)
     return sh.m
@@ -702,11 +708,12 @@ class CharBuilder(kit.Builder):
     def eye(self, c, r, look=(0, -1, 0), white="EyeWhite", pupil="Pupil"):
         c = V(c)
         d = V(look).normalized()
-        self.ball(white, tuple(c), r, seg=(16, 12))
-        self.ball(pupil, tuple(c + d * r * 0.62), r * 0.52, seg=(12, 8), sc=(1, 1, 1))
+        self.ball(white, tuple(c), r, seg=(20, 14))
+        self.ball(pupil, tuple(c + d * r * 0.56), r * 0.58, seg=(16, 10), sc=(1, 1, 1))
         up = V((0, 0, 1))
         side = d.cross(up).normalized() if abs(d.z) < 0.9 else V((1, 0, 0))
-        self.ball(white, tuple(c + d * r * 0.98 + up * r * 0.25 + side * r * 0.18), r * 0.14, seg=(8, 6))
+        self.ball(white, tuple(c + d * r * 0.98 + up * r * 0.26 + side * r * 0.2), r * 0.2, seg=(10, 8))
+        self.ball(white, tuple(c + d * r * 1.0 - up * r * 0.18 - side * r * 0.2), r * 0.09, seg=(8, 6))
 
     def finish_char(self, collection):
         self.mat_cache = {st: char_material(f"{self.name}_{st}", spec) for st, spec in self.styles.items()}
@@ -883,7 +890,7 @@ def head_profile(r=HEAD_R, h=HEAD_H, rc=0.27, n=7):
 
 
 BODY = dict(chest=(2.0, 1.0), chest_bot=(1.0, 1.0), chest_bev=0.075, shoulder=None, arm=1.0, arm_bot=1.0, leg=1.0,
-            leg_bot=1.0, limb_bev=0.075, belly=None, back=None, hand="block", foot="block")
+            leg_bot=1.0, limb_bev=0.075, belly=None, back=None, hand="block", foot="block", hand_scale=1.0, foot_scale=1.0)
 
 
 def standard_body(b, st, hands=True, feet=True, shape=None):
@@ -891,7 +898,8 @@ def standard_body(b, st, hands=True, feet=True, shape=None):
     The R15 parts at their usual places, shaped by shape (see BODY): torso width / depth and
     taper (chest_bot scales the bottom of the chest: a V for sharks, a sack for octopuses),
     roundness (chest_bev, limb_bev), limb thickness and taper, belly / back bulges (sx, sy, sz),
-    mitt hands and flipper feet. With no shape it is the crisp blocky R15 body.
+    mitt hands and flipper feet, and hand_scale / foot_scale for big cartoon hands and feet.
+    With no shape it is the crisp blocky R15 body.
 
     Parts are built so they connect: each limb segment starts exactly as wide as the one above
     it ends, the joints are flat (only the outer ends are rounded), the arms are at least wide
@@ -940,13 +948,16 @@ def standard_body(b, st, hands=True, feet=True, shape=None):
         if hands:
             with b.part(f"{side}Hand"):
                 if sh["hand"] == "mitt":
-                    b.rtube(st["hand"], (x, 0, 2.15), (ab, ab, 0.38), bot=(0.94, 0.94), side=rs, top=0.03,
-                            bottom=min(0.16, ab * 0.22), segs=4)
-                    b.rtube(st["hand"], (x - sx * ab * 0.4, -ab * 0.28, 2.2), (0.24, 0.3, 0.3), side=0.1, top=0.08,
-                            bottom=0.08, segs=3)
+                    # a round cartoon mitt, wider than the wrist, with a thumb
+                    hw = ab * sh["hand_scale"]
+                    b.rtube(st["hand"], (x, 0, 2.13), (hw, hw * 0.96, 0.46), bot=(0.92, 0.92), side=min(0.3, hw * 0.42),
+                            top=min(0.12, hw * 0.14), bottom=min(0.2, hw * 0.24), segs=5)
+                    b.rtube(st["hand"], (x - sx * hw * 0.42, -hw * 0.24, 2.2), (0.26, 0.3, 0.32), side=0.12, top=0.1,
+                            bottom=0.1, segs=3)
                 else:
                     b.rtube(st["hand"], (x, 0, 2.17), (ab, ab, 0.34), side=rs, top=0.03, bottom=min(lb_, 0.1), segs=3)
-            b.dims[f"{side}Hand"] = (1.96, 2.34, ab * 0.94, ab)
+            hw = ab * (sh["hand_scale"] if sh["hand"] == "mitt" else 1.0)
+            b.dims[f"{side}Hand"] = (1.9, 2.36, hw * 0.92, hw)
         xl = sx * LEG_X
         rl = min(lb_, 0.45 * lfoot)
         with b.part(f"{side}UpperLeg"):
@@ -960,12 +971,15 @@ def standard_body(b, st, hands=True, feet=True, shape=None):
         b.dims[f"{side}LowerLeg"] = (0.36, 1.1, lfoot, lmid)
         if feet:
             with b.part(f"{side}Foot"):
+                fs = sh["foot_scale"]
                 if sh["foot"] == "flipper":
                     # a wide, flat webbed foot that reaches forward; its top meets the shin
-                    b.rtube(st["foot"], (xl, -0.12, 0.19), (lfoot * 1.08, 1.24, 0.38), bot=(1.06, 1.04), side=0.22,
-                            top=0.08, bottom=0.05, segs=4)
+                    b.rtube(st["foot"], (xl, -0.14, 0.19), (lfoot * 1.08 * fs, 1.24 * fs, 0.38), bot=(1.08, 1.04), side=0.24,
+                            top=0.1, bottom=0.05, segs=4)
                 else:
-                    b.rtube(st["foot"], (xl, 0, 0.19), (lfoot, lfoot, 0.38), side=rl, top=0.03, bottom=min(lb_, 0.08), segs=3)
+                    # a big round cartoon shoe
+                    b.rtube(st["foot"], (xl, -0.08 * fs, 0.19), (lfoot * fs, lfoot * fs * 1.12, 0.38), side=min(0.3, rl * 1.4),
+                            top=0.1, bottom=0.06, segs=4)
 
 
 def smooth_outline(ctrl, per=5):

@@ -27,13 +27,13 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 41100,
-  "max_part_tris": 10304,
+  "tris": 42996,
+  "max_part_tris": 11880,
   "body_height": 5.2,
   "full_size": [
-   4.89,
+   4.78,
    5.97,
-   2.51
+   2.54
   ]
  },
  "Pufferfish": {
@@ -71,11 +71,11 @@
    "UpperTorso__DorsalFin",
    "UpperTorso__Spikes"
   ],
-  "tris": 37776,
-  "max_part_tris": 10304,
+  "tris": 39928,
+  "max_part_tris": 11880,
   "body_height": 5.2,
   "full_size": [
-   4.93,
+   4.78,
    5.89,
    2.57
   ]
@@ -101,8 +101,8 @@
    "RightUpperLeg",
    "UpperTorso"
   ],
-  "tris": 17686,
-  "max_part_tris": 3134,
+  "tris": 19070,
+  "max_part_tris": 4096,
   "body_height": 5.2,
   "full_size": [
    4.25,
@@ -136,13 +136,13 @@
    "UpperTorso",
    "UpperTorso__Tentacles"
   ],
-  "tris": 18282,
+  "tris": 18858,
   "max_part_tris": 3982,
   "body_height": 5.2,
   "full_size": [
-   4.04,
-   5.48,
-   2.02
+   4.02,
+   5.65,
+   2.39
   ]
  },
  "Octopus": {
@@ -168,13 +168,13 @@
    "UpperTorso",
    "UpperTorso__Tentacles"
   ],
-  "tris": 48836,
+  "tris": 50668,
   "max_part_tris": 14416,
   "body_height": 5.2,
   "full_size": [
    6.13,
    6.03,
-   2.64
+   2.69
   ]
  },
  "MorayEel": {
@@ -200,11 +200,11 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 30628,
-  "max_part_tris": 11384,
+  "tris": 32076,
+  "max_part_tris": 12512,
   "body_height": 5.2,
   "full_size": [
-   4.22,
+   4.21,
    5.78,
    2.93
   ]
@@ -235,11 +235,11 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 35316,
-  "max_part_tris": 11564,
+  "tris": 36764,
+  "max_part_tris": 12692,
   "body_height": 5.2,
   "full_size": [
-   4.47,
+   4.44,
    6.1,
    3.12
   ]
@@ -271,11 +271,11 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 37872,
+  "tris": 39320,
   "max_part_tris": 10304,
   "body_height": 5.2,
   "full_size": [
-   4.47,
+   4.44,
    6.09,
    3.04
   ]
@@ -305,11 +305,11 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 32024,
-  "max_part_tris": 11924,
+  "tris": 33472,
+  "max_part_tris": 13052,
   "body_height": 5.2,
   "full_size": [
-   5.2,
+   5.14,
    6.26,
    2.69
   ]
@@ -337,7 +337,7 @@
    "UpperTorso",
    "UpperTorso__Tentacles"
   ],
-  "tris": 51908,
+  "tris": 53292,
   "max_part_tris": 13252,
   "body_height": 5.2,
   "full_size": [
@@ -374,13 +374,13 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 41744,
-  "max_part_tris": 10304,
+  "tris": 43640,
+  "max_part_tris": 11880,
   "body_height": 5.2,
   "full_size": [
-   4.89,
+   4.78,
    5.97,
-   2.51
+   2.54
   ]
  }
 }

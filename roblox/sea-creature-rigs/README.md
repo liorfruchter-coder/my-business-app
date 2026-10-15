@@ -5,6 +5,9 @@ Each one is 5.2 studs tall like the default character and keeps the regular Robl
 The fish, sharks, eel, orca, octopus and squid wear their creature's head as a hood: the player's face looks out through its mouth.
 The crab keeps the bare head with eye stalks on it, and the jellyfish wears its glowing bell as a cap.
 Each body is shaped like its animal (round pufferfish, V-shaped shark, soft octopus, armoured crab) while staying a normal R15 humanoid.
+The style is cartoon: big round mitts and feet in an accent colour, big shiny eyes with eyebrows that give each creature a mood
+(angry shark and squid, grumpy eel, surprised pufferfish, happy tiny fish and octopus), blush on the cute ones, and bright colours
+with a glossy, toy-like shading baked into the textures.
 
 ![Front](previews/Lineup_Front.jpg)
 
@@ -63,17 +66,17 @@ To make a creature the default character instead, copy its rig into **StarterPla
 
 | # | Creature | Parts | Triangles | Largest part (tris) | Size W × H × D (studs) |
 |---:|---|---:|---:|---:|---|
-| 1 | Tiny Fish | 24 | 41,100 | 10,304 | 4.89 × 5.97 × 2.51 |
-| 2 | Pufferfish | 31 | 37,776 | 10,304 | 4.93 × 5.89 × 2.57 |
-| 3 | Crab | 17 | 17,686 | 3,134 | 4.25 × 6.22 × 2.73 |
-| 4 | Jellyfish | 22 | 18,282 | 3,982 | 4.04 × 5.48 × 2.02 |
-| 5 | Octopus | 19 | 48,836 | 14,416 | 6.13 × 6.03 × 2.64 |
-| 6 | Moray Eel | 19 | 30,628 | 11,384 | 4.22 × 5.78 × 2.93 |
-| 7 | Shark | 22 | 35,316 | 11,564 | 4.47 × 6.1 × 3.12 |
-| 8 | Hammerhead Shark | 23 | 37,872 | 10,304 | 4.47 × 6.09 × 3.04 |
-| 9 | Orca | 21 | 32,024 | 11,924 | 5.2 × 6.26 × 2.69 |
-| 10 | Giant Squid | 19 | 51,908 | 13,252 | 4.13 × 6.52 × 2.67 |
-| 11 | Clownfish | 24 | 41,744 | 10,304 | 4.89 × 5.97 × 2.51 |
+| 1 | Tiny Fish | 24 | 42,996 | 11,880 | 4.78 × 5.97 × 2.54 |
+| 2 | Pufferfish | 31 | 39,928 | 11,880 | 4.78 × 5.89 × 2.57 |
+| 3 | Crab | 17 | 19,070 | 4,096 | 4.25 × 6.22 × 2.73 |
+| 4 | Jellyfish | 22 | 18,858 | 3,982 | 4.02 × 5.65 × 2.39 |
+| 5 | Octopus | 19 | 50,668 | 14,416 | 6.13 × 6.03 × 2.69 |
+| 6 | Moray Eel | 19 | 32,076 | 12,512 | 4.21 × 5.78 × 2.93 |
+| 7 | Shark | 22 | 36,764 | 12,692 | 4.44 × 6.1 × 3.12 |
+| 8 | Hammerhead Shark | 23 | 39,320 | 10,304 | 4.44 × 6.09 × 3.04 |
+| 9 | Orca | 21 | 33,472 | 13,052 | 5.14 × 6.26 × 2.69 |
+| 10 | Giant Squid | 19 | 53,292 | 13,252 | 4.13 × 6.52 × 2.67 |
+| 11 | Clownfish | 24 | 43,640 | 11,880 | 4.78 × 5.97 × 2.54 |
 
 Height is the whole model including fins, bells and mantles. The body itself is 5.2 studs tall on every rig.
 
