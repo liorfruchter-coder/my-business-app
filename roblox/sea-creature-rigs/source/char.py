@@ -905,7 +905,8 @@ def standard_body(b, st, hands=True, feet=True, shape=None):
     The R15 parts at their usual places, shaped by shape (see BODY): torso width / depth and
     taper (chest_bot scales the bottom of the chest: a V for sharks, a sack for octopuses),
     roundness (chest_bev, limb_bev), limb thickness and taper, belly / back bulges (sx, sy, sz),
-    mitt hands and flipper feet, and hand_scale / foot_scale for big cartoon hands and feet.
+    mitt hands and flipper feet; hands and feet are normal size (hand_scale / foot_scale above 1
+    would make big cartoon ones).
     With no shape it is the crisp blocky R15 body.
 
     Parts are built so they connect: each limb segment starts exactly as wide as the one above
@@ -955,16 +956,16 @@ def standard_body(b, st, hands=True, feet=True, shape=None):
         if hands:
             with b.part(f"{side}Hand"):
                 if sh["hand"] == "mitt":
-                    # a round cartoon mitt, wider than the wrist, with a thumb
+                    # a rounded mitt with a thumb (hand_scale above 1 makes cartoon-sized hands)
                     hw = ab * sh["hand_scale"]
-                    b.rtube(st["hand"], (x, 0, 2.13), (hw, hw * 0.96, 0.46), bot=(0.92, 0.92), side=min(0.3, hw * 0.42),
-                            top=min(0.12, hw * 0.14), bottom=min(0.2, hw * 0.24), segs=5)
-                    b.rtube(st["hand"], (x - sx * hw * 0.42, -hw * 0.24, 2.2), (0.26, 0.3, 0.32), side=0.12, top=0.1,
-                            bottom=0.1, segs=3)
+                    b.rtube(st["hand"], (x, 0, 2.15), (hw, hw * 0.96, 0.42), bot=(0.92, 0.92), side=min(0.28, hw * 0.4),
+                            top=0.04, bottom=min(0.16, hw * 0.22), segs=5)
+                    b.rtube(st["hand"], (x - sx * hw * 0.44, -hw * 0.22, 2.2), (0.2 * hw / 0.75, 0.24 * hw / 0.75, 0.26),
+                            side=0.09, top=0.08, bottom=0.08, segs=3)
                 else:
                     b.rtube(st["hand"], (x, 0, 2.17), (ab, ab, 0.34), side=rs, top=0.03, bottom=min(lb_, 0.1), segs=3)
             hw = ab * (sh["hand_scale"] if sh["hand"] == "mitt" else 1.0)
-            b.dims[f"{side}Hand"] = (1.9, 2.36, hw * 0.92, hw)
+            b.dims[f"{side}Hand"] = (1.94, 2.36, hw * 0.92, hw)
         xl = sx * LEG_X
         rl = min(lb_, 0.45 * lfoot)
         with b.part(f"{side}UpperLeg"):
@@ -980,13 +981,13 @@ def standard_body(b, st, hands=True, feet=True, shape=None):
             with b.part(f"{side}Foot"):
                 fs = sh["foot_scale"]
                 if sh["foot"] == "flipper":
-                    # a wide, flat webbed foot that reaches forward; its top meets the shin
-                    b.rtube(st["foot"], (xl, -0.14, 0.19), (lfoot * 1.08 * fs, 1.24 * fs, 0.38), bot=(1.08, 1.04), side=0.24,
-                            top=0.1, bottom=0.05, segs=4)
+                    # a flat webbed foot, a little longer than the shin is thick; its top meets the shin
+                    b.rtube(st["foot"], (xl, -0.08 * fs, 0.19), (lfoot * 1.04 * fs, max(1.0, lfoot * 1.3) * fs, 0.38),
+                            bot=(1.06, 1.03), side=0.2, top=0.08, bottom=0.05, segs=4)
                 else:
-                    # a big round cartoon shoe
-                    b.rtube(st["foot"], (xl, -0.08 * fs, 0.19), (lfoot * fs, lfoot * fs * 1.12, 0.38), side=min(0.3, rl * 1.4),
-                            top=0.1, bottom=0.06, segs=4)
+                    # a rounded foot as wide as the shin and a little longer
+                    b.rtube(st["foot"], (xl, -0.06 * fs, 0.19), (lfoot * fs, lfoot * fs * 1.15, 0.38), side=min(0.24, rl * 1.2),
+                            top=0.08, bottom=0.06, segs=4)
 
 
 def smooth_outline(ctrl, per=5):

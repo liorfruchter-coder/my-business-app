@@ -150,23 +150,23 @@ def spike(b, st, p, n, L=0.3, r=0.08):
 
 # body shapes per creature (see char.BODY): still the R15 parts, but each reads as that animal
 FISH_BODY = dict(chest=(2.0, 1.12), chest_bot=(0.9, 0.92), shoulder=0.28, chest_bev=0.26, arm=0.9, arm_bot=0.8, leg=0.94, leg_bot=0.8,
-                 limb_bev=0.2, hand="mitt", foot="flipper", hand_scale=1.32, foot_scale=1.1)
+                 limb_bev=0.2, hand="mitt", foot="flipper")
 SHARK_BODY = dict(chest=(2.0, 1.06), chest_bot=(0.88, 0.9), shoulder=0.28, chest_bev=0.2, arm=0.9, arm_bot=0.8, leg=0.96, leg_bot=0.8,
-                  limb_bev=0.18, hand="mitt", foot="flipper", hand_scale=1.3, foot_scale=1.1)
+                  limb_bev=0.18, hand="mitt", foot="flipper")
 ORCA_BODY = dict(chest=(2.0, 1.16), chest_bot=(0.9, 0.92), shoulder=0.28, chest_bev=0.32, arm=0.9, arm_bot=0.8, leg=0.98, leg_bot=0.8,
-                 limb_bev=0.24, belly=(0.8, 0.2, 0.76), hand="mitt", foot="flipper", hand_scale=1.3, foot_scale=1.1)
+                 limb_bev=0.24, belly=(0.8, 0.2, 0.76), hand="mitt", foot="flipper")
 PUFFER_BODY = dict(chest=(2.0, 1.0), chest_bot=(0.92, 0.96), chest_bev=0.42, shoulder=0.3, belly=(0.96, 0.36, 0.82),
-                   back=(0.9, 0.3, 0.78), arm=0.9, arm_bot=0.8, leg=0.92, leg_bot=0.8, limb_bev=0.26, hand="mitt", hand_scale=1.35, foot_scale=1.25)
+                   back=(0.9, 0.3, 0.78), arm=0.9, arm_bot=0.8, leg=0.92, leg_bot=0.8, limb_bev=0.26, hand="mitt")
 CRAB_BODY = dict(chest=(2.0, 1.0), chest_bot=(0.88, 0.9), shoulder=0.28, chest_bev=0.1, arm=0.9, arm_bot=0.8, leg=0.9, leg_bot=0.8,
-                 limb_bev=0.1, foot_scale=1.2)
+                 limb_bev=0.1)
 JELLY_BODY = dict(chest=(2.0, 1.0), chest_bot=(0.92, 0.94), shoulder=0.28, chest_bev=0.36, arm=0.9, arm_bot=0.8, leg=0.92, leg_bot=0.8,
-                  limb_bev=0.3, hand="mitt", hand_scale=1.3, foot_scale=1.2)
+                  limb_bev=0.3, hand="mitt")
 OCTO_BODY = dict(chest=(2.0, 1.06), chest_bot=(1.02, 1.04), shoulder=0.28, chest_bev=0.4, arm=0.9, arm_bot=0.8, leg=0.96, leg_bot=0.8,
-                 limb_bev=0.32, foot_scale=1.2)
+                 limb_bev=0.32)
 EEL_BODY = dict(chest=(2.0, 0.94), chest_bot=(0.86, 0.94), shoulder=0.28, chest_bev=0.26, arm=0.9, arm_bot=0.8, leg=0.88, leg_bot=0.8,
-                limb_bev=0.22, hand="mitt", foot="flipper", hand_scale=1.3, foot_scale=1.1)
+                limb_bev=0.22, hand="mitt", foot="flipper")
 SQUID_BODY = dict(chest=(2.0, 1.0), chest_bot=(0.84, 0.9), shoulder=0.28, chest_bev=0.34, arm=0.9, arm_bot=0.8, leg=0.9, leg_bot=0.8,
-                  limb_bev=0.28, foot_scale=1.2)
+                  limb_bev=0.28)
 
 # painted shapes (studs; front view u = x, side view u = y with the front at -y)
 def shield(top=3.92, bot=2.04, wt=0.42, wm=0.7, wb=0.5, zm=3.25):

@@ -5,7 +5,7 @@ Each one is 5.2 studs tall like the default character and keeps the regular Robl
 The fish, sharks, eel, orca, octopus and squid wear their creature's head as a hood: the player's face looks out through its mouth.
 The crab keeps the bare head with eye stalks on it, and the jellyfish wears its glowing bell as a cap.
 Each body is shaped like its animal (round pufferfish, V-shaped shark, soft octopus, armoured crab) while staying a normal R15 humanoid.
-The style is cartoon: big round mitts and feet in an accent colour, big shiny eyes with eyebrows that give each creature a mood
+The style is cartoon: rounded hands and feet in an accent colour, big shiny eyes with eyebrows that give each creature a mood
 (angry shark and squid, grumpy eel, surprised pufferfish, happy tiny fish and octopus), blush on the cute ones, and bright colours
 with a glossy, toy-like shading baked into the textures.
 
@@ -68,12 +68,12 @@ To make a creature the default character instead, copy its rig into **StarterPla
 
 | # | Creature | Parts | Triangles | Largest part (tris) | Size W × H × D (studs) |
 |---:|---|---:|---:|---:|---|
-| 1 | Tiny Fish | 24 | 38,556 | 11,880 | 4.49 × 5.9 × 3.12 |
+| 1 | Tiny Fish | 24 | 38,556 | 11,880 | 4.49 × 5.9 × 3.11 |
 | 2 | Pufferfish | 31 | 36,352 | 11,880 | 4.49 × 5.89 × 3.03 |
 | 3 | Crab | 17 | 19,070 | 4,096 | 4.15 × 6.22 × 2.73 |
-| 4 | Jellyfish | 22 | 18,858 | 3,982 | 3.84 × 5.65 × 2.39 |
+| 4 | Jellyfish | 22 | 18,858 | 3,982 | 3.79 × 5.65 × 2.39 |
 | 5 | Octopus | 19 | 50,668 | 14,416 | 6.13 × 6.03 × 2.69 |
-| 6 | Moray Eel | 19 | 39,392 | 13,928 | 3.84 × 5.8 × 2.81 |
+| 6 | Moray Eel | 19 | 39,392 | 13,928 | 3.8 × 5.8 × 2.81 |
 | 7 | Shark | 22 | 34,556 | 12,692 | 4.29 × 6.05 × 3.86 |
 | 8 | Hammerhead Shark | 23 | 37,112 | 10,304 | 4.29 × 6.01 × 3.78 |
 | 9 | Orca | 21 | 31,928 | 13,052 | 4.93 × 6.19 × 3.47 |
