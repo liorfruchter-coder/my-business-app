@@ -610,100 +610,107 @@ class CharBuilder(kit.Builder):
                             affect="EDGES", clamp_overlap=True)
         self._done(st, bm, f0)
 
-    def fin3(self, st, ctrl, M, thick=0.14, rays=0, pleat=0.0, scallop=0.0, curl=0.0, cup=0.0, per=6, cols=None,
-             rows=16, flare=1.3, flare_len=0.22, sink=0.08):
-        """A cartoon fin that grows out of the body.
+    def fin4(self, st, root, tips, M, thick=0.05, edge=0.012, spine=0.05, rib=0.026, scallop=0.24, sag=0.035, curl=0.0,
+             bend=None, rib_st=None, ns=12, nt=7, sink=0.05):
+        """A stylised fin like a bat-wing / dragon fin accessory: bony rays from the root to sharp
+        points, a thin membrane stretched between them that sags a little and is cut back in a
+        curve between every two points, and a thicker rolled spine along the leading ray.
 
-        ctrl: closed outline (u, v); ctrl[0] -> ctrl[1] is the base line (v ~ 0), the rest the edge.
-        Local frame from M: x = u, z = v (away from the body), y = thickness.
-        The fin is a grid fanned from the base line to the edge (its columns are the rays). It keeps
-        an even, chunky thickness with a fully rounded rim, and flares out at the base (flare x
-        thicker over flare_len studs) into a fillet that sinks into the body, so it reads as part
-        of the body rather than a cut-out stuck on. With rays it gets soft ridges along them and
-        a gently wavy edge.
-        Grad colour: x = 0 at the base .. 1 at the edge, y = 1 on a ray, z = 0 at the base .. 1 a
-        quarter stud out (styles blend from the body colour with it)."""
-        out = smooth_outline(ctrl, per)
-        b1, b0 = V((*ctrl[1], 0)), V((*ctrl[0], 0))
-        edge = [V((u, v, 0)) for u, v in out[per:]] + [V((*out[0], 0))]
-        # resample the edge evenly by arc length
-        L = [0.0]
-        for a, c in zip(edge, edge[1:]):
-            L.append(L[-1] + (c - a).length)
-        total = L[-1] or 1.0
-        ncol = cols or (max(30, rays * 8) if rays else 34)
-        E, k = [], 0
-        for j in range(ncol):
-            d = total * j / (ncol - 1)
-            while k < len(L) - 2 and L[k + 1] < d:
-                k += 1
-            seg = (L[k + 1] - L[k]) or 1.0
-            E.append(edge[k].lerp(edge[k + 1], (d - L[k]) / seg))
-        us = [p.x for p in E]
-        uc, uh = (max(us) + min(us)) / 2, max((max(us) - min(us)) / 2, 1e-3)
+        root: ((u0, v0), (u1, v1)), the root line (sunk into the body); ray k starts at
+        lerp(root0, root1, k / (n - 1)), so the first tip is the leading edge.
+        tips: [(u, v), ...] the points. Local frame from M: x = u, z = v, y = thickness.
+        bend: per ray, how far its middle bows sideways (default: the leading spine bows most).
+        Grad colour: x = 0 at the root .. 1 at the points, z = 0 at the root .. 1 a little out."""
+        n = len(tips)
+        r0, r1 = V((*root[0], 0)), V((*root[1], 0))
         down = V((0, -sink, 0))
-        half = thick / 2
-        rim = thick * 0.85
-        grid_t, grid_b, gvals, lip = [], [], [], []
-        for i in range(rows + 1):
-            f = 0.5 - 0.5 * math.cos(math.pi * i / rows)
-            rt, rb, rv = [], [], []
-            for j in range(ncol):
-                c = j / (ncol - 1) * rays if rays else 0.0
-                on_ray = 0.5 + 0.5 * math.cos(TAU * c) if rays else 0.0
-                Bj = b1.lerp(b0, j / (ncol - 1)) + down
-                Ej = E[j]
-                if rays and 0 < j < ncol - 1:
-                    Ej = Bj + (Ej - Bj) * (1 - scallop * (1 - on_ray) * (1 - abs(2 * j / (ncol - 1) - 1)) ** 0.3)
-                span = (Ej - Bj).length
-                P = Bj.lerp(Ej, f)
-                to_edge, from_base = (1 - f) * span, f * span
-                h = half * math.sqrt(max(0.0, 1 - max(0.0, 1 - to_edge / rim) ** 2))
-                h = max(h, half * 0.22) + half * flare * max(0.0, 1 - from_base / flare_len) ** 2
-                w = curl * f * f + cup * ((P.x - uc) / uh) ** 2 * f
-                if rays:
-                    w += pleat * min(1.0, from_base / 0.3) * math.cos(TAU * c)
-                rt.append(V((P.x, w + h, P.y)))
-                rb.append(V((P.x, w - h, P.y)))
-                rv.append((f, on_ray ** 3, min(1.0, max(0.0, (from_base - sink) / 0.22))))
-                if i == rows:
-                    out_d = (Ej - Bj).normalized() if span > 1e-6 else V((0, 1, 0))
-                    q = P + out_d * h * 0.8
-                    lip.append(V((q.x, w, q.y)))
-            grid_t.append(rt)
-            grid_b.append(rb)
-            gvals.append(rv)
+        starts = [r0.lerp(r1, k / max(n - 1, 1)) + down for k in range(n)]
+        T = [V((u, v, 0)) for u, v in tips]
+        lens = [(T[k] - starts[k]).length for k in range(n)]
+        if bend is None:
+            bend = [0.1 * lens[0]] + [0.04 * lens[k] for k in range(1, n)]
+        # every ray bows the same way as the leading spine (away from the others)
+        d0 = (T[0] - starts[0]).normalized()
+        side = V((-d0.y, d0.x, 0))
+        if n > 1 and side.dot(T[1] - T[0]) > 0:
+            side = -side
+
+        def ray(k, s):
+            d = T[k] - starts[k]
+            perp = V((-d.y, d.x, 0)).normalized()
+            if perp.dot(side) < 0:
+                perp = -perp
+            return starts[k] + d * s + perp * bend[k] * math.sin(math.pi * s)
+
+        def wv(s, t):
+            return sag * math.sin(math.pi * t) * s + curl * s * s
+
+        def half(s, L):
+            h = max(edge, thick * (1 - s) ** 0.8) / 2
+            return h + thick * 0.8 * max(0.0, 1 - s * L / 0.16) ** 2       # flare into the body
+
+        Mw = self.M @ M
+        verts, faces, gv = [], [], []
+        for k in range(n - 1):
+            mid_root = (starts[k] + starts[k + 1]) / 2
+            mid_tip = (T[k] + T[k + 1]) / 2
+            inward = mid_root - mid_tip
+            depth = scallop * inward.length
+            inward = inward.normalized() if inward.length > 1e-6 else V((0, 0, 0))
+            L = (lens[k] + lens[k + 1]) / 2
+            base = len(verts)
+            top, bot = [], []
+            for i in range(ns + 1):
+                s_ = i / ns
+                s = 1 - (1 - s_) ** 1.15
+                rt, rb = [], []
+                for j in range(nt + 1):
+                    t = j / nt
+                    P = ray(k, s).lerp(ray(k + 1, s), t) + inward * depth * math.sin(math.pi * t) * s ** 2.5
+                    w, h = wv(s, t), half(s, L)
+                    rt.append(len(verts))
+                    verts.append(Mw @ V((P.x, w + h, P.y)))
+                    gv.append((s, 0.0, min(1.0, s * L / 0.2)))
+                    rb.append(len(verts))
+                    verts.append(Mw @ V((P.x, w - h, P.y)))
+                    gv.append((s, 0.0, min(1.0, s * L / 0.2)))
+                top.append(rt)
+                bot.append(rb)
+            for i in range(ns):
+                for j in range(nt):
+                    faces.append((top[i][j], top[i][j + 1], top[i + 1][j + 1], top[i + 1][j]))
+                    faces.append((bot[i][j], bot[i + 1][j], bot[i + 1][j + 1], bot[i][j + 1]))
+            for j in range(nt):        # the cut-back outer edge and the buried root
+                faces.append((top[ns][j], top[ns][j + 1], bot[ns][j + 1], bot[ns][j]))
+                faces.append((top[0][j + 1], top[0][j], bot[0][j], bot[0][j + 1]))
+            for jj in (0, nt):         # the two sides (under the ribs)
+                for i in range(ns):
+                    faces.append((top[i][jj], top[i + 1][jj], bot[i + 1][jj], bot[i][jj]))
         bm = self._bm(st)
         f0 = len(bm.faces)
         lay = bm.loops.layers.float_color.get("Grad") or bm.loops.layers.float_color.new("Grad")
-        Mw = self.M @ M
-        vt = [[bm.verts.new(Mw @ p) for p in row] for row in grid_t]
-        vb = [[bm.verts.new(Mw @ p) for p in row] for row in grid_b]
-        vl = [bm.verts.new(Mw @ p) for p in lip]
-        quads = []
-        for i in range(rows):
-            for j in range(ncol - 1):
-                quads.append(([vt[i][j], vt[i][j + 1], vt[i + 1][j + 1], vt[i + 1][j]],
-                              [(i, j), (i, j + 1), (i + 1, j + 1), (i + 1, j)]))
-                quads.append(([vb[i][j], vb[i + 1][j], vb[i + 1][j + 1], vb[i][j + 1]],
-                              [(i, j), (i + 1, j), (i + 1, j + 1), (i, j + 1)]))
-        for j in range(ncol - 1):       # the rounded lip and the (buried) base
-            quads.append(([vt[rows][j], vt[rows][j + 1], vl[j + 1], vl[j]], [(rows, j), (rows, j + 1), (rows, j + 1), (rows, j)]))
-            quads.append(([vl[j], vl[j + 1], vb[rows][j + 1], vb[rows][j]], [(rows, j), (rows, j + 1), (rows, j + 1), (rows, j)]))
-            quads.append(([vt[0][j + 1], vt[0][j], vb[0][j], vb[0][j + 1]], [(0, j + 1), (0, j), (0, j), (0, j + 1)]))
-        for jj in (0, ncol - 1):        # the two ends of the fan
-            for i in range(rows):
-                quads.append(([vt[i][jj], vt[i + 1][jj], vb[i + 1][jj], vb[i][jj]], [(i, jj), (i + 1, jj), (i + 1, jj), (i, jj)]))
-            quads.append(([vt[rows][jj], vl[jj], vb[rows][jj]], [(rows, jj)] * 3))
-        for vs, ids in quads:
+        vs = [bm.verts.new(p) for p in verts]
+        for f in faces:
             try:
-                face = bm.faces.new(vs)
+                face = bm.faces.new([vs[i] for i in f])
             except ValueError:
                 continue
-            for lp, (i, j) in zip(face.loops, ids):
-                g, r, z = gvals[i][j]
-                lp[lay] = (g, r, z, 1.0)
+            for lp, i in zip(face.loops, f):
+                g = gv[i]
+                lp[lay] = (g[0], g[1], g[2], 1.0)
         self._done(st, bm, f0)
+        # the bony rays: a thick rolled spine on the leading edge, thinner ribs behind it
+        rs = rib_st or st
+        for k in range(n):
+            pts, radii = [], []
+            r_root = spine if k == 0 else rib
+            m = 16
+            for i in range(m + 1):
+                s = i / m
+                P = ray(k, s)
+                pts.append(M @ V((P.x, curl * s * s, P.y)))      # on the membrane (no sag along a ray)
+                radii.append(max(0.005, r_root * (1 - s) ** 0.9 + 0.004))
+            self.ttube(rs, pts, radii, n=8, cap=True, grad=True)
 
     def eye(self, c, r, look=(0, -1, 0), white="EyeWhite", pupil="Pupil"):
         c = V(c)

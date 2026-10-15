@@ -27,13 +27,13 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 42996,
+  "tris": 38556,
   "max_part_tris": 11880,
   "body_height": 5.2,
   "full_size": [
-   4.63,
-   5.97,
-   2.54
+   4.49,
+   5.9,
+   3.12
   ]
  },
  "Pufferfish": {
@@ -71,13 +71,13 @@
    "UpperTorso__DorsalFin",
    "UpperTorso__Spikes"
   ],
-  "tris": 39928,
+  "tris": 36352,
   "max_part_tris": 11880,
   "body_height": 5.2,
   "full_size": [
-   4.63,
+   4.49,
    5.89,
-   2.57
+   3.03
   ]
  },
  "Crab": {
@@ -200,13 +200,13 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 32076,
-  "max_part_tris": 12512,
+  "tris": 39392,
+  "max_part_tris": 13928,
   "body_height": 5.2,
   "full_size": [
-   4.12,
-   5.78,
-   2.93
+   3.84,
+   5.8,
+   2.81
   ]
  },
  "Shark": {
@@ -235,13 +235,13 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 36764,
+  "tris": 34556,
   "max_part_tris": 12692,
   "body_height": 5.2,
   "full_size": [
-   4.31,
-   6.1,
-   3.12
+   4.29,
+   6.05,
+   3.86
   ]
  },
  "HammerheadShark": {
@@ -271,13 +271,13 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 39320,
+  "tris": 37112,
   "max_part_tris": 10304,
   "body_height": 5.2,
   "full_size": [
-   4.31,
-   6.09,
-   3.04
+   4.29,
+   6.01,
+   3.78
   ]
  },
  "Orca": {
@@ -294,7 +294,7 @@
    "LeftUpperArm__Paddle",
    "LeftUpperLeg",
    "LowerTorso",
-   "LowerTorso__Flukes",
+   "LowerTorso__Tail",
    "RightFoot",
    "RightHand",
    "RightLowerArm",
@@ -305,13 +305,13 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 33472,
+  "tris": 31928,
   "max_part_tris": 13052,
   "body_height": 5.2,
   "full_size": [
-   5.02,
-   6.26,
-   2.69
+   4.93,
+   6.19,
+   3.47
   ]
  },
  "GiantSquid": {
@@ -337,12 +337,12 @@
    "UpperTorso",
    "UpperTorso__Tentacles"
   ],
-  "tris": 53292,
+  "tris": 51796,
   "max_part_tris": 13252,
   "body_height": 5.2,
   "full_size": [
    4.13,
-   6.52,
+   6.53,
    2.67
   ]
  },
@@ -374,13 +374,13 @@
    "UpperTorso",
    "UpperTorso__DorsalFin"
   ],
-  "tris": 43640,
+  "tris": 40608,
   "max_part_tris": 11880,
   "body_height": 5.2,
   "full_size": [
-   4.63,
-   5.97,
-   2.54
+   4.49,
+   5.9,
+   3.06
   ]
  }
 }

@@ -2,8 +2,10 @@
 
 Body parts keep the blocky R15 layout (standard_body). Markings are painted, not
 stuck on: crisp shapes drawn in a front, back or side view and projected onto
-the faces that look that way, plus wrap-around bands. Fins are fin2 surfaces
-that thin toward the edge, curve, carry a base-to-tip colour and a darker rim.
+the faces that look that way, plus wrap-around bands. Fins (char.fin4, shapes in
+FINS) are drawn like bat-wing fin accessories: bony ribs to sharp points, a thin
+membrane cut back between them and a rolled spine on the leading edge. Tails
+grow out of the lower back, curve down and end in a tail fin or flukes.
 Anything that sticks out lives in "<BodyPart>__<Piece>" objects that Roblox
 welds on; the Head stays the regular Roblox head and its pieces keep clear of
 the face. The fish, sharks, eel, orca, octopus and squid wear their head as a
@@ -58,14 +60,61 @@ def taper(n, r0, r1, power=1.0):
     return [r0 + (r1 - r0) * (i / max(n - 1, 1)) ** power for i in range(n)]
 
 
-def fin(b, st, ctrl, M, thick=0.14, curl=0.0, cup=0.0, rays=0, pleat=None, scallop=None, scale=1.0, flare=1.3, per=6):
-    """A chunky cartoon fin grown out of the body from its base line ctrl[0] -> ctrl[1]. With rays
-    it is a fish fin (soft ridges, a gently wavy edge); without, a smooth shark / orca fin."""
-    ctrl = [(u * scale, v * scale) for u, v in ctrl]
-    b.fin3(st, ctrl, M, thick=thick, rays=rays,
-           pleat=(0.014 if rays else 0.0) if pleat is None else pleat,
-           scallop=(0.05 if rays else 0.0) if scallop is None else scallop,
-           curl=curl, cup=cup, per=per, flare=flare)
+# Fin shapes for char.fin4, in the style of bat-wing / dragon-fin accessories: (root line, points).
+# u runs along the root (the first point is the leading spine), v away from the body.
+FINS = {
+    "crest": (((-0.34, 0), (0.3, 0)), [(0.12, 0.95), (0.55, 0.7), (0.84, 0.42), (0.95, 0.12)]),
+    "ear": (((-0.16, 0), (0.16, 0)), [(0.1, 0.62), (0.48, 0.5), (0.62, 0.22)]),
+    "dorsal": (((0.55, 0), (-0.55, 0)), [(0.95, 0.66), (0.5, 0.62), (0.05, 0.54), (-0.38, 0.4), (-0.7, 0.2)]),
+    "arm": (((-0.22, 0), (0.22, 0)), [(0.05, 0.66), (0.42, 0.56), (0.62, 0.3)]),
+    "calf": (((-0.16, 0), (0.16, 0)), [(0.05, 0.46), (0.34, 0.36), (0.44, 0.16)]),
+    "fork": (((-0.12, 0), (0.12, 0)), [(-0.85, 0.8), (-0.32, 0.52), (0.0, 0.4), (0.32, 0.52), (0.85, 0.8)]),
+    "round_tail": (((-0.12, 0), (0.12, 0)), [(-0.66, 0.56), (-0.3, 0.7), (0.0, 0.72), (0.3, 0.7), (0.66, 0.56)]),
+    # a clownfish's tail: a rounded fan with a gently wavy edge
+    "clown_tail": (((-0.14, 0), (0.14, 0)), [(-0.6, 0.46), (-0.52, 0.68), (-0.28, 0.82), (0.0, 0.86), (0.28, 0.82),
+                                             (0.52, 0.68), (0.6, 0.46)]),
+    "shark": (((-0.55, 0), (0.45, 0)), [(0.5, 1.05), (0.7, 0.5), (0.62, 0.2)]),
+    "shark_tail": (((0.16, 0), (-0.16, 0)), [(0.95, 0.9), (0.42, 0.48), (0.0, 0.4), (-0.42, 0.58)]),
+    "pec": (((-0.26, 0), (0.24, 0)), [(0.1, 0.78), (0.48, 0.58), (0.6, 0.24)]),
+    "pelvic": (((-0.14, 0), (0.14, 0)), [(0.08, 0.42), (0.34, 0.3), (0.4, 0.12)]),
+    "flukes": (((-0.14, 0), (0.14, 0)), [(-0.95, 0.52), (-0.42, 0.42), (0.0, 0.3), (0.42, 0.42), (0.95, 0.52)]),
+    "orca": (((-0.45, 0), (0.35, 0)), [(0.16, 1.45), (0.4, 0.62), (0.36, 0.22)]),
+    "paddle": (((-0.24, 0), (0.24, 0)), [(-0.02, 0.86), (0.34, 0.64), (0.42, 0.3)]),
+    "squid": (((-0.45, 0), (0.42, 0)), [(-0.3, 0.6), (0.08, 0.52), (0.36, 0.22)]),
+    "eel_crest": (((-0.32, 0), (0.7, 0)), [(-0.1, 0.42), (0.25, 0.42), (0.55, 0.34), (0.82, 0.16)]),
+    "ridge": (((-0.6, 0), (1.6, 0)), [(-0.7, 0.3), (-0.2, 0.36), (0.3, 0.38), (0.8, 0.36), (1.3, 0.34), (1.75, 0.2)]),
+}
+SYMMETRIC = {"fork", "round_tail", "clown_tail", "flukes"}
+
+
+def fin(b, st, shape, M, scale=1.0, **kw):
+    """A fin from FINS (or a (root, points) pair), scaled, in frame M (see Fm)."""
+    root, tips = FINS[shape] if isinstance(shape, str) else shape
+    root = tuple((u * scale, v * scale) for u, v in root)
+    tips = [(u * scale, v * scale) for u, v in tips]
+    if isinstance(shape, str) and shape in SYMMETRIC and "bend" not in kw:
+        # the two outer spines bow outwards, the middle ones stay straight
+        mid = (root[0][0] + root[1][0]) / 2
+        L = [math.hypot(u - mid, v) for u, v in tips]
+        kw["bend"] = [0.08 * L[0]] + [0.0] * (len(tips) - 2) + [-0.08 * L[-1]]
+    kw.setdefault("thick", 0.05 * max(0.7, scale))
+    kw.setdefault("spine", 0.05 * scale)
+    kw.setdefault("rib", 0.026 * scale)
+    b.fin4(st, root, tips, M, **kw)
+
+
+def tail(b, st, ctrl, r0, r1, per=8):
+    """A tail: a tube through ctrl (it starts inside the body) tapering from r0 to r1.
+    Returns the path, its radii and the direction at the tip."""
+    path = spline(ctrl, per)
+    radii = taper(len(path), r0, r1, 0.85)
+    b.ttube(st, path, radii, n=18, grad=False)
+    return path, radii, (path[-1] - path[-3]).normalized()
+
+
+def back_y(b, part, z, x=0.0):
+    """How far back the surface of a body part is at height z."""
+    return b.hit(part, (x, 3, z), (0, -1, 0))[0].y
 
 
 def tentacle(b, st, pts, r0, r1, sucker=None, sucker_in=None, per=8, side=1.0, every=2, flat=1.0, power=0.9, rows=2, face=None):
@@ -265,42 +314,50 @@ def wear_hood(b, hood, st="Hood", lining="Lining", lip="Lip", fat_lip=0.0, teeth
     return ring
 
 
-def fish_fins(b, fin_st, body, head="Head", tail_ctrl=None, dorsal=True, forearm=True, calf=True, crest=True, ears=True,
-              pleat=0.014, scale=0.78, crest_o=(0, -0.02, 5.1), ear_o=(0.52, 0.12, 4.5), head_scale=0.44):
-    """The shared fin set for the fish-type rigs: scale sizes the body fins, head_scale the small
-    fins on the hood."""
+def fish_fins(b, fin_st, body, tail_shape="fork", dorsal=True, forearm=True, calf=True, crest=True, ears=True,
+              scale=0.8, crest_o=(0, -0.02, 5.1), ear_o=(0.52, 0.12, 4.5), head_scale=0.5, tail_scale=1.15, tail=True,
+              scallop=None):
+    """The shared fin set for the fish-type rigs, and the tail (scallop: how deep the edge is cut
+    back between the points; smaller is smoother)."""
+    kw = {} if scallop is None else dict(scallop=scallop)
     if crest:
         with b.part("Head__Crest"):
-            fin(b, fin_st, [(-0.46, -0.04), (0.5, -0.04), (0.88, 0.3), (1.04, 0.74), (0.92, 1.1), (0.58, 1.22), (0.2, 1.06),
-                            (-0.1, 0.74), (-0.32, 0.36)],
-                Fm(crest_o, (0, 1, 0), (0, 0, 1)), thick=0.13, rays=4, pleat=pleat * 0.7, scale=head_scale)
+            fin(b, fin_st, "crest", Fm(crest_o, (0, 1, 0), (0, 0, 1)), scale=head_scale, **kw)
     if ears:
         with b.part("Head__Fins"):
             for sx in (-1, 1):
-                fin(b, fin_st, [(-0.22, -0.04), (0.3, -0.04), (0.64, 0.24), (0.72, 0.56), (0.48, 0.74), (0.16, 0.66), (-0.08, 0.36)],
-                    Fm((sx * ear_o[0], ear_o[1], ear_o[2]), (0, 0.35, 1), (sx, 0.5, 0.3)), thick=0.11, rays=3, pleat=pleat * 0.6,
-                    scale=head_scale * 1.1)
+                fin(b, fin_st, "ear", Fm((sx * ear_o[0], ear_o[1], ear_o[2]), (0, 0.35, 1), (sx, 0.5, 0.3)), scale=head_scale * 1.25,
+                    **kw)
     if dorsal:
         with b.part("UpperTorso__DorsalFin"):
-            fin(b, fin_st, [(-0.8, -0.04), (0.74, -0.04), (1.0, 0.3), (0.84, 0.74), (0.36, 0.94), (-0.2, 0.82), (-0.56, 0.48)],
-                Fm((0, 0.46, 3.15), (0, 0, 1), (0, 1, 0.3)), thick=0.15, rays=6, pleat=pleat, scale=scale)
-    with b.part("LowerTorso__Tail"):
-        tube = spline([(0, 0.36, 2.24), (0, 0.78, 2.14), (0, 1.12, 2.02)], 6)
-        b.ttube(body, tube, taper(len(tube), 0.36, 0.16, 0.8), n=18, grad=False)
-        fin(b, fin_st, tail_ctrl or [(-0.2, -0.04), (0.2, -0.04), (0.7, 0.42), (1.2, 1.0), (1.02, 1.08), (0.6, 0.86), (0.2, 0.7),
-                                     (0, 0.66), (-0.2, 0.7), (-0.6, 0.86), (-1.02, 1.08), (-1.2, 1.0), (-0.7, 0.42)],
-            Fm((0, 1.04, 2.04), (1, 0, 0), (0, 0.8, -0.6)), thick=0.15, rays=8, pleat=pleat, cup=0.05, scale=scale)
+            fin(b, fin_st, "dorsal", Fm((0, back_y(b, "UpperTorso", 3.15) - 0.02, 3.15), (0, 0, 1), (0, 1, 0.3)), scale=scale,
+                **kw)
+    if tail:
+        fish_tail(b, fin_st, body, tail_shape, tail_scale, scallop)
     for side, sx in (("Left", 1), ("Right", -1)):
         if forearm:
             with b.part(f"{side}LowerArm__Fin"):
-                fin(b, fin_st, [(-0.3, -0.04), (0.42, -0.04), (0.66, 0.3), (0.52, 0.66), (0.16, 0.78), (-0.16, 0.58)],
-                    Fm((sx * (ARM_X + b.half_width(f"{side}LowerArm", 2.72) - 0.02), 0.18, 2.72), (0, 0.25, -1), (sx, 0.75, 0.1)),
-                    thick=0.12, rays=4, pleat=pleat * 0.8, scale=scale)
+                fin(b, fin_st, "arm",
+                    Fm((sx * (ARM_X + b.half_width(f"{side}LowerArm", 2.72) - 0.02), 0.16, 2.72), (0, 0.25, -1), (sx, 0.75, 0.1)),
+                    scale=scale, **kw)
         if calf:
             with b.part(f"{side}LowerLeg__Fin"):
-                fin(b, fin_st, [(-0.24, -0.04), (0.3, -0.04), (0.44, 0.28), (0.24, 0.5), (-0.06, 0.4)],
-                    Fm((sx * (LEG_X + b.half_width(f"{side}LowerLeg", 0.8) - 0.02), 0.2, 0.8), (0, 0.25, -1), (sx, 0.8, 0.1)),
-                    thick=0.11, rays=3, pleat=pleat * 0.7, scale=scale)
+                fin(b, fin_st, "calf",
+                    Fm((sx * (LEG_X + b.half_width(f"{side}LowerLeg", 0.8) - 0.02), 0.18, 0.8), (0, 0.25, -1), (sx, 0.8, 0.1)),
+                    scale=scale, **kw)
+
+
+def fish_tail(b, fin_st, body, shape="fork", scale=1.15, scallop=None):
+    """A fish's tail: the back end of a fish, thick where it leaves the lower back and narrowing
+    to a slim stalk, then a big upright tail fin (like a real fish, not a shark's crescent)."""
+    yb = back_y(b, "LowerTorso", 2.22)
+    with b.part("LowerTorso__Tail"):
+        path, radii, d = tail(b, body, [(0, yb - 0.22, 2.3), (0, yb + 0.2, 2.18), (0, yb + 0.54, 2.1), (0, yb + 0.8, 2.12)],
+                              0.42, 0.15)
+        up = V((0, -d.z, d.y)).normalized()
+        kw = {} if scallop is None else dict(scallop=scallop)
+        fin(b, fin_st, shape, Fm(tuple(path[-1] - d * 0.08), tuple(up), d), scale=scale, **kw)
+    return path, radii
 
 
 # ---------------------------------------------------------------------------
@@ -393,9 +450,7 @@ def pufferfish():
                 spike(b, "Spike", P - N * 0.03, N, 0.34, 0.09)
         P, N = hood.point(0, 90)
         spike(b, "Spike", P - N * 0.03, N, 0.38, 0.1)
-    fish_fins(b, "Fin", "Body", crest=False, calf=False, ear_o=(0.94, 0.16, 4.5),
-              tail_ctrl=[(-0.2, -0.04), (0.2, -0.04), (0.62, 0.36), (0.86, 0.78), (0.52, 0.88), (0, 0.72), (-0.52, 0.88),
-                         (-0.86, 0.78), (-0.62, 0.36)])
+    fish_fins(b, "Fin", "Body", crest=False, calf=False, ear_o=(0.94, 0.16, 4.5), tail_shape="round_tail")
     for side, sx in (("Left", 1), ("Right", -1)):
         for part, cx, zs in (("UpperArm", ARM_X, (3.2, 3.68)), ("LowerArm", ARM_X, (2.5, 2.82)),
                              ("UpperLeg", LEG_X, (1.36, 1.76)), ("LowerLeg", LEG_X, (0.6, 0.92))):
@@ -694,19 +749,27 @@ def moray_eel():
     wear_hood(b, hood, fat_lip=0.05, teeth=("Tooth", 0.07, 0.2, 0.15), eye_r=0.17, eye_at=(38, 36), brows="grumpy")
     with b.part("Head__Crest"):
         # the long eel dorsal fin starts on the crown and runs down the back
-        fin(b, "Fin", [(-0.36, -0.04), (0.76, -0.04), (0.9, 0.14), (0.74, 0.4), (0.34, 0.54), (-0.06, 0.5), (-0.28, 0.28)],
-            Fm((0, -0.12, 5.48), (0, 1, -0.45), (0, 0.4, 1)), thick=0.13, rays=5, pleat=0.01, scallop=0.04, scale=0.62)
+        fin(b, "Fin", "eel_crest", Fm((0, -0.12, 5.48), (0, 1, -0.45), (0, 0.4, 1)), scale=0.75)
     with b.part("UpperTorso__DorsalFin"):
-        fin(b, "Fin", [(-0.56, -0.04), (1.62, -0.04), (1.66, 0.18), (1.3, 0.38), (0.7, 0.44), (0.1, 0.42), (-0.4, 0.3)],
-            Fm((0, 0.44, 2.36), (0, 0, 1), (0, 1, 0.04)), thick=0.14, rays=11, pleat=0.012, scallop=0.04)
+        fin(b, "Fin", "ridge", Fm((0, back_y(b, "UpperTorso", 3.0) - 0.02, 2.36), (0, 0, 1), (0, 1, 0.04)), scale=0.95)
+    yb = back_y(b, "LowerTorso", 2.22)
     with b.part("LowerTorso__Tail"):
-        pts = [(0, 0.38, 2.25), (0, 0.95, 1.92), (0.1, 1.35, 1.22), (0.45, 1.58, 0.5), (1.1, 1.62, 0.24), (1.72, 1.32, 0.22),
-               (2.05, 0.94, 0.26), (2.0, 0.66, 0.34)]
-        path = spline(pts, 8)
-        radii = taper(len(path), 0.44, 0.05, 0.8)
-        b.ttube("Tail", path, radii, n=16, grad=False)
-        b.ttube("Fin", path, [r * 0.62 for r in radii], n=10, flat=1.0, flat_b=0.14, lift=1.2)
-        b.ttube("FinRim", path, [r * 0.62 for r in radii], n=6, flat=0.2, flat_b=0.18, lift=2.5, grad=False)
+        # a long eel tail that drops to the floor and curls round, with a spiky ridge along its top
+        pts = [(0, yb - 0.16, 2.28), (0, yb + 0.3, 2.06), (0.08, yb + 0.78, 1.5), (0.3, yb + 1.08, 0.82), (0.8, yb + 1.22, 0.4),
+               (1.4, yb + 1.02, 0.3), (1.78, yb + 0.6, 0.3), (1.76, yb + 0.22, 0.34)]
+        path, radii, d = tail(b, "Tail", pts, 0.4, 0.07, per=10)
+        up = V((0, 0, 1))
+        i = 6
+        while i < len(path) - 6:
+            seg = path[i + 5] - path[i]
+            L = seg.length
+            r = radii[i]
+            h = 0.12 + 0.32 * radii[i] / radii[0]
+            u = seg.normalized()
+            o = path[i] + up * r * 0.75
+            fin(b, "Fin", (((0, 0), (L, 0)), [(0.35 * L, h), (1.1 * L, h * 0.55)]), Fm(tuple(o), tuple(u), (0, 0, 1)),
+                thick=0.04, spine=0.03, rib=0.02, sink=0.04)
+            i += 5
     return b
 
 
@@ -736,35 +799,41 @@ def _shark_styles(skin, dark, fin_c, fin_tip):
                 Tooth=dict(color=(255, 255, 250), grad=0, rough=0.25))
 
 
-# the cartoon shark fin: convex front edge sweeping back to a rounded tip, concave back edge
-SHARK_FIN = [(-0.55, -0.04), (0.45, -0.04), (0.5, 0.12), (0.52, 0.32), (0.6, 0.56), (0.74, 0.82), (0.9, 1.04), (0.93, 1.14),
-             (0.85, 1.2), (0.72, 1.16), (0.48, 0.98), (0.2, 0.7), (-0.1, 0.42), (-0.36, 0.16)]
-
-
 def _shark_body(b, dorsal=True):
     standard_body(b, dict(head="Head", chest="Skin", waist="Skin", arm="Limb", forearm="Limb", hand="White",
                           thigh="Limb", shin="Limb", foot="White"), shape=SHARK_BODY)
     if dorsal:
         with b.part("UpperTorso__DorsalFin"):
-            fin(b, "Fin", [(x * 0.8, y * 0.8) for x, y in SHARK_FIN], Fm((0, 0.46, 3.5), (0, 0.42, -1), (0, 1, 0.42)),
-                thick=0.2, scale=0.8)
-    with b.part("LowerTorso__Tail"):
-        tube = spline([(0, 0.36, 2.24), (0, 0.86, 2.16), (0, 1.22, 2.1)], 6)
-        b.ttube("Skin", tube, taper(len(tube), 0.36, 0.14, 0.8), n=18, grad=False)
-        # heterocercal tail: the upper lobe is the big one
-        fin(b, "Fin", [(-0.22, -0.04), (0.26, -0.04), (0.66, 0.2), (1.12, 0.46), (1.5, 0.7), (1.38, 0.82), (0.9, 0.62),
-                       (0.4, 0.5), (0.04, 0.5), (-0.34, 0.58), (-0.72, 0.68), (-0.82, 0.58), (-0.5, 0.22)],
-            Fm((0, 1.16, 2.1), (0, 0.3, 1), (0, 1, -0.3)), thick=0.2, scale=0.8)
+            fin(b, "Fin", "shark", Fm((0, back_y(b, "UpperTorso", 3.5) - 0.02, 3.5), (0, 0.42, -1), (0, 1, 0.42)), scale=0.62)
+    shark_tail(b, "Skin", "Fin", "shark_tail")
     for side, sx in (("Left", 1), ("Right", -1)):
         with b.part(f"{side}UpperArm__Fin"):
-            fin(b, "Fin", [(-0.34, -0.04), (0.32, -0.04), (0.42, 0.2), (0.54, 0.46), (0.62, 0.7), (0.52, 0.8), (0.36, 0.7),
-                           (0.08, 0.4), (-0.18, 0.18)],
+            fin(b, "Fin", "pec",
                 Fm((sx * (ARM_X + b.half_width(f"{side}UpperArm", 3.46) - 0.02), 0.0, 3.46), (0, 1, 0.3), (sx * 0.55, 0.45, -1)),
-                thick=0.17, scale=0.72, flare=1.6)
+                scale=0.8)
     with b.part("LowerTorso__Fins"):
         for sx in (-1, 1):
-            fin(b, "Fin", [(-0.2, -0.04), (0.22, -0.04), (0.34, 0.26), (0.38, 0.4), (0.2, 0.36), (-0.02, 0.18)],
-                Fm((sx * 0.62, 0.44, 2.14), (0, 0, 1), (sx * 0.5, 1, -0.5)), thick=0.13, scale=0.85)
+            fin(b, "Fin", "pelvic", Fm((sx * 0.56, back_y(b, "LowerTorso", 2.14, sx * 0.56) - 0.02, 2.14), (0, 0, 1),
+                                       (sx * 0.5, 1, -0.5)), scale=0.9)
+
+
+def shark_tail(b, body, fin_st, shape, scale=1.25, flukes=False):
+    """A long, thick tail that curves back and down from the lower back. Sharks end in a tall
+    tail fin (upright), orcas in flat flukes."""
+    yb = back_y(b, "LowerTorso", 2.22)
+    with b.part("LowerTorso__Tail"):
+        path, radii, d = tail(b, body, [(0, yb - 0.22, 2.32), (0, yb + 0.3, 2.18), (0, yb + 0.8, 2.04), (0, yb + 1.24, 2.08),
+                                        (0, yb + 1.56, 2.3)], 0.44, 0.13)
+        if flukes:
+            fin(b, fin_st, shape, Fm(tuple(path[-1] - d * 0.08), (1, 0, 0), d), scale=scale)
+        else:
+            up = V((0, -d.z, d.y)).normalized()
+            fin(b, fin_st, shape, Fm(tuple(path[-1] - d * 0.08), tuple(up), d), scale=scale)
+            # a small second dorsal fin on top of the tail
+            k = int(len(path) * 0.55)
+            dk = (path[k + 1] - path[k - 1]).normalized()
+            upk = V((0, -dk.z, dk.y)).normalized()
+            fin(b, fin_st, "pelvic", Fm(tuple(path[k] + upk * radii[k] * 0.7), tuple(-dk), tuple(upk)), scale=0.75)
 
 
 def shark():
@@ -774,10 +843,7 @@ def shark():
     hood = Hood(r=(0.92, 0.96, 0.88), bumps=[(-90, 34, 0.24, 26), (-90, -42, 0.1, 22)])
     wear_hood(b, hood, fat_lip=0.055, teeth=("Tooth", 0.135, 0.2, 0.125), eye_r=0.15, eye_at=(54, 24), brows="angry")
     with b.part("Head__Fin"):
-        # the big head fin, with a cartoon bite taken out of its back edge
-        bitten = SHARK_FIN[:4] + [(0.47, 0.42), (0.53, 0.5)] + SHARK_FIN[4:]
-        fin(b, "Fin", [(x * 0.62, y * 0.62) for x, y in bitten], Fm((0, 0.06, 5.48), (0, 1, 0), (0, 0, 1)),
-            thick=0.22, scale=0.82)
+        fin(b, "Fin", "shark", Fm((0, 0.06, 5.46), (0, 1, 0), (0, 0, 1)), scale=0.56)
     return b
 
 
@@ -811,8 +877,7 @@ def hammerhead():
             for dy in (-0.05, 0.05):
                 b.ball("Dark", (sx * 0.62, -0.38 + dy * 0.2, 5.33 + dy), 0.035, seg=(8, 6))
     with b.part("Head__Fin"):
-        fin(b, "Fin", [(x * 0.56, y * 0.56) for x, y in SHARK_FIN], Fm((0, 0.12, 5.52), (0, 1, 0), (0, 0, 1)),
-            thick=0.21, scale=0.82)
+        fin(b, "Fin", "shark", Fm((0, 0.12, 5.52), (0, 1, 0), (0, 0, 1)), scale=0.46)
     return b
 
 
@@ -847,24 +912,16 @@ def orca():
     hood = Hood(r=(0.94, 0.96, 0.88), bumps=[(-90, 34, 0.2, 30), (-90, -44, 0.08, 24), (0, 85, 0.06, 40)])
     wear_hood(b, hood, fat_lip=0.05, teeth=("Tooth", 0.08, 0.11, 0.1), eye_r=0.14, eye_at=(58, 14), brows="cheeky")
     with b.part("Head__Fin"):
-        # the tall orca dorsal fin, leaning back a little
-        fin(b, "Fin", [(-0.52, -0.04), (0.4, -0.04), (0.38, 0.4), (0.36, 0.86), (0.38, 1.3), (0.34, 1.62), (0.2, 1.6),
-                       (0.02, 1.14), (-0.22, 0.62)],
-            Fm((0, 0.08, 5.48), (0, 1, 0), (0, 0, 1)), thick=0.2, scale=0.46)
+        # the tall orca dorsal fin
+        fin(b, "Fin", "orca", Fm((0, 0.08, 5.46), (0, 1, 0), (0, 0, 1)), scale=0.5)
     with b.part("UpperTorso__DorsalFin"):
-        fin(b, "Fin", [(-0.5, -0.04), (0.5, -0.04), (0.5, 0.3), (0.5, 0.62), (0.36, 0.78), (0.12, 0.6), (-0.2, 0.3)],
-            Fm((0, 0.46, 3.5), (0, 0.4, -1), (0, 1, 0.4)), thick=0.18, scale=0.85)
-    with b.part("LowerTorso__Flukes"):
-        tube = spline([(0, 0.36, 2.25), (0, 0.92, 2.17), (0, 1.3, 2.12)], 5)
-        b.ttube("Black", tube, taper(len(tube), 0.38, 0.16), n=16, grad=False)
-        fin(b, "Fin", [(-0.22, -0.04), (0.22, -0.04), (0.7, 0.16), (1.14, 0.46), (1.08, 0.64), (0.56, 0.54), (0.0, 0.42),
-                       (-0.56, 0.54), (-1.08, 0.64), (-1.14, 0.46), (-0.7, 0.16)],
-            Fm((0, 1.18, 2.1), (1, 0, 0), (0, 1, 0.08)), thick=0.18, cup=0.05, scale=0.82)
+        fin(b, "Fin", "shark", Fm((0, back_y(b, "UpperTorso", 3.5) - 0.02, 3.5), (0, 0.4, -1), (0, 1, 0.4)), scale=0.5)
+    shark_tail(b, "Black", "Fin", "flukes", scale=1.15, flukes=True)
     for side, sx in (("Left", 1), ("Right", -1)):
         with b.part(f"{side}UpperArm__Paddle"):
-            fin(b, "Fin", [(-0.3, -0.04), (0.3, -0.04), (0.44, 0.36), (0.36, 0.8), (0.02, 1.0), (-0.3, 0.8), (-0.42, 0.36)],
+            fin(b, "Fin", "paddle",
                 Fm((sx * (ARM_X + b.half_width(f"{side}UpperArm", 3.3) - 0.02), 0.12, 3.3), (0, 1, 0), (sx * 0.9, 0.35, -0.6)),
-                thick=0.18, curl=0.05, scale=0.78)
+                scale=0.85, scallop=0.12)
     return b
 
 
@@ -899,8 +956,7 @@ def giant_squid():
     with b.part("Head__Fins"):
         for sx in (-1, 1):
             P, N = hood.point(90 - 90 * sx, 72)
-            fin(b, "Mantle", [(-0.5, -0.04), (0.42, -0.04), (0.36, 0.22), (0.12, 0.46), (-0.16, 0.54), (-0.4, 0.34)],
-                Fm(tuple(P - N * 0.02), (0, 0, 1), (sx, 0, -0.25)), thick=0.14, curl=0.03, scale=0.85)
+            fin(b, "Mantle", "squid", Fm(tuple(P - N * 0.02), (0, 0, 1), (sx, 0, -0.25)), scale=0.95)
     with b.part("Head__Hood"):
         b.ball("Mantle", tuple(top - V((0, 0, 0.06))), 0.1, seg=(12, 8))
     with b.part("LowerTorso__Arms"):
@@ -962,13 +1018,17 @@ def clownfish():
                           thigh="Limb", shin="Limb", foot="Dark"), shape=dict(FISH_BODY, belly=(0.78, 0.2, 0.72)))
     hood = Hood(bumps=[(-90, -10, 0.08, 30)])
     wear_hood(b, hood, fat_lip=0.075, eye_r=0.21, brows="cheeky", blush=True)
-    fish_fins(b, "Fin", "Orange", crest_o=(0, 0.02, 5.42), ear_o=(0.86, 0.16, 4.5),
-              tail_ctrl=[(-0.2, -0.04), (0.2, -0.04), (0.66, 0.4), (0.88, 0.84), (0.62, 1.04), (0, 1.0), (-0.62, 1.04),
-                         (-0.88, 0.84), (-0.66, 0.4)])
+    # clownfish fins are soft and rounded: only a slight wave between the rays
+    fish_fins(b, "Fin", "Orange", crest_o=(0, 0.02, 5.42), ear_o=(0.86, 0.16, 4.5), tail=False, scallop=0.08)
+    path, radii = fish_tail(b, "Fin", "Orange", "clown_tail", scale=1.15, scallop=0.06)
     with b.part("LowerTorso__Tail"):
-        b.cyl("White", (0, 0.68, 2.2), (0, 0.86, 2.19), 0.31, 16)
-        for y in (0.64, 0.9):
-            b.cyl("Black", (0, y - 0.03, 2.2), (0, y + 0.03, 2.19), 0.32, 16)
+        # the white band with black edges round the tail
+        k = len(path) // 3
+        d = (path[k + 1] - path[k - 1]).normalized()
+        c, r = path[k], radii[k] * 1.07
+        b.cyl("White", tuple(c - d * 0.08), tuple(c + d * 0.08), r, 20)
+        for o in (-0.1, 0.1):
+            b.cyl("Black", tuple(c + d * (o - 0.025)), tuple(c + d * (o + 0.025)), r * 1.02, 20)
     return b
 
 

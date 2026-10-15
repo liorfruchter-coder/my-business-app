@@ -255,7 +255,7 @@ for fn in creatures.CREATURES:
     for o in bpy.data.objects:
         if o.name.startswith("Joint_"):
             o.hide_render = True
-    CARD = ((-3.1, -1.0, 0.0), (3.1, 1.6, 7.5))
+    CARD = ((-3.1, -1.0, 0.0), (3.1, 2.4, 7.5))
     frame(cam, parts, az=-32, el=7, margin=0.02, box=CARD)
     render(os.path.join(out, "previews", "_raw", f"{name}_front.png"))
     face.hide_render = True

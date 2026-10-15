@@ -15,6 +15,8 @@ with a glossy, toy-like shading baked into the textures.
 
 ![Heads](previews/Heads.jpg)
 
+![Fins and tails](previews/Tails.jpg)
+
 ## What's here
 
 | Path | What it is |
@@ -23,7 +25,7 @@ with a glossy, toy-like shading baked into the textures.
 | `textures/<Creature>.png` | The creature's 1024×1024 texture; every part of a creature shares it |
 | `roblox/SeaCreatureRigSetup.lua` | ModuleScript: turns an imported FBX into a working R15 character, and morphs players |
 | `blend/<Creature>.blend` | Editable Blender scenes (saved from Blender 5.2) |
-| `previews/` | `Lineup_Front.jpg`, `Lineup_Back.jpg`, `Heads.jpg` (close-ups) and one `<Creature>.jpg` each |
+| `previews/` | `Lineup_Front.jpg`, `Lineup_Back.jpg`, `Heads.jpg` and `Tails.jpg` (close-ups) and one `<Creature>.jpg` each |
 | `source/` | The Python that builds everything. Edit it and re-run to change a creature |
 | `rigs.json` | Parts, triangles and size of each rig |
 
@@ -66,17 +68,17 @@ To make a creature the default character instead, copy its rig into **StarterPla
 
 | # | Creature | Parts | Triangles | Largest part (tris) | Size W × H × D (studs) |
 |---:|---|---:|---:|---:|---|
-| 1 | Tiny Fish | 24 | 42,996 | 11,880 | 4.63 × 5.97 × 2.54 |
-| 2 | Pufferfish | 31 | 39,928 | 11,880 | 4.63 × 5.89 × 2.57 |
+| 1 | Tiny Fish | 24 | 38,556 | 11,880 | 4.49 × 5.9 × 3.12 |
+| 2 | Pufferfish | 31 | 36,352 | 11,880 | 4.49 × 5.89 × 3.03 |
 | 3 | Crab | 17 | 19,070 | 4,096 | 4.15 × 6.22 × 2.73 |
 | 4 | Jellyfish | 22 | 18,858 | 3,982 | 3.84 × 5.65 × 2.39 |
 | 5 | Octopus | 19 | 50,668 | 14,416 | 6.13 × 6.03 × 2.69 |
-| 6 | Moray Eel | 19 | 32,076 | 12,512 | 4.12 × 5.78 × 2.93 |
-| 7 | Shark | 22 | 36,764 | 12,692 | 4.31 × 6.1 × 3.12 |
-| 8 | Hammerhead Shark | 23 | 39,320 | 10,304 | 4.31 × 6.09 × 3.04 |
-| 9 | Orca | 21 | 33,472 | 13,052 | 5.02 × 6.26 × 2.69 |
-| 10 | Giant Squid | 19 | 53,292 | 13,252 | 4.13 × 6.52 × 2.67 |
-| 11 | Clownfish | 24 | 43,640 | 11,880 | 4.63 × 5.97 × 2.54 |
+| 6 | Moray Eel | 19 | 39,392 | 13,928 | 3.84 × 5.8 × 2.81 |
+| 7 | Shark | 22 | 34,556 | 12,692 | 4.29 × 6.05 × 3.86 |
+| 8 | Hammerhead Shark | 23 | 37,112 | 10,304 | 4.29 × 6.01 × 3.78 |
+| 9 | Orca | 21 | 31,928 | 13,052 | 4.93 × 6.19 × 3.47 |
+| 10 | Giant Squid | 19 | 51,796 | 13,252 | 4.13 × 6.53 × 2.67 |
+| 11 | Clownfish | 24 | 40,608 | 11,880 | 4.49 × 5.9 × 3.06 |
 
 Height is the whole model including fins, bells and mantles. The body itself is 5.2 studs tall on every rig.
 
